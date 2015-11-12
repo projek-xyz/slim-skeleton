@@ -4,7 +4,7 @@
 [![VERSION](https://img.shields.io/packagist/v/projek-xyz/slim-skeleton.svg?style=flat-square)](https://github.com/projek-xyz/slim-skeleton/releases)
 [![Build Status](https://img.shields.io/travis/projek-xyz/slim-skeleton/master.svg?style=flat-square)](https://travis-ci.org/projek-xyz/slim-skeleton)
 [![Coveralls](https://img.shields.io/coveralls/projek-xyz/slim-skeleton/master.svg?style=flat-square)](https://coveralls.io/github/projek-xyz/slim-skeleton)
-[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/de272fe6-fcb7-4dad-b8d5-28e9d4ee86f6.svg?style=flat-square)](https://insight.sensiolabs.com/projects/de272fe6-fcb7-4dad-b8d5-28e9d4ee86f6)
+[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/59c39221-cc85-467f-9e00-c7e0dcbdc9ee.svg?style=flat-square)](https://insight.sensiolabs.com/projects/59c39221-cc85-467f-9e00-c7e0dcbdc9ee)
 
 ## Prerequisites
 

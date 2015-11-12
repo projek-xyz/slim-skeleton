@@ -4,7 +4,6 @@ namespace App\Providers;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Slim\PDO\Database;
-use App\Models\Model;
 
 class DatabaseProvider implements ServiceProviderInterface
 {

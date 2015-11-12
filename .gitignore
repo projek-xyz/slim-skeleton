@@ -1,0 +1,37 @@
+# Generic
+# --------------------------
+Thumbs.db
+Desktop.ini
+Icon?
+.directory
+*.cache
+*.old
+*.zip
+*~
+
+# Development files
+# --------------------------
+app/cache/*
+app/logs/*
+app/.env
+clover.xml
+coveralls-upload.json
+
+# Dependency folders
+# --------------------------
+vendor/
+node_modules/
+
+# IDE Project Configurations
+# --------------------------
+nbproject/
+.idea/
+.settings/
+.project
+*.sublime-*
+
+# But Keep these
+# --------------------------
+!.htaccess
+!.gitkeep
+!.keep

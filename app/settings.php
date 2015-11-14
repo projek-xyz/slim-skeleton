@@ -4,15 +4,16 @@ return [
     // Application basename
     'basename' => 'Slim-App',
 
-    // Application title
-    'title' => 'Slim Framework 3',
+    // Application title and description
+    'title' => 'Slim 3 Skeleton',
+    'description' => 'PHP Application Skeleton for SLIM 3 Microframework',
 
     // Application Mode
     'mode' => getenv('APP_ENV') ?: 'development',
 
     // Language settings
     'lang' => [
-        'directory' => APP_DIR.'langs',
+        // 'directory' => APP_DIR.'langs',
         'default'   => 'id',
     ],
 

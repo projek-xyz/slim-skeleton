@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "480ebdb16f40baa063c04e812600fad4",
-    "content-hash": "8aaed2999f5cd0e0dd51273e41848766",
+    "hash": "0fa5af8f9edc644bc1f0980d484a9793",
+    "content-hash": "ac568392dbfded08c42f08e37d4c4244",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -251,115 +251,6 @@
                 "dependency injection"
             ],
             "time": "2015-09-11 15:10:35"
-        },
-        {
-            "name": "projek-xyz/slim-monolog",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/projek-xyz/slim-monolog.git",
-                "reference": "cecf2c0b75b66b9608e9342e830d691cd49befc3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/projek-xyz/slim-monolog/zipball/cecf2c0b75b66b9608e9342e830d691cd49befc3",
-                "reference": "cecf2c0b75b66b9608e9342e830d691cd49befc3",
-                "shasum": ""
-            },
-            "require": {
-                "monolog/monolog": "~1.17",
-                "php": ">=5.5.0",
-                "slim/slim": "3.x-dev"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Projek\\Slim\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fery Wardiyanto",
-                    "email": "hallo@feryardiant.me",
-                    "homepage": "http://feryardiant.me"
-                }
-            ],
-            "description": "Slim Framework 3 log helper built on top of the Monolog logger component",
-            "homepage": "http://www.projek.xyz/slim-monolog",
-            "keywords": [
-                "framework",
-                "logger",
-                "monolog",
-                "slim"
-            ],
-            "time": "2015-11-12 03:13:36"
-        },
-        {
-            "name": "projek-xyz/slim-plates",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/projek-xyz/slim-plates.git",
-                "reference": "b9b6262b4a8013a593717ea99da05fb5e8a0ff43"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/projek-xyz/slim-plates/zipball/b9b6262b4a8013a593717ea99da05fb5e8a0ff43",
-                "reference": "b9b6262b4a8013a593717ea99da05fb5e8a0ff43",
-                "shasum": ""
-            },
-            "require": {
-                "league/plates": "~3.1.0",
-                "php": ">=5.5.0",
-                "slim/slim": "3.x-dev"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Projek\\Slim\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fery Wardiyanto",
-                    "email": "hallo@feryardiant.me",
-                    "homepage": "http://feryardiant.me"
-                }
-            ],
-            "description": "Slim Framework 3 view helper built on top of the Plates templating component",
-            "homepage": "http://www.projek.xyz/slim-plates",
-            "keywords": [
-                "framework",
-                "plates",
-                "slim",
-                "template",
-                "view"
-            ],
-            "time": "2015-11-12 03:13:24"
         },
         {
             "name": "psr/http-message",
@@ -1657,8 +1548,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "slim/slim": 20,
-        "projek-xyz/slim-monolog": 20,
-        "projek-xyz/slim-plates": 20,
         "vlucas/phpdotenv": 20
     },
     "prefer-stable": true,

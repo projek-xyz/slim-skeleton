@@ -11,6 +11,11 @@ class DatabaseProvider implements ServiceProviderInterface
 
     protected $db;
 
+    /**
+     * Register this database provider with a Pimple container
+     *
+     * @param \Pimple\Container $container
+     */
     public function register(Container $container)
     {
         $this->settings = $container->get('settings')['db'];
@@ -18,6 +23,12 @@ class DatabaseProvider implements ServiceProviderInterface
         $container['db'] = $this->getConnection();
     }
 
+    /**
+     * Get database connection
+     *
+     * @param  string $name Connection name
+     * @return App\Providers\DatabaseProvider
+     */
     public function getConnection($name = 'default')
     {
         $conn = $this->settings[$name];
@@ -34,6 +45,11 @@ class DatabaseProvider implements ServiceProviderInterface
         return $this;
     }
 
+    /**
+     * Get database instance
+     *
+     * @return Slim\PDO\Database
+     */
     public function getInstance()
     {
         return $this->db;

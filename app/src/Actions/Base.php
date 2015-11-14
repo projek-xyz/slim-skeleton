@@ -1,9 +1,9 @@
 <?php
-namespace App;
+namespace App\Actions;
 
 use Slim\Container;
 
-abstract class BaseAction
+abstract class Base
 {
     /**
      * Slim DI Container
@@ -23,7 +23,7 @@ abstract class BaseAction
 
         $view->addData([
             '_title_'       => $settings['title'],
-            '_description_' => $settings['description']
+            '_description_' => $settings['description'],
         ]);
     }
 

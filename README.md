@@ -9,13 +9,12 @@
 ## Prerequisites
 
 - PHP 5.5.x or newer, since Slim v3.x depends on it.
-- Node.JS 0.12.x or newer, required for development only.
 - HTTP Server, e.g. NginX or Apache either.
 - MySQL Server 5.x or newer for main database.
 
 ## Installation
 
-I've make this package available to install via `composer create-project` so make sure you've already have [composer](https://getcomposer.org/download/) installed globally.
+I've make this package available to install via `composer create-project` so make sure you've already have [composer](https://getcomposer.org/download/) installed globally in your system.
 
 ```bash
 $ composer create-project -n -s dev projek-xyz/slim-skeleton my-app

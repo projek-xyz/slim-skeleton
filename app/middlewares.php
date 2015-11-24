@@ -15,8 +15,8 @@ Middleware::setStreamFactory(function () use ($container) {
 $app->add(new Middleware\Robots());
 $app->add(new Middleware\ResponseTime());
 $app->add(new Middleware\TrailingSlash(true));
-$app->add(new Middleware\FormatNegotiator());
-$app->add(new Middleware\LanguageNegotiator(['id', 'en']));
+// $app->add(new Middleware\FormatNegotiator());
+// $app->add(new Middleware\LanguageNegotiator(['id', 'en']));
 
 // $app->add(
 //     Middleware::When()
@@ -28,11 +28,9 @@ $app->add(new Middleware\LanguageNegotiator(['id', 'en']));
  * Log every request
  */
 $app->add(function (Request $req, Response $res, Callable $next) {
-    $lang = Middleware\LanguageNegotiator::getLanguage($req);
-
     $res = $next($req, $res);
 
-    $this->get('logger')->debug($req->getMethod().' '.$req->getUri()->getPath().' '.$lang);
+    $this->get('logger')->debug($req->getMethod().' '.$req->getUri()->getPath());
 
     return $res;
 });

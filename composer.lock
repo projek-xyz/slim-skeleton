@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "432f6ec4a20728c45642a9765a573afa",
-    "content-hash": "4f3149b3154a90f8c800e7703d28217e",
+    "hash": "fbd1ec0a4989c5d1eb8ea9bf9dde37ba",
+    "content-hash": "b5fb942ba741a828c1563ea5fb69eae2",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -208,16 +208,16 @@
         },
         {
             "name": "oscarotero/psr7-middlewares",
-            "version": "v3.7.2",
+            "version": "v3.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oscarotero/psr7-middlewares.git",
-                "reference": "d572c7f9c5afa4d0e20b97dd5c207d6334f1ecdd"
+                "reference": "206c334bcb14b5478806bfd9ef245d02ab75484e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oscarotero/psr7-middlewares/zipball/d572c7f9c5afa4d0e20b97dd5c207d6334f1ecdd",
-                "reference": "d572c7f9c5afa4d0e20b97dd5c207d6334f1ecdd",
+                "url": "https://api.github.com/repos/oscarotero/psr7-middlewares/zipball/206c334bcb14b5478806bfd9ef245d02ab75484e",
+                "reference": "206c334bcb14b5478806bfd9ef245d02ab75484e",
                 "shasum": ""
             },
             "require": {
@@ -276,7 +276,7 @@
                 "psr-7",
                 "psr-messages"
             ],
-            "time": "2015-11-05 19:26:27"
+            "time": "2015-11-24 15:59:27"
         },
         {
             "name": "pimple/pimple",
@@ -458,16 +458,16 @@
         },
         {
             "name": "slim/pdo",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FaaPz/Slim-PDO.git",
-                "reference": "a0c263288ef3bb31601b1107313008577d4c8449"
+                "reference": "dae84ac7bd9e08a15f48c930225d733d3e7f1b29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FaaPz/Slim-PDO/zipball/a0c263288ef3bb31601b1107313008577d4c8449",
-                "reference": "a0c263288ef3bb31601b1107313008577d4c8449",
+                "url": "https://api.github.com/repos/FaaPz/Slim-PDO/zipball/dae84ac7bd9e08a15f48c930225d733d3e7f1b29",
+                "reference": "dae84ac7bd9e08a15f48c930225d733d3e7f1b29",
                 "shasum": ""
             },
             "require": {
@@ -500,7 +500,7 @@
                 "pdo",
                 "slim"
             ],
-            "time": "2015-10-07 11:51:15"
+            "time": "2015-11-22 12:28:27"
         },
         {
             "name": "slim/slim",
@@ -508,12 +508,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "c181a3a7666677fcf5dee2c03c504d5731262745"
+                "reference": "72438c74ec90852560abbec060a6c0043f29bb4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/c181a3a7666677fcf5dee2c03c504d5731262745",
-                "reference": "c181a3a7666677fcf5dee2c03c504d5731262745",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/72438c74ec90852560abbec060a6c0043f29bb4f",
+                "reference": "72438c74ec90852560abbec060a6c0043f29bb4f",
                 "shasum": ""
             },
             "require": {
@@ -566,7 +566,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2015-11-09 10:57:43"
+            "time": "2015-11-21 19:56:16"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -1676,16 +1676,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v2.7.6",
+            "version": "v2.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "eb033050050916b6bfa51be71009ef67b16046c9"
+                "reference": "72bcb27411780eaee9469729aace73c0d46fb2b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/eb033050050916b6bfa51be71009ef67b16046c9",
-                "reference": "eb033050050916b6bfa51be71009ef67b16046c9",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/72bcb27411780eaee9469729aace73c0d46fb2b8",
+                "reference": "72bcb27411780eaee9469729aace73c0d46fb2b8",
                 "shasum": ""
             },
             "require": {
@@ -1706,7 +1706,10 @@
                 ],
                 "psr-4": {
                     "Symfony\\Component\\VarDumper\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1728,20 +1731,20 @@
                 "debug",
                 "dump"
             ],
-            "time": "2015-10-25 17:17:38"
+            "time": "2015-11-18 13:41:01"
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.7.6",
+            "version": "v2.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "eca9019c88fbe250164affd107bc8057771f3f4d"
+                "reference": "4cfcd7a9fceba662b3c036b7d9a91f6197af046c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/eca9019c88fbe250164affd107bc8057771f3f4d",
-                "reference": "eca9019c88fbe250164affd107bc8057771f3f4d",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/4cfcd7a9fceba662b3c036b7d9a91f6197af046c",
+                "reference": "4cfcd7a9fceba662b3c036b7d9a91f6197af046c",
                 "shasum": ""
             },
             "require": {
@@ -1756,7 +1759,10 @@
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\Yaml\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1774,7 +1780,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2015-10-11 09:39:48"
+            "time": "2015-11-18 13:41:01"
         }
     ],
     "aliases": [],
@@ -1787,8 +1793,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5.0",
-        "ext-intl": "*"
+        "php": ">=5.5.0"
     },
     "platform-dev": []
 }

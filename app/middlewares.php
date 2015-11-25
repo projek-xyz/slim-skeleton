@@ -4,16 +4,8 @@
  */
 
 // use Slim\Http\Stream;
-use Psr7Middlewares\Middleware;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-
-Middleware::setStreamFactory(function () use ($container) {
-    return $container->get('request')->getBody();
-});
-
-$app->add(Middleware::TrailingSlash(true));
-$app->add(Middleware::FormatNegotiator());
 
 /**
  * Log every request
@@ -27,31 +19,27 @@ $app->add(function (Request $req, Response $res, Callable $next) {
 });
 
 /**
- * Middleware to add or remove the trailing slash.
+ * Middleware to remove the trailing slash.
  */
 $app->add(function (Request $req, Response $res, Callable $next) {
     $uri = $req->getUri();
     $path = $uri->getPath();
     $is_true = true;
 
-    if ($is_true) {
-        if (strlen($path) > 1 && substr($path, -1) !== '/' && !pathinfo($path, PATHINFO_EXTENSION)) {
-            $path .= '/';
-        }
-    } else {
-        if (strlen($path) > 1 && substr($path, -1) === '/') {
-            $path = substr($path, 0, -1);
-        }
+    if (strlen($path) > 1 && substr($path, -1) === '/') {
+        $path = substr($path, 0, -1);
     }
 
     //Ensure the path has one "/"
-    if (empty($path) || $path === $this->basePath) {
+    if (empty($path) || $path === $uri->getBasePath()) {
         $path .= '/';
     }
 
     //redirect
-    if (is_int($this->redirectStatus) && ($uri->getPath() !== $path)) {
-        return self::getRedirectResponse($this->redirectStatus, $uri->withPath($path), $res);
+    if ($uri->getPath() !== $path) {
+        return $res->withStatus(301)
+            ->withHeader('Location', $path)
+            ->withBody($req->getBody());
     }
 
     return $next($req->withUri($uri->withPath($path)), $res);

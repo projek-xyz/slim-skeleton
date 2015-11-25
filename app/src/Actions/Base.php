@@ -22,8 +22,8 @@ abstract class Base
         $settings = $this->container->get('settings');
 
         $view->addData([
-            '_title_'       => $settings['title'],
-            '_description_' => $settings['description'],
+            '_title_' => $settings['title'],
+            '_desc_'  => $settings['description'],
         ]);
     }
 

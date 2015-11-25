@@ -10,14 +10,6 @@ class NotFoundHandler extends NotFound
     /**
      * {inheritdoc}
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
-    {
-        return parent::__invoke($request, $response);
-    }
-
-    /**
-     * {inheritdoc}
-     */
     protected function renderHtmlErrorMessage(ServerRequestInterface $request)
     {
         $homeUrl = (string)($request->getUri()->withPath('')->withQuery('')->withFragment(''));

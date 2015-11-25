@@ -3,8 +3,8 @@
  * Application Middlewares
  */
 
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Response;
+use Slim\Http\Request;
 
 /**
  * Middleware to log every request
@@ -15,6 +15,26 @@ $app->add(function (Request $req, Response $res, Callable $next) {
     $this->get('logger')->debug($req->getMethod().' '.$req->getUri()->getPath());
 
     return $res;
+});
+
+/**
+ * Middleware to provide method overwrite
+ */
+$app->add(function (Request $req, Response $res, Callable $next) {
+    $reqMethod = strtoupper($req->getMethod());
+    $params = [];
+
+    if ($reqMethod == 'GET') {
+        $params = $req->getQueryParams();
+    } elseif ($reqMethod == 'POST') {
+        $params = $req->getParsedBody();
+    }
+
+    if (!empty($params) && isset($params['_method'])) {
+        $req = $req->withMethod($params['_method']);
+    }
+
+    return $next($req, $res);
 });
 
 /**
@@ -65,9 +85,14 @@ $app->add(function (Request $req, Response $res, Callable $next) {
 $app->add(function (Request $req, Response $res, Callable $next) {
     if ($req->getUri()->getPath() === '/robots.txt') {
         $body = new Body(fopen('php://temp', 'r+'));
-        $body->write("User-Agent: *\nDisallow: /");
+        $robots = <<<ROBOTS
+# www.robotstxt.org/
 
-        return $res->withBody($body);
+User-agent: *
+Disallow:
+ROBOTS;
+
+        return $res->withBody($body->write($robots));
     }
 
     $res = $next($req, $res);

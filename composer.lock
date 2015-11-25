@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fbd1ec0a4989c5d1eb8ea9bf9dde37ba",
-    "content-hash": "b5fb942ba741a828c1563ea5fb69eae2",
+    "hash": "19d733f4a9f2f7c606b27195ee341fb6",
+    "content-hash": "afe5cee58dfa49229b80fc2327ec3f07",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -205,78 +205,6 @@
                 "routing"
             ],
             "time": "2015-06-18 19:15:47"
-        },
-        {
-            "name": "oscarotero/psr7-middlewares",
-            "version": "v3.7.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/oscarotero/psr7-middlewares.git",
-                "reference": "206c334bcb14b5478806bfd9ef245d02ab75484e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oscarotero/psr7-middlewares/zipball/206c334bcb14b5478806bfd9ef245d02ab75484e",
-                "reference": "206c334bcb14b5478806bfd9ef245d02ab75484e",
-                "shasum": ""
-            },
-            "require": {
-                "container-interop/container-interop": "^1.1",
-                "php": ">=5.5.0"
-            },
-            "require-dev": {
-                "aura/router": "3.0.0-beta2",
-                "aura/session": "2.*",
-                "m6web/firewall": "~1.0",
-                "matthiasmullie/scrapbook": "dev-master",
-                "maximebf/debugbar": "~1.10",
-                "mrclay/minify": "^2.2",
-                "neomerx/cors-psr7": "^0.2.0",
-                "nikic/fast-route": "0.*",
-                "phpunit/phpunit": "~4.0",
-                "ramsey/uuid": "^2.8",
-                "relay/relay": "1.*",
-                "willdurand/negotiation": "~2.0",
-                "zendframework/zend-diactoros": "1.*"
-            },
-            "suggest": {
-                "aura/router": "To use Middleware::auraRouter",
-                "aura/session": "To use Middleware::auraSession",
-                "m6web/firewall": "To use Middleware::firewall()",
-                "maximebf/debugbar": "To use Middleware::debugBar()",
-                "mrclay/minify": "To use Middleware::minify()",
-                "neomerx/cors-psr7": "To use Middleware::cors()",
-                "nikic/fast-route": "To use Middleware::fastRoute",
-                "ramsey/uuid": "To use Middleware::uuid()",
-                "willdurand/negotiation": "To use Middleware::formatNegotiator() and Middleware::languageNegotiator()"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psr7Middlewares\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Oscar Otero",
-                    "email": "oom@oscarotero.com",
-                    "homepage": "http://oscarotero.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Collection of HTTP middlewares compatible with PSR-7",
-            "homepage": "https://github.com/oscarotero/psr7-middlewares",
-            "keywords": [
-                "http",
-                "middlewares",
-                "psr-7",
-                "psr-messages"
-            ],
-            "time": "2015-11-24 15:59:27"
         },
         {
             "name": "pimple/pimple",
@@ -769,62 +697,6 @@
                 "instantiate"
             ],
             "time": "2015-06-14 21:17:01"
-        },
-        {
-            "name": "maximebf/debugbar",
-            "version": "v1.10.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/maximebf/php-debugbar.git",
-                "reference": "30e53e8a28284b69dd223c9f5ee8957befd72636"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/30e53e8a28284b69dd223c9f5ee8957befd72636",
-                "reference": "30e53e8a28284b69dd223c9f5ee8957befd72636",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "psr/log": "~1.0",
-                "symfony/var-dumper": "~2.6"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "suggest": {
-                "kriswallsmith/assetic": "The best way to manage assets",
-                "monolog/monolog": "Log using Monolog",
-                "predis/predis": "Redis storage"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.10-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "DebugBar": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Maxime Bouroumeau-Fuseau",
-                    "email": "maxime.bouroumeau@gmail.com",
-                    "homepage": "http://maximebf.com"
-                }
-            ],
-            "description": "Debug bar in the browser for php application",
-            "homepage": "https://github.com/maximebf/php-debugbar",
-            "keywords": [
-                "debug"
-            ],
-            "time": "2015-10-19 20:35:12"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -1675,65 +1547,6 @@
             "time": "2015-06-21 13:59:46"
         },
         {
-            "name": "symfony/var-dumper",
-            "version": "v2.7.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "72bcb27411780eaee9469729aace73c0d46fb2b8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/72bcb27411780eaee9469729aace73c0d46fb2b8",
-                "reference": "72bcb27411780eaee9469729aace73c0d46fb2b8",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.9"
-            },
-            "suggest": {
-                "ext-symfony_debug": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.7-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "Resources/functions/dump.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Component\\VarDumper\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony mechanism for exploring and dumping PHP variables",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "debug",
-                "dump"
-            ],
-            "time": "2015-11-18 13:41:01"
-        },
-        {
             "name": "symfony/yaml",
             "version": "v2.7.7",
             "source": {
@@ -1787,8 +1600,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "slim/slim": 20,
-        "vlucas/phpdotenv": 20,
-        "maximebf/debugbar": 20
+        "vlucas/phpdotenv": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -40,8 +40,6 @@
     "willdurand/negotiation": "~2.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "~4.0",
-    "oscarotero/psr7-middlewares": "~3.7",
-    "maximebf/debugbar": "^1.10@dev"
+    "phpunit/phpunit": "~4.0"
   }
 }

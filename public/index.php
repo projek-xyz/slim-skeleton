@@ -36,11 +36,6 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-// Get detailed information while development
-if ($settings['mode'] === 'development') {
-    $settings['displayErrorDetails'] = true;
-}
-
 // Setup dependencies
 require_once APP_DIR.'dependencies.php';
 

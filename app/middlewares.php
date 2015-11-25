@@ -3,12 +3,11 @@
  * Application Middlewares
  */
 
-// use Slim\Http\Stream;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 /**
- * Log every request
+ * Middleware to log every request
  */
 $app->add(function (Request $req, Response $res, Callable $next) {
     $res = $next($req, $res);
@@ -24,18 +23,17 @@ $app->add(function (Request $req, Response $res, Callable $next) {
 $app->add(function (Request $req, Response $res, Callable $next) {
     $uri = $req->getUri();
     $path = $uri->getPath();
-    $is_true = true;
 
     if (strlen($path) > 1 && substr($path, -1) === '/') {
         $path = substr($path, 0, -1);
     }
 
-    //Ensure the path has one "/"
+    // Ensure the path has one "/"
     if (empty($path) || $path === $uri->getBasePath()) {
         $path .= '/';
     }
 
-    //redirect
+    // redirect
     if ($uri->getPath() !== $path) {
         return $res->withStatus(301)
             ->withHeader('Location', $path)

@@ -6,7 +6,7 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use InvalidArgumentException;
 
-class PlatesProvider implements ServiceProviderInterface
+class ViewProvider implements ServiceProviderInterface
 {
     /**
      * Register this plates view provider with a Pimple container

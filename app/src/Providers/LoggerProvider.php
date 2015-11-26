@@ -6,7 +6,7 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use InvalidArgumentException;
 
-class MonologProvider implements ServiceProviderInterface
+class LoggerProvider implements ServiceProviderInterface
 {
     /**
      * Register this monolog provider with a Pimple container

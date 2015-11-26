@@ -14,6 +14,10 @@ class DatabaseProvider implements ServiceProviderInterface
      */
     public function register(Container $container)
     {
+        if (!isset($container->get('settings')['db'])) {
+            throw new InvalidArgumentException('Database configuration not found');
+        }
+
         $settings = $container->get('settings')['db'];
 
         if (!$settings['dsn']) {

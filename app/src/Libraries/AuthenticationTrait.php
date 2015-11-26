@@ -26,7 +26,6 @@ trait AuthenticationTrait
      * Configure the users and passwords.
      *
      * @param array $users [username => password]
-     *
      * @return self
      */
     public function users(array $users)
@@ -40,7 +39,6 @@ trait AuthenticationTrait
      * Set the realm value.
      *
      * @param string $realm
-     *
      * @return self
      */
     public function realm($realm)

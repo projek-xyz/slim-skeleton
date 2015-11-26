@@ -436,12 +436,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "72438c74ec90852560abbec060a6c0043f29bb4f"
+                "reference": "6768169c52db341ea364c7d2577c2f8683198325"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/72438c74ec90852560abbec060a6c0043f29bb4f",
-                "reference": "72438c74ec90852560abbec060a6c0043f29bb4f",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/6768169c52db341ea364c7d2577c2f8683198325",
+                "reference": "6768169c52db341ea364c7d2577c2f8683198325",
                 "shasum": ""
             },
             "require": {
@@ -494,7 +494,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2015-11-21 19:56:16"
+            "time": "2015-11-26 08:55:45"
         },
         {
             "name": "vlucas/phpdotenv",

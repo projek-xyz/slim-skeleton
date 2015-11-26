@@ -19,15 +19,13 @@ return [
 
     // Database settings
     'db' => [
-        'default' => [
-            'dsn'     => getenv('APP_DB_DSN')    ?: '',
-            'driver'  => getenv('APP_DB_DRIVER') ?: 'mysql',
-            'host'    => getenv('APP_DB_HOST')   ?: 'localhost',
-            'user'    => getenv('APP_DB_USER')   ?: 'root',
-            'pass'    => getenv('APP_DB_PASS')   ?: '',
-            'name'    => getenv('APP_DB_NAME')   ?: '',
-            'charset' => 'utf8',
-        ]
+        'dsn'     => getenv('APP_DB_DSN')    ?: '',
+        'driver'  => getenv('APP_DB_DRIVER') ?: 'mysql',
+        'host'    => getenv('APP_DB_HOST')   ?: 'localhost',
+        'user'    => getenv('APP_DB_USER')   ?: 'root',
+        'pass'    => getenv('APP_DB_PASS')   ?: '',
+        'name'    => getenv('APP_DB_NAME')   ?: '',
+        'charset' => 'utf8',
     ],
 
     // Loggin settings

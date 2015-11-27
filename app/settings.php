@@ -45,7 +45,7 @@ return [
     // List of Pimple Service Providers
     'providers' => [
         // App\Providers\DatabaseProvider::class,
-        App\Providers\MonologProvider::class,
-        App\Providers\PlatesProvider::class,
+        App\Providers\LoggerProvider::class,
+        App\Providers\ViewProvider::class,
     ]
 ];

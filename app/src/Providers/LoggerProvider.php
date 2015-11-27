@@ -72,8 +72,8 @@ class LoggerProvider implements ServiceProviderInterface
             if ($path === 'syslog') {
                 $this->useSyslog($this->settings['level']);
             } elseif (is_dir($path)) {
-                $path .= '/'.$this->settings['filename'];
-                $this->useFiles($this->settings['level'], $path);
+                $path .= '/'.strtolower($this->name);
+                $this->useRotatingFiles($this->settings['level'], $path);
             }
         }
 
@@ -181,6 +181,24 @@ class LoggerProvider implements ServiceProviderInterface
         $path || $path = $this->settings['directory'];
         $this->monolog->pushHandler(
             $handler = new Handler\StreamHandler($path, Logger::toMonologLevel($level))
+        );
+        $handler->setFormatter($this->getDefaultFormatter());
+
+        return $this;
+    }
+
+    /**
+     * Register a rotating file log handler.
+     *
+     * @param  string  $level
+     * @param  string  $path
+     * @return void
+     */
+    public function useRotatingFiles($level = 'debug', $path = null)
+    {
+        $path || $path = $this->settings['directory'];
+        $this->monolog->pushHandler(
+            $handler = new Handler\RotatingFileHandler($path, 5, Logger::toMonologLevel($level))
         );
         $handler->setFormatter($this->getDefaultFormatter());
 

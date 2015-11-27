@@ -1,9 +1,9 @@
 <?php
 namespace App\Providers;
 
+use Slim\PDO\Database;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Slim\PDO\Database;
 
 class DatabaseProvider implements ServiceProviderInterface
 {
@@ -14,19 +14,24 @@ class DatabaseProvider implements ServiceProviderInterface
      */
     public function register(Container $container)
     {
-        if (!isset($container->get('settings')['db'])) {
+        $settings = $container->get('settings');
+
+        if (!isset($settings['db'])) {
             throw new InvalidArgumentException('Database configuration not found');
         }
 
-        $settings = $container->get('settings')['db'];
+        $db = $settings['db'];
 
-        if (!$settings['dsn']) {
-            $settings['dsn'] = $settings['driver'].
-                ':host='.$settings['host'].
-                ';dbname='.$settings['name'].
-                ';charset='.$settings['charset'];
+        if (!$db['dsn']) {
+            $db['dsn'] = sprintf(
+                '%s:host=%s;dbname=%s;charset=%s',
+                $db['driver'],
+                $db['host'],
+                $db['name'],
+                $db['charset']
+            );
         }
 
-        $container['db'] = new Database($settings['dsn'], $settings['user'], $settings['pass']);
+        $container['db'] = new Database($db['dsn'], $db['user'], $db['pass']);
     }
 }

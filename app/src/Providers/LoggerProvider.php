@@ -1,12 +1,12 @@
 <?php
 namespace App\Providers;
 
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 use Monolog\Logger;
 use Monolog\Handler;
 use Monolog\Formatter\LineFormatter;
 use Psr\Log\LoggerTrait;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use InvalidArgumentException;
 use DateTimeZone;
 

@@ -1,12 +1,12 @@
 <?php
-namespace App\Libraries;
+namespace App\Utils;
 
 use League\Plates\Engine;
 use League\Plates\Extension\ExtensionInterface;
 use Psr\Http\Message\UriInterface;
 use Slim\Interfaces\RouterInterface;
 
-class PlatesExtension implements ExtensionInterface
+class ViewExtension implements ExtensionInterface
 {
     /**
      * @var \Slim\Interfaces\RouterInterface

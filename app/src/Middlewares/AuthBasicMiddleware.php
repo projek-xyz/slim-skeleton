@@ -2,7 +2,7 @@
 
 namespace App\Middlewares;
 
-use App\Libraries;
+use App\Utils;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class AuthBasicMiddleware
 {
-    use Libraries\AuthenticationTrait;
+    use Utils\AuthenticationTrait;
 
     /**
      * Execute the middleware.

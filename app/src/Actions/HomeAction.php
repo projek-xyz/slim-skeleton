@@ -7,6 +7,6 @@ class HomeAction extends Base
     {
         $name = isset($args['name']) ? $args['name'] : 'world';
 
-        return $this->view->render($res, 'home', compact('name'));
+        return $this->view->render('home', compact('name'));
     }
 }

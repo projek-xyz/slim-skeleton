@@ -8,6 +8,9 @@ return [
     'title' => 'Slim 3 Skeleton',
     'description' => 'PHP Application Skeleton for SLIM 3 Microframework',
 
+    // Application TimeZone
+    'timezone' => 'Asia/Jakarta',
+
     // Application Mode
     'mode' => getenv('APP_ENV') ?: 'development',
 
@@ -32,7 +35,7 @@ return [
     'logger' => [
         'directory' => APP_DIR.'logs',
         'filename'  => date('Y-m-d').'.log',
-        'level'     => 'debug'
+        'level'     => 'DEBUG'
     ],
 
     // View settings

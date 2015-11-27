@@ -9,8 +9,6 @@ if (PHP_SAPI == 'cli-server') {
     if (is_file(__DIR__.$file) || in_array($ext, $exts)) return;
 }
 
-date_default_timezone_set('Asia/Jakarta');
-
 define('ROOT_DIR',  dirname(__DIR__).'/');
 define('APP_DIR',   ROOT_DIR.'app/');
 define('ASSET_DIR', ROOT_DIR.'asset/');
@@ -29,6 +27,11 @@ $app = new Slim\App([
 
 $container = $app->getContainer();
 $settings  = $container->get('settings');
+
+// Let's set default timezone
+if (isset($settings['timezone'])) {
+    date_default_timezone_set($settings['timezone'] ?: 'UTC');
+}
 
 // Let's just use PHP Native sesion
 if (!isset($_SESSION)) {

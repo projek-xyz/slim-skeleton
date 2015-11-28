@@ -31,6 +31,13 @@ return [
         'charset' => 'utf8',
     ],
 
+    // Database settings
+    'fs' => [
+        'local' => [
+            'path' => ASSET_DIR,
+        ]
+    ],
+
     // Loggin settings
     'logger' => [
         'directory' => APP_DIR.'logs',
@@ -48,6 +55,7 @@ return [
     // List of Pimple Service Providers
     'providers' => [
         // App\Providers\DatabaseProvider::class,
+        App\Providers\FilesystemProvider::class,
         App\Providers\NegotiatorProvider::class,
         App\Providers\LoggerProvider::class,
         App\Providers\ViewProvider::class,

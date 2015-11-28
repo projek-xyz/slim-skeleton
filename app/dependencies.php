@@ -6,6 +6,13 @@
 use Slim\Container;
 
 /**
+ * Registering all defined providers
+ */
+foreach ($settings['providers'] as $provider) {
+    $container->register(new $provider);
+}
+
+/**
  * Overwrite default Slim errorHandler container
  */
 $container['errorHandler'] = function () use ($settings) {
@@ -22,13 +29,6 @@ $container['errorHandler'] = function () use ($settings) {
 $container['notFoundHandler'] = function () {
     return new App\Handlers\NotFoundHandler;
 };
-
-/**
- * Registering all defined providers
- */
-foreach ($settings['providers'] as $provider) {
-    $container->register(new $provider);
-}
 
 /**
  * Enable flash message using native PHP Session

@@ -72,7 +72,7 @@ class LoggerProvider implements ServiceProviderInterface
             if ($path === 'syslog') {
                 $this->useSyslog($this->settings['level']);
             } elseif (is_dir($path)) {
-                $path .= '/'.strtolower($this->name);
+                $path .= '/'.strtolower($this->name).'.log';
                 $this->useRotatingFiles($this->settings['level'], $path);
             }
         }

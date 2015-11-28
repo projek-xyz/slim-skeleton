@@ -51,8 +51,9 @@ class ViewProvider implements ServiceProviderInterface
             $this->setAssetPath($this->settings['assetPath']);
         }
 
+        $this->loadExtension(new Utils\Views\HtmlExtension);
         $this->loadExtension(
-            new Utils\ViewExtension(
+            new Utils\Views\UriExtension(
                 $container->get('router'),
                 $container->get('request')->getUri()
             )

@@ -25,6 +25,13 @@ class FilesystemProvider implements ServiceProviderInterface
     protected $mounts;
 
     /**
+     * Mounting settings
+     *
+     * @var array
+     */
+    protected $settings = [];
+
+    /**
      * Register this database provider with a Pimple container
      *
      * @param \Pimple\Container $container
@@ -37,11 +44,11 @@ class FilesystemProvider implements ServiceProviderInterface
             throw new InvalidArgumentException('Database configuration not found');
         }
 
-        $fs = $settings['fs'];
+        $this->settings = array_merge($this->settings, $settings['fs']);
         $mounts = [];
 
-        if (isset($fs['local'])) {
-            $mounts['local'] = new Filesystem(new Adapter\Local($fs['local']['path']));
+        if (isset($this->settings['local'])) {
+            $mounts['local'] = new Filesystem(new Adapter\Local($this->settings['local']['path']));
         }
 
         $this->mounts = new MountManager($mounts);
@@ -70,7 +77,11 @@ class FilesystemProvider implements ServiceProviderInterface
      */
     public function mountLocal($path)
     {
-        $this->fs = new Filesystem(new Adapter\Local($path));
+        if (isset($this->settings[$path]['path'])) {
+            $this->fs = $this->mounts->getFilesystem($path);
+        } else {
+            $this->fs = new Filesystem(new Adapter\Local($path));
+        }
 
         return $this;
     }
@@ -78,7 +89,34 @@ class FilesystemProvider implements ServiceProviderInterface
     /**
      * Mount Archive
      *
-     * @param  string $path Archive Path
+     * @param  string $host
+     * @return $this
+     */
+    public function mountFtp($host, $username = '', $password = '', array $opt = [])
+    {
+        if (isset($this->settings[$host]['host'])) {
+            $this->fs = $this->mounts->getFilesystem($host);
+        } else {
+            $opts = [
+                'host' => $host,
+                'username' => $username,
+                'password' => $password,
+            ];
+
+            if ($opt) {
+                $opts = array_merge($opt, $opts);
+            }
+
+            $this->fs = new Filesystem(new Adapter\Ftp($opts));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Mount Archive
+     *
+     * @param  string $path
      * @return $this
      */
     public function mountArchive($path)

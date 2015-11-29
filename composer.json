@@ -26,6 +26,10 @@
       "App\\Tests\\": "app/tests/"
     }
   },
+  "scripts": {
+    "test": "php vendor/bin/phpunit -c app/phpunit.xml",
+    "test-ci": "php vendor/bin/phpunit -c app/phpunit.xml --coverage-clover clover.xml"
+  },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit
-    bootstrap="vendor/autoload.php"
+    bootstrap="../vendor/autoload.php"
     colors="true"
     backupGlobals="false"
     backupStaticAttributes="false"
@@ -17,13 +17,13 @@
 
     <testsuites>
         <testsuite name="Projek Slim Skeleton Test Suite">
-            <directory>./app/tests/</directory>
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./app/src/</directory>
+            <directory>./src/</directory>
         </whitelist>
     </filter>
 

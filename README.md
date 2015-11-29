@@ -6,13 +6,13 @@
 [![Coveralls](https://img.shields.io/coveralls/projek-xyz/slim-skeleton/master.svg?style=flat-square)](https://coveralls.io/github/projek-xyz/slim-skeleton)
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/59c39221-cc85-467f-9e00-c7e0dcbdc9ee.svg?style=flat-square)](https://insight.sensiolabs.com/projects/59c39221-cc85-467f-9e00-c7e0dcbdc9ee)
 
-## Prerequisites
+## Requirements
 
 - PHP 5.5.x or newer, since Slim v3.x depends on it.
 - HTTP Server, e.g. NginX or Apache either.
 - MySQL Server 5.x or newer for main database.
 
-## Installation
+## Install
 
 I've make this package available to install via `composer create-project` so make sure you've already have [composer](https://getcomposer.org/download/) installed globally in your system.
 
@@ -24,7 +24,7 @@ then enter `my-app` directory you just create and run the server.
 
 ```bash
 $ cd my-app
-$ php -S 0.0.0.0:8888 -t public public/index.php
+$ php -S localhost:8888 -t public public/index.php
 ```
 
 Now, you should open [http://localhost:8888](http://localhost:8888) in your favorite web browser.
@@ -33,36 +33,38 @@ Now, you should open [http://localhost:8888](http://localhost:8888) in your favo
 
 ```
 ├── app/                  // Root for application codes
-│   ├── cache/            // cache directory
-│   ├── logs/             // Log directory fror Monolog
-│   ├── src/              // Class files within `App` namespace
-│   │   ├── Actions/      // Router Actions directory
-│   │   └── Providers/    // Service Providers directory
-│   ├── views/            // View templates directory for Plates
-│   ├── .env.sample       // Sample .env file for phpdotenv
-│   ├── dependencies.php  // Services for Pimple
-│   ├── middlewares.php   // Middlewares declaration
-│   ├── routers.php       // Application routes
-│   └── settings.php      // Application settings
+│   ├── cache/            // cache directory
+│   ├── logs/             // Log directory fror Monolog
+│   ├── src/              // Class files within `App` namespace
+│   │   ├── Actions/      // Router Actions directory
+│   │   ├── Handlers/     // Custom Handlers directory
+│   │   ├── Providers/    // Service Providers directory
+│   │   └── Utils/        // Utilities directory
+│   ├── tests/            // Test suites directory
+│   ├── views/            // View templates directory for Plates
+│   ├── .env.sample       // Sample .env file for phpdotenv
+│   ├── dependencies.php  // Services for Pimple
+│   ├── middlewares.php   // Middlewares declaration
+│   ├── phpunit.xml       // Sample phpunit configuration file
+│   ├── routers.php       // Application routes
+│   └── settings.php      // Application settings
 ├── asset/                // Assets directory
-│   ├── database/         // Database directory
-│   └── uploads/          // Uploaded files directory
-├── public/               // Webroot directory
-│   ├── images/           // Static images directory
-│   ├── styles/           // Stylesheets directory
-│   ├── favicon.ico       // Sample favicon
-│   ├── .htaccess.sample  // Sample .htaccess file for apache2
-│   └── index.php         // Entry point to application
-├── tests/                // Test suites directory
-└── phpunit.xml           // Sample phpunit configuration file
+│   ├── database/         // Database directory
+│   └── uploads/          // Uploaded files directory
+└── public/               // Webroot directory
+    ├── images/           // Static images directory
+    ├── styles/           // Stylesheets directory
+    ├── favicon.ico       // Sample favicon
+    ├── .htaccess.sample  // Sample .htaccess file for apache2
+    └── index.php         // Entry point to application
 ```
 
 ## Testing
 
-I need to make sure everything's works fine before it ready to use, so I put all test cases are available in [**tests**](tests) directory.
+To make sure everything's works fine before it ready to use, so I put all test cases are available in [**app/tests**](app/tests) directory. Simply run:
 
 ```bash
-phpunit
+$ composer run-script test
 ```
 
 ## Contributing

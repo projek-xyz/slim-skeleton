@@ -5,7 +5,6 @@ use App\Utils;
 use League\Plates\Engine;
 use League\Plates\Extension\Asset;
 use League\Plates\Extension\ExtensionInterface;
-use Psr\Http\Message\ResponseInterface;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use InvalidArgumentException;
@@ -77,7 +76,7 @@ class ViewProvider implements ServiceProviderInterface
     /**
      * Set Asset path from Plates Asset Extension
      *
-     * @param  \Psr\Http\Message\ResponseInterface $extension
+     * @param  \League\Plates\Extension\ExtensionInterface $extension
      * @return \League\Plates\Engine
      */
     public function loadExtension(ExtensionInterface $extension)

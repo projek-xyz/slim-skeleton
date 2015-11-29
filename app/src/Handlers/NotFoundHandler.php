@@ -2,7 +2,6 @@
 namespace App\Handlers;
 
 use Slim\Handlers\NotFound;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class NotFoundHandler extends NotFound
@@ -13,7 +12,7 @@ class NotFoundHandler extends NotFound
     protected function renderHtmlErrorMessage(ServerRequestInterface $request)
     {
         $homeUrl = (string)($request->getUri()->withPath('')->withQuery('')->withFragment(''));
-        $contentType = 'text/html';
+        // just comment it for now, $contentType = 'text/html';
         $output = <<<END
 <html>
     <head>

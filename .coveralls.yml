@@ -1,3 +1,4 @@
 src_dir: app
+service: travis-ci
 coverage_clover: clover.xml
 json_path: coveralls-upload.json

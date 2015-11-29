@@ -41,7 +41,7 @@ class FilesystemProvider implements ServiceProviderInterface
         $mounts = [];
 
         if (isset($fs['local'])) {
-            $mounts['local'] = new Filesystem(new Adapter\Local($path));
+            $mounts['local'] = new Filesystem(new Adapter\Local($fs['local']['path']));
         }
 
         $this->mounts = new MountManager($mounts);

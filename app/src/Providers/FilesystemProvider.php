@@ -4,9 +4,10 @@ namespace App\Providers;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use League\Flysystem\Adapter;
-use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use InvalidArgumentException;
+use LogicException;
 
 class FilesystemProvider implements ServiceProviderInterface
 {
@@ -117,11 +118,16 @@ class FilesystemProvider implements ServiceProviderInterface
      * Mount Archive
      *
      * @param  string $path
+     * @throws LogicException
      * @return $this
      */
     public function mountArchive($path)
     {
-        $this->fs = new Filesystem(new ZipArchiveAdapter($path));
+        if (!class_exists('League\Flysystem\ZipArchive\ZipArchiveAdapter')) {
+            throw new LogicException('No adapter found to mount Zip Archive.');
+        }
+
+        $this->fs = new Filesystem(new \League\Flysystem\ZipArchive\ZipArchiveAdapter($path));
 
         return $this;
     }

@@ -49,18 +49,17 @@ class FilesystemProvider implements ServiceProviderInterface
         $container['fs'] = $this;
     }
 
+    /**
+     * Magic method to connect to filesystem for convenience
+     *
+     * @param  string $prefix Filesystem name
+     * @return $this
+     */
     public function __get($prefix)
     {
         $this->fs = $this->mounts->getFilesystem($prefix);
 
         return $this;
-    }
-
-    public function __destruct()
-    {
-        if ($this->fs && $this->fs instanceof ZipArchiveAdapter) {
-            $this->fs->getAdapter()->getArchive()->close();
-        }
     }
 
     /**

@@ -11,8 +11,16 @@ use Slim\Http\Request;
  */
 $app->add(function (Request $req, Response $res, Callable $next) {
     $res = $next($req, $res);
+    $negotiator = $this->get('negotiator');
 
-    $this->get('logger')->debug($req->getMethod().' '.$req->getUri()->getPath());
+    $this->get('logger')->debug($req->getUri()->getPath(), [
+        'lang' => $negotiator->getLanguage($req),
+        'format' => $negotiator->getFormat($req),
+        'target' => $req->getRequestTarget(),
+        'status' => $res->getStatusCode(),
+        'method' => $req->getMethod(),
+        'params' => $req->getParams(),
+    ]);
 
     return $res;
 });

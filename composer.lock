@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "43644369f067f7e33406af5feb3a1f8b",
-    "content-hash": "13e387040f9b355d1d8479dab2d31383",
+    "hash": "0323df2c1eeb6712b5c62c344cbf4f69",
+    "content-hash": "b9bc852676aac855296fe989605eb2b7",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -117,52 +117,6 @@
                 "storage"
             ],
             "time": "2015-10-30 22:12:12"
-        },
-        {
-            "name": "league/flysystem-ziparchive",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/flysystem-ziparchive.git",
-                "reference": "ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-ziparchive/zipball/ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8",
-                "reference": "ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8",
-                "shasum": ""
-            },
-            "require": {
-                "league/flysystem": "~1.0@alpha",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Flysystem\\ZipArchive\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Frank de Jonge",
-                    "email": "info@frenky.net"
-                }
-            ],
-            "description": "Flysystem adapter for ZipArchive's",
-            "time": "2015-04-21 12:14:28"
         },
         {
             "name": "league/plates",
@@ -566,12 +520,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "8cfcc79ca7e172be5fce6c94589736486c5f7a30"
+                "reference": "48be9d25b855740d750fd49213bed84eebbf651d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/559ab5404f20eb9c09a56e50e7df215b05625e86",
-                "reference": "8cfcc79ca7e172be5fce6c94589736486c5f7a30",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/48be9d25b855740d750fd49213bed84eebbf651d",
+                "reference": "48be9d25b855740d750fd49213bed84eebbf651d",
                 "shasum": ""
             },
             "require": {
@@ -624,7 +578,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2015-11-28 17:38:23"
+            "time": "2015-11-29 14:40:50"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -1729,10 +1683,9 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "slim/slim": 20,
-        "vlucas/phpdotenv": 20,
         "league/flysystem": 20,
-        "league/flysystem-ziparchive": 20
+        "slim/slim": 20,
+        "vlucas/phpdotenv": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

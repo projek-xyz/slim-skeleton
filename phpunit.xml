@@ -17,7 +17,7 @@
 
     <testsuites>
         <testsuite name="Projek Slim Skeleton Test Suite">
-            <directory>./tests/</directory>
+            <directory>./app/tests/</directory>
         </testsuite>
     </testsuites>
 

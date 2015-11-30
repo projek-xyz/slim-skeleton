@@ -1,12 +1,14 @@
 <?php
 
+use App\Providers;
+
 return [
     // Application basename
     'basename' => 'Slim-App',
 
     // Application title and description
-    'title' => 'Slim 3 Skeleton',
-    'description' => 'PHP Application Skeleton for SLIM 3 Microframework',
+    'title' => 'Slim Skeleton',
+    'description' => 'PHP Application Skeleton for Slim v3 Microframework',
 
     // Application TimeZone
     'timezone' => 'Asia/Jakarta',
@@ -54,10 +56,10 @@ return [
 
     // List of Pimple Service Providers
     'providers' => [
-        // App\Providers\DatabaseProvider::class,
-        App\Providers\FilesystemProvider::class,
-        App\Providers\NegotiatorProvider::class,
-        App\Providers\LoggerProvider::class,
-        App\Providers\ViewProvider::class,
+        // Providers\DatabaseProvider::class,
+        Providers\FilesystemProvider::class,
+        Providers\NegotiatorProvider::class,
+        Providers\LoggerProvider::class,
+        Providers\ViewProvider::class,
     ]
 ];

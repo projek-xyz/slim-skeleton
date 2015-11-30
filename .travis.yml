@@ -14,12 +14,7 @@ php:
   - hhvm
 
 install:
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then composer require satooshi/php-coveralls:dev-master -n ; fi
   - composer install -n
 
 script:
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then composer run-script test-ci ; fi
-  - composer run-script test-ci
-
-after_script:
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then php vendor/bin/coveralls -v ; fi
+  - composer run-script test

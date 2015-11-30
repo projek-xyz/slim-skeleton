@@ -27,8 +27,7 @@
     }
   },
   "scripts": {
-    "test": "php vendor/bin/phpunit -c app/phpunit.xml",
-    "test-ci": "php vendor/bin/phpunit -c app/phpunit.xml --coverage-clover clover.xml"
+    "test": "php vendor/bin/phpunit -c app/phpunit.xml"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

@@ -14,8 +14,6 @@ Icon?
 app/cache/*
 app/logs/*
 app/.env
-clover.xml
-coveralls-upload.json
 
 # Dependency folders
 # --------------------------
@@ -34,4 +32,3 @@ nbproject/
 # --------------------------
 !.htaccess
 !.gitkeep
-!.keep

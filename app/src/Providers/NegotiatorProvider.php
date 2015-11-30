@@ -51,6 +51,11 @@ class NegotiatorProvider implements ServiceProviderInterface
      */
     public function register(Container $container)
     {
+        $settings = $container->get('settings');
+
+        // Overwrite default language based on setting.
+        $this->default['language'] = $settings['lang']['default'];
+
         $container['negotiator'] = $this;
     }
 

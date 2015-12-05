@@ -1,0 +1,17 @@
+engines:
+  fixme:
+    enabled: true
+  phpcodesniffer:
+    enabled: true
+  phpmd:
+    enabled: true
+
+ratings:
+  paths:
+  - app/src/**.php
+
+exclude_paths:
+  - asset/*
+  - tests/*
+  - public/*
+  - vendor/*

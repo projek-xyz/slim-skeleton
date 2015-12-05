@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit
-    bootstrap="../vendor/autoload.php"
-    colors="true"
+    bootstrap="./vendor/autoload.php"
     backupGlobals="false"
     backupStaticAttributes="false"
     convertWarningsToExceptions="true"
@@ -13,7 +12,7 @@
     stopOnFailure="false"
     stopOnSkipped="false"
     stopOnError="false"
-    verbose="false">
+    colors="true">
 
     <testsuites>
         <testsuite name="Projek Slim Skeleton Test Suite">
@@ -23,7 +22,7 @@
 
     <filter>
         <whitelist>
-            <directory>./src/</directory>
+            <directory>./app/src/</directory>
         </whitelist>
     </filter>
 

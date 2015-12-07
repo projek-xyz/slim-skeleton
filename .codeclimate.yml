@@ -8,7 +8,7 @@ engines:
 
 ratings:
   paths:
-  - app/src/**.php
+    - app/src/**.php
 
 exclude_paths:
   - asset/*

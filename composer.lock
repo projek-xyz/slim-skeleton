@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f17ae52453fd39be44eaba051784ab52",
-    "content-hash": "f1b654c4978d40b9f8f03c5f0924b84a",
+    "hash": "1af0ac566ca17eac7f5a0b6080d096f1",
+    "content-hash": "d39a6892837ed9d0a3397ab2d8e2261b",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -338,7 +338,7 @@
         },
         {
             "name": "projek-xyz/slim-monolog",
-            "version": "dev-master",
+            "version": "v0.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/projek-xyz/slim-monolog.git",
@@ -392,7 +392,7 @@
         },
         {
             "name": "projek-xyz/slim-plates",
-            "version": "dev-master",
+            "version": "v0.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/projek-xyz/slim-plates.git",
@@ -1793,8 +1793,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "league/flysystem": 20,
-        "projek-xyz/slim-plates": 20,
-        "projek-xyz/slim-monolog": 20,
         "vlucas/phpdotenv": 20
     },
     "prefer-stable": true,

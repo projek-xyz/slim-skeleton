@@ -62,7 +62,7 @@ class NegotiatorProvider implements ServiceProviderInterface
     /**
      * Get content request format
      *
-     * @param  Psr\Http\Message\ServerRequestInterface $request
+     * @param  \Psr\Http\Message\ServerRequestInterface $request
      * @return string
      */
     public function getFormat(ServerRequestInterface $request)
@@ -102,7 +102,7 @@ class NegotiatorProvider implements ServiceProviderInterface
     /**
      * Get content language
      *
-     * @param  Psr\Http\Message\ServerRequestInterface $request
+     * @param  \Psr\Http\Message\ServerRequestInterface $request
      * @return string
      */
     public function getLanguage(ServerRequestInterface $request)

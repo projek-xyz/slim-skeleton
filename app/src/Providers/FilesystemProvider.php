@@ -118,7 +118,7 @@ class FilesystemProvider implements ServiceProviderInterface
      * Mount Archive
      *
      * @param  string $path
-     * @throws LogicException
+     * @throws \LogicException
      * @return $this
      */
     public function mountArchive($path)
@@ -138,7 +138,7 @@ class FilesystemProvider implements ServiceProviderInterface
      * @param  string $path     The path of the new file.
      * @param  string $contents The file contents.
      * @param  array  $config   An optional configuration array.
-     * @throws FileExistsException
+     * @throws \League\Flysystem\FileExistsException
      * @return bool True on success, false on failure.
      */
     public function write($path, $contents, array $config = [])
@@ -154,8 +154,8 @@ class FilesystemProvider implements ServiceProviderInterface
      * @param  string   $path     The path of the new file.
      * @param  resource $resource The file handle.
      * @param  array    $config   An optional configuration array.
-     * @throws InvalidArgumentException If $resource is not a file handle.
-     * @throws FileExistsException
+     * @throws \InvalidArgumentException
+     * @throws \League\Flysystem\FileExistsException
      * @return bool True on success, false on failure.
      */
     public function writeStream($path, $resource, array $config = [])
@@ -186,7 +186,7 @@ class FilesystemProvider implements ServiceProviderInterface
      * @param  string   $path     The path to the file.
      * @param  resource $resource The file handle.
      * @param  array    $config   An optional configuration array.
-     * @throws InvalidArgumentException Thrown if $resource is not a resource.
+     * @throws \InvalidArgumentException
      * @return bool True on success, false on failure.
      */
     public function putStream($path, $resource, array $config = [])
@@ -202,7 +202,7 @@ class FilesystemProvider implements ServiceProviderInterface
      * @param  string $path     The path of the existing file.
      * @param  string $contents The file contents.
      * @param  array  $config   An optional configuration array.
-     * @throws FileNotFoundException
+     * @throws \League\Flysystem\FileNotFoundException
      * @return bool True on success, false on failure.
      */
     public function update($path, $contents, array $config = [])
@@ -218,8 +218,8 @@ class FilesystemProvider implements ServiceProviderInterface
      * @param  string   $path     The path of the existing file.
      * @param  resource $resource The file handle.
      * @param  array    $config   An optional configuration array.
-     * @throws InvalidArgumentException If $resource is not a file handle.
-     * @throws FileNotFoundException
+     * @throws \InvalidArgumentException
+     * @throws \League\Flysystem\FileNotFoundException
      * @return bool True on success, false on failure.
      */
     public function updateStream($path, $resource, array $config = [])
@@ -233,7 +233,7 @@ class FilesystemProvider implements ServiceProviderInterface
      * Read a file.
      *
      * @param  string $path The path to the file.
-     * @throws FileNotFoundException
+     * @throws \League\Flysystem\FileNotFoundException
      * @return string|false The file contents or false on failure.
      */
     public function read($path)
@@ -247,7 +247,7 @@ class FilesystemProvider implements ServiceProviderInterface
      * Retrieves a read-stream for a path.
      *
      * @param  string $path The path to the file.
-     * @throws FileNotFoundException
+     * @throws \League\Flysystem\FileNotFoundException
      * @return resource|false The path resource or false on failure.
      */
     public function readStream($path)
@@ -262,8 +262,8 @@ class FilesystemProvider implements ServiceProviderInterface
      *
      * @param  string $path    Path to the existing file.
      * @param  string $newpath The new path of the file.
-     * @throws FileExistsException   Thrown if $newpath exists.
-     * @throws FileNotFoundException Thrown if $path does not exist.
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
      * @return bool True on success, false on failure.
      */
     public function rename($path, $newpath)
@@ -278,8 +278,8 @@ class FilesystemProvider implements ServiceProviderInterface
      *
      * @param  string $path    Path to the existing file.
      * @param  string $newpath The new path of the file.
-     * @throws FileExistsException   Thrown if $newpath exists.
-     * @throws FileNotFoundException Thrown if $path does not exist.
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
      * @return bool True on success, false on failure.
      */
     public function copy($path, $newpath)
@@ -293,7 +293,7 @@ class FilesystemProvider implements ServiceProviderInterface
      * Delete a file.
      *
      * @param  string $path
-     * @throws FileNotFoundException
+     * @throws \League\Flysystem\FileNotFoundException
      * @return bool True on success, false on failure.
      */
     public function delete($path)
@@ -349,7 +349,7 @@ class FilesystemProvider implements ServiceProviderInterface
      * Get a file's mime-type.
      *
      * @param  string $path The path to the file.
-     * @throws FileNotFoundException
+     * @throws \League\Flysystem\FileNotFoundException
      * @return string|false The file mime-type or false on failure.
      */
     public function getMimetype($path)
@@ -363,7 +363,7 @@ class FilesystemProvider implements ServiceProviderInterface
      * Get a file's timestamp.
      *
      * @param  string $path The path to the file.
-     * @throws FileNotFoundException
+     * @throws \League\Flysystem\FileNotFoundException
      * @return string|false The timestamp or false on failure.
      */
     public function getTimestamp($path)
@@ -377,7 +377,7 @@ class FilesystemProvider implements ServiceProviderInterface
      * Get a file's visibility.
      *
      * @param  string $path The path to the file.
-     * @throws FileNotFoundException
+     * @throws \League\Flysystem\FileNotFoundException
      * @return string|false The visibility (public|private) or false on failure.
      */
     public function getVisibility($path)
@@ -418,7 +418,7 @@ class FilesystemProvider implements ServiceProviderInterface
      * Get a file's metadata.
      *
      * @param  string $path The path to the file.
-     * @throws FileNotFoundException
+     * @throws \League\Flysystem\FileNotFoundException
      * @return array|false The file metadata or false on failure.
      */
     public function getMetadata($path)

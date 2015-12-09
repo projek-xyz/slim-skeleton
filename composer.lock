@@ -40,12 +40,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "3e97b4659b8057664d0d23b1491493d3501eaad2"
+                "reference": "e5c3dd737167d388983885c7bfe317a2a3db41f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/3e97b4659b8057664d0d23b1491493d3501eaad2",
-                "reference": "3e97b4659b8057664d0d23b1491493d3501eaad2",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/e5c3dd737167d388983885c7bfe317a2a3db41f2",
+                "reference": "e5c3dd737167d388983885c7bfe317a2a3db41f2",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-12-06 14:09:00"
+            "time": "2015-12-09 15:01:21"
         },
         {
             "name": "league/plates",

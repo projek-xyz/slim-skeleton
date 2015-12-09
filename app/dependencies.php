@@ -5,6 +5,11 @@
 
 use Slim\Container;
 
+// Get detailed information while development
+if ($settings['mode'] === 'development') {
+    $settings['displayErrorDetails'] = true;
+}
+
 /**
  * Registering all defined providers
  */
@@ -15,19 +20,23 @@ foreach ($settings['providers'] as $provider) {
 /**
  * Overwrite default Slim errorHandler container
  */
-$container['errorHandler'] = function () use ($settings) {
-    // Get detailed information while development
-    if ($settings['mode'] === 'development') {
-        $settings['displayErrorDetails'] = true;
+$container['errorHandler'] = function (Container $c) use ($settings) {
+    $handler = new App\Handlers\ErrorHandler($settings['displayErrorDetails']);
+    if ($settings['mode'] !== 'development') {
+        $handler->setView($c['view']->getPlates());
     }
-    return new App\Handlers\ErrorHandler($settings['displayErrorDetails']);
+    return $handler;
 };
 
 /**
  * Overwrite default Slim notFoundHandler container
  */
-$container['notFoundHandler'] = function () {
-    return new App\Handlers\NotFoundHandler;
+$container['notFoundHandler'] = function (Container $c) use ($settings) {
+    $handler = new App\Handlers\NotFoundHandler;
+    if ($settings['mode'] !== 'development') {
+        $handler->setView($c['view']->getPlates());
+    }
+    return $handler;
 };
 
 /**
@@ -35,17 +44,6 @@ $container['notFoundHandler'] = function () {
  */
 $container['flash'] = function () {
     return new Slim\Flash\Messages;
-};
-
-/**
- * Setup debugbar instance
- */
-$container['debugbar'] = function () use ($settings) {
-    // Only initiate debugbar when development
-    if ($settings['mode'] === 'development') {
-        return new DebugBar\StandardDebugBar;
-    }
-    return null;
 };
 
 /**

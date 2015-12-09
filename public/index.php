@@ -11,7 +11,7 @@ if (PHP_SAPI == 'cli-server') {
 
 $app = require dirname(__DIR__).'/app/bootstrap.php';
 $container = $app->getContainer();
-$settings  = $container->get('settings');
+$settings = $container->get('settings');
 
 // Let's set default timezone
 if (isset($settings['timezone'])) {

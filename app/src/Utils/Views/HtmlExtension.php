@@ -19,9 +19,9 @@ class HtmlExtension implements ExtensionInterface
      */
     public function register(Engine $engine)
     {
-        $engine->registerFunction('js',       [$this, 'js']);
-        $engine->registerFunction('css',      [$this, 'css']);
-        $engine->registerFunction('link',     [$this, 'link']);
+        $engine->registerFunction('js', [$this, 'js']);
+        $engine->registerFunction('css', [$this, 'css']);
+        $engine->registerFunction('link', [$this, 'link']);
         $engine->registerFunction('htmlAttr', [$this, 'htmlAttr']);
     }
 

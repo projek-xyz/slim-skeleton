@@ -59,7 +59,7 @@ return [
         // Providers\DatabaseProvider::class,
         Providers\FilesystemProvider::class,
         Providers\NegotiatorProvider::class,
-        Providers\LoggerProvider::class,
-        Providers\ViewProvider::class,
+        Projek\Slim\MonologProvider::class,
+        Projek\Slim\PlatesProvider::class,
     ]
 ];

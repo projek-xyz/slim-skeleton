@@ -11,14 +11,14 @@ Icon?
 
 # Development files
 # --------------------------
-app/cache/*
-app/logs/*
-app/.env
+/app/cache/*
+/app/logs/*
+/.env
 
 # Dependency folders
 # --------------------------
-vendor/
-node_modules/
+/vendor/
+/node_modules/
 
 # IDE Project Configurations
 # --------------------------

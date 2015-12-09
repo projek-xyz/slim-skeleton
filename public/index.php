@@ -9,22 +9,7 @@ if (PHP_SAPI == 'cli-server') {
     if (is_file(__DIR__.$file) || in_array($ext, $exts)) return;
 }
 
-define('ROOT_DIR',  dirname(__DIR__).'/');
-define('APP_DIR',   ROOT_DIR.'app/');
-define('ASSET_DIR', ROOT_DIR.'asset/');
-
-// Loading vendors
-require ROOT_DIR.'vendor/autoload.php';
-
-if (file_exists(APP_DIR.'.env')) {
-    (new Dotenv\Dotenv(APP_DIR))->load();
-}
-
-// Initialize Slim\App
-$app = new Slim\App([
-    'settings' => require_once APP_DIR.'settings.php'
-]);
-
+$app = require dirname(__DIR__).'/app/bootstrap.php';
 $container = $app->getContainer();
 $settings  = $container->get('settings');
 

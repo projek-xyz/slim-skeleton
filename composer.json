@@ -23,7 +23,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "App\\Tests\\": "app/tests/"
+      "App\\Tests\\": "tests/"
     }
   },
   "minimum-stability": "dev",
@@ -35,7 +35,7 @@
     "projek-xyz/slim-monolog": "dev-master",
     "slim/flash": "~0.1.0",
     "slim/pdo": "~1.8",
-    "slim/slim": "3.x-dev",
+    "slim/slim": "~3.0",
     "vlucas/valitron": "~1.2",
     "vlucas/phpdotenv": "^2.1@dev",
     "willdurand/negotiation": "~2.0"

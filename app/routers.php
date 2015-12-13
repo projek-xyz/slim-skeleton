@@ -3,5 +3,5 @@
  * Application Routers
  */
 
-$app->get('/', 'App\Actions\HomeAction:index')->setName('home-page');
+$app->get('/[{name}]', 'App\Actions\HomeAction:index')->setName('home-page');
 

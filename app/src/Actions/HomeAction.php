@@ -5,8 +5,13 @@ class HomeAction extends Base
 {
     public function index($req, $res, $args)
     {
-        $name = isset($args['name']) ? $args['name'] : 'world';
+        if (isset($args['name'])) {
+            return $this->view->render($res, 'hello', [
+                'name' => $args['name'],
+                'desc' => 'Welcome to world',
+            ]);
+        }
 
-        return $this->view->render($res, 'home', compact('name'));
+        return $this->view->render($res, 'home');
     }
 }

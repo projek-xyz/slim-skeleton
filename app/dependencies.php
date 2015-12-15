@@ -17,27 +17,27 @@ foreach ($settings['providers'] as $provider) {
     $container->register(new $provider);
 }
 
-/**
- * Overwrite default Slim errorHandler container
- */
-$container['errorHandler'] = function (Container $c) use ($settings) {
-    $handler = new App\Handlers\ErrorHandler($settings['displayErrorDetails']);
-    if ($settings['mode'] !== 'development') {
-        $handler->setView($c['view']->getPlates());
-    }
-    return $handler;
-};
+if ($settings['mode'] !== 'development') {
+    /**
+     * Overwrite default Slim errorHandler container
+     */
+    $container['errorHandler'] = function (Container $c) use ($settings) {
+        $handler = new App\Handlers\ErrorHandler($settings['displayErrorDetails']);
+        $handler->setView($c['view']);
 
-/**
- * Overwrite default Slim notFoundHandler container
- */
-$container['notFoundHandler'] = function (Container $c) use ($settings) {
-    $handler = new App\Handlers\NotFoundHandler;
-    if ($settings['mode'] !== 'development') {
-        $handler->setView($c['view']->getPlates());
-    }
-    return $handler;
-};
+        return $handler;
+    };
+
+    /**
+     * Overwrite default Slim notFoundHandler container
+     */
+    $container['notFoundHandler'] = function (Container $c) {
+        $handler = new App\Handlers\NotFoundHandler;
+        $handler->setView($c['view']);
+
+        return $handler;
+    };
+}
 
 /**
  * Enable flash message using native PHP Session

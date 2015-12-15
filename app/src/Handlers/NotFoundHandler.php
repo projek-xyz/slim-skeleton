@@ -3,30 +3,28 @@ namespace App\Handlers;
 
 use Slim\Handlers\NotFound;
 use Psr\Http\Message\ServerRequestInterface;
-use League\Plates\Engine;
+use Psr\Http\Message\ResponseInterface;
+use App\Utils\ViewAware;
 
 class NotFoundHandler extends NotFound
 {
-    private $view;
-
-    public function setView(Engine $view)
-    {
-        $this->view = $view;
-    }
+    use ViewAware;
 
     /**
      * {inheritdoc}
      */
-    protected function renderHtmlErrorMessage(ServerRequestInterface $request)
+    protected function renderHtmlNotFoundOutput(ServerRequestInterface $request, ResponseInterface $response)
     {
         if (is_null($this->view)) {
-            return parent::renderHtmlErrorMessage($request);
+           return parent::renderHtmlNotFoundOutput($request, $response);
         }
 
         $title = 'Page Not Found';
         $desc = 'The page you are looking for could not be found. Check the address bar to ensure your URL is spelled correctly. If all else fails, you can visit our home page at the link below.';
         $homeUrl = (string)($request->getUri()->withPath('')->withQuery('')->withFragment(''));
 
-        return $this->view->render('error-404', compact('title', 'desc', 'homeUrl'));
+        $this->view->addData(compact('title', 'desc', 'homeUrl'));
+
+        return $this->view->render('error-404');
     }
 }

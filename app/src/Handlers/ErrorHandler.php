@@ -3,16 +3,11 @@ namespace App\Handlers;
 
 use Exception;
 use Slim\Handlers\Error;
-use League\Plates\Engine;
+use App\Utils\ViewAware;
 
 class ErrorHandler extends Error
 {
-    private $view = null;
-
-    public function setView(Engine $view)
-    {
-        $this->view = $view;
-    }
+    use ViewAware;
 
     /**
      * {inheritdoc}
@@ -37,6 +32,8 @@ class ErrorHandler extends Error
         } else {
             $html = '<p>A website error has occurred. Sorry for the temporary inconvenience.</p>';
         }
+
+        $this->view->addData(compact('title', 'html'));
 
         return $this->view->render('error-500', compact('title', 'html'));
     }

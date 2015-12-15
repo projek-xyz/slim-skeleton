@@ -27,17 +27,17 @@ if ($settings['mode'] !== 'development') {
 
         return $handler;
     };
-
-    /**
-     * Overwrite default Slim notFoundHandler container
-     */
-    $container['notFoundHandler'] = function (Container $c) {
-        $handler = new App\Handlers\NotFoundHandler;
-        $handler->setView($c['view']);
-
-        return $handler;
-    };
 }
+
+/**
+ * Overwrite default Slim notFoundHandler container
+ */
+$container['notFoundHandler'] = function (Container $c) {
+    $handler = new App\Handlers\NotFoundHandler;
+    $handler->setView($c['view']);
+
+    return $handler;
+};
 
 /**
  * Enable flash message using native PHP Session

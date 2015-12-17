@@ -5,11 +5,6 @@
 
 use Slim\Container;
 
-// Get detailed information while development
-if ($settings['mode'] === 'development') {
-    $settings['displayErrorDetails'] = true;
-}
-
 /**
  * Registering all defined providers
  */

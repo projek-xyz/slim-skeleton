@@ -6,7 +6,7 @@ use Projek\Slim\Plates;
 /**
  * Utilities used by error handlers.
  */
-trait ViewAware
+trait ViewableAware
 {
     private $view = null;
 

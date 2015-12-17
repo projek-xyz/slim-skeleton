@@ -4,11 +4,11 @@ namespace App\Handlers;
 use Slim\Handlers\NotFound;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Utils\ViewAware;
+use App\Utils\ViewableAware;
 
 class NotFoundHandler extends NotFound
 {
-    use ViewAware;
+    use ViewableAware;
 
     /**
      * {inheritdoc}

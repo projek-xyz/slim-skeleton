@@ -13,6 +13,11 @@ $app = require dirname(__DIR__).'/app/bootstrap.php';
 $container = $app->getContainer();
 $settings = $container->get('settings');
 
+// Get detailed information while development
+if ($settings['mode'] === 'development') {
+    $settings['displayErrorDetails'] = true;
+}
+
 // Let's set default timezone
 if (isset($settings['timezone'])) {
     date_default_timezone_set($settings['timezone'] ?: 'UTC');
@@ -23,6 +28,14 @@ if (!isset($_SESSION)) {
     session_name($settings['basename']);
     session_start();
 }
+
+// Setup new environment
+$env = $container->get('environment');
+$env->replace([
+    'REQUEST_SCHEME'       => 'https',
+    'HTTP_HOST'            => 'localhost',
+    'HTTP_ACCEPT_LANGUAGE' => 'id-ID,id;q=0.8,en-US;q=0.6',
+]);
 
 // Setup dependencies
 require_once APP_DIR.'dependencies.php';

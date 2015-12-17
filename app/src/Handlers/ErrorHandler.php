@@ -3,11 +3,11 @@ namespace App\Handlers;
 
 use Exception;
 use Slim\Handlers\Error;
-use App\Utils\ViewAware;
+use App\Utils\ViewableAware;
 
 class ErrorHandler extends Error
 {
-    use ViewAware;
+    use ViewableAware;
 
     /**
      * {inheritdoc}

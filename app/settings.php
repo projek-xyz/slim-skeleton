@@ -57,8 +57,8 @@ return [
     // List of Pimple Service Providers
     'providers' => [
         // Providers\DatabaseProvider::class,
-        Providers\FilesystemProvider::class,
         Providers\NegotiatorProvider::class,
+        Projek\Slim\FlysystemProvider::class,
         Projek\Slim\MonologProvider::class,
         Projek\Slim\PlatesProvider::class,
     ]

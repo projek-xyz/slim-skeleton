@@ -19,6 +19,7 @@ if ($settings['mode'] !== 'development') {
     $container['errorHandler'] = function (Container $c) use ($settings) {
         $handler = new App\Handlers\ErrorHandler($settings['displayErrorDetails']);
         $handler->setView($c['view']);
+        $handler->setLogger($c['logger']);
 
         return $handler;
     };
@@ -30,6 +31,7 @@ if ($settings['mode'] !== 'development') {
 $container['notFoundHandler'] = function (Container $c) {
     $handler = new App\Handlers\NotFoundHandler;
     $handler->setView($c['view']);
+    $handler->setLogger($c['logger']);
 
     return $handler;
 };

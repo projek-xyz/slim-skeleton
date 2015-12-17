@@ -18,16 +18,19 @@ $app->add(new App\Middlewares\CommonMiddleware([
  */
 $app->add(function (Request $req, Response $res, Callable $next) {
     $res = $next($req, $res);
-    $negotiator = $this->get('negotiator');
 
-    $this->get('logger')->debug($req->getUri()->getPath(), [
+    $negotiator = $this->get('negotiator');
+    $context = [
+        $req->getMethod() => (string) $req->getUri(),
         'lang' => $negotiator->getLanguage($req),
         'format' => $negotiator->getFormat($req),
-        'target' => $req->getRequestTarget(),
-        'status' => $res->getStatusCode(),
-        'method' => $req->getMethod(),
-        'params' => $req->getParams(),
-    ]);
+    ];
+
+    if ($params = $req->getParams()) {
+        $context['params'] = $params;
+    }
+
+    $this->get('logger')->debug($req->getUri()->getPath(), $context);
 
     return $res;
 });

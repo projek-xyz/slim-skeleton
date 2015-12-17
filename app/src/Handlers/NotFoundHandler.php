@@ -1,14 +1,27 @@
 <?php
 namespace App\Handlers;
 
+use App\Utils;
 use Slim\Handlers\NotFound;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Utils\ViewableAware;
+use Psr\Http\Message\ServerRequestInterface;
 
 class NotFoundHandler extends NotFound
 {
-    use ViewableAware;
+    use Utils\ViewableAware;
+    use Utils\LoggableAware;
+
+    /**
+     * {inheritdoc}
+     */
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->logger->warning('Not found', [
+            $request->getMethod() => (string) $request->getUri()
+        ]);
+
+        return parent::__invoke($request, $response);
+    }
 
     /**
      * {inheritdoc}

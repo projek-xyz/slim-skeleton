@@ -1,13 +1,28 @@
 <?php
 namespace App\Handlers;
 
-use Exception;
+use App\Utils;
 use Slim\Handlers\Error;
-use App\Utils\ViewableAware;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Exception;
 
 class ErrorHandler extends Error
 {
-    use ViewableAware;
+    use Utils\ViewableAware;
+    use Utils\LoggableAware;
+
+    /**
+     * {inheritdoc}
+     */
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, Exception $exception)
+    {
+        $this->logger->critical($exception->getMessage(), [
+            $request->getMethod() => (string) $request->getUri()
+        ]);
+
+        return parent::__invoke($request, $response, $exception);
+    }
 
     /**
      * {inheritdoc}
@@ -35,6 +50,6 @@ class ErrorHandler extends Error
 
         $this->view->addData(compact('title', 'html'));
 
-        return $this->view->render('error-500', compact('title', 'html'));
+        return $this->view->render('error-500');
     }
 }

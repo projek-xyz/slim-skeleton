@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Utils;
 
 use Projek\Slim\Plates;
+
 /**
  * Utilities used by error handlers.
  */

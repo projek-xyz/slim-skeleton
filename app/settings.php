@@ -51,9 +51,10 @@ return [
 
     // View settings
     'view' => [
-        'directory'     => APP_DIR.'views',
-        'assetPath'     => ASSET_DIR.'asset',
-        'fileExtension' => 'tpl',
+        'directory'           => APP_DIR.'views',
+        'assetPath'           => ROOT_DIR.'public',
+        'fileExtension'       => 'tpl',
+        'timestampInFilename' => false,
     ],
 
     // List of Pimple Service Providers

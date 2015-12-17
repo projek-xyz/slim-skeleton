@@ -3,6 +3,7 @@
 define('ROOT_DIR',  dirname(__DIR__).'/');
 define('APP_DIR',   __DIR__.'/');
 define('ASSET_DIR', ROOT_DIR.'asset/');
+define('WWW_DIR',   ROOT_DIR.'public/');
 
 // Loading vendors
 require ROOT_DIR.'vendor/autoload.php';

@@ -55,15 +55,15 @@ class CommonMiddleware
                 $reqUri .= ':'.$port;
             }
 
+            $url = parse_url($baseUrl);
+            $uri = $uri->withScheme($url['scheme'])
+                ->withHost($url['host']);
+
+            if (isset($url['port'])) {
+                $uri = $uri->withPort($url['port']);
+            }
+
             if ($reqUri !== rtrim($baseUrl, '/')) {
-                $baseUrl = parse_url($baseUrl);
-                $uri = $uri->withScheme($baseUrl['scheme'])
-                    ->withHost($baseUrl['host']);
-
-                if (isset($baseUrl['port'])) {
-                    $uri = $uri->withPort($baseUrl['port']);
-                }
-
                 return $res->withStatus(301)
                     ->withHeader('Location', (string) $uri)
                     ->withBody($req->getBody());

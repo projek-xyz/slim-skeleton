@@ -5,6 +5,8 @@ use App\Providers;
 return [
     // Application basename
     'basename' => 'Slim-App',
+    // Application baseurl
+    'baseurl' => getenv('APP_BASEURL') ?: '',
 
     // Application title and description
     'title' => 'Slim Skeleton',

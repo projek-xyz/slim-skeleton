@@ -17,6 +17,7 @@ class CommonMiddleware
     private $settings = [
         'mode' => 'development',
         'privateRoutes' => null,
+        'baseurl' => '',
     ];
 
     /**
@@ -38,7 +39,6 @@ class CommonMiddleware
      */
     public function __invoke(Request $req, Response $res, callable $next)
     {
-        $server = $req->getServerParams();
         $uri = $req->getUri();
         $path = $this->filterTrailingSlash($uri);
 
@@ -47,6 +47,30 @@ class CommonMiddleware
                 ->withHeader('Location', $path)
                 ->withBody($req->getBody());
         }
+
+        if ($baseUrl = $this->settings['baseurl']) {
+            $reqUri = $uri->getScheme().'://'.$uri->getHost();
+
+            if ($port = $uri->getPort()) {
+                $reqUri .= ':'.$port;
+            }
+
+            if ($reqUri !== rtrim($baseUrl, '/')) {
+                $baseUrl = parse_url($baseUrl);
+                $uri = $uri->withScheme($baseUrl['scheme'])
+                    ->withHost($baseUrl['host']);
+
+                if (isset($baseUrl['port'])) {
+                    $uri = $uri->withPort($baseUrl['port']);
+                }
+
+                return $res->withStatus(301)
+                    ->withHeader('Location', (string) $uri)
+                    ->withBody($req->getBody());
+            }
+        }
+
+        $server = $req->getServerParams();
 
         if (!isset($server['REQUEST_TIME_FLOAT'])) {
             $server['REQUEST_TIME_FLOAT'] = microtime(true);

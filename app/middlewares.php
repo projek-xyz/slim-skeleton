@@ -10,7 +10,8 @@ use Slim\Http\Request;
  * Middleware that commonly used
  */
 $app->add(new App\Middlewares\CommonMiddleware([
-    'mode' => $settings['mode']
+    'mode' => $settings['mode'],
+    'baseurl' => $settings['baseurl'],
 ]));
 
 /**

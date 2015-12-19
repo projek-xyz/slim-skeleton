@@ -2,9 +2,10 @@
 
 namespace App\Middlewares;
 
+use Slim\Http\Uri;
 use Slim\Http\Response;
 use Slim\Http\Request;
-use Slim\Http\Uri;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Middleware to create basic http authentication.
@@ -31,10 +32,9 @@ class CommonMiddleware
     /**
      * Execute the middleware.
      *
-     * @param \Slim\Http\Request  $req
-     * @param \Slim\Http\Response $res
-     * @param callable            $next
-     *
+     * @param  \Slim\Http\Request  $req
+     * @param  \Slim\Http\Response $res
+     * @param  callable            $next
      * @return \Slim\Http\Response
      */
     public function __invoke(Request $req, Response $res, callable $next)
@@ -97,10 +97,10 @@ class CommonMiddleware
     /**
      * Provide filter to trim trailing slashes in URI path
      *
-     * @param  Slim\Http\Uri $uri
+     * @param  \Psr\Http\Message\UriInterface $uri
      * @return string
      */
-    protected function filterTrailingSlash(Uri $uri)
+    protected function filterTrailingSlash(UriInterface $uri)
     {
         $path = $uri->getPath();
 
@@ -138,11 +138,11 @@ class CommonMiddleware
     /**
      * Provide private routes to be exposes by search engine
      *
-     * @param  Slim\Http\Uri      $req
-     * @param  Slim\Http\Response $res
-     * @return Slim\Http\Response
+     * @param  \Psr\Http\Message\UriInterface $uri
+     * @param  \Slim\Http\Response            $res
+     * @return \Slim\Http\Response
      */
-    protected function filterPrivateRoutes(Uri $uri, Response $res)
+    protected function filterPrivateRoutes(UriInterface $uri, Response $res)
     {
         $privates = $this->settings['privateRoutes'];
         $path = $uri->getPath();

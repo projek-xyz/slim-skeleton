@@ -1,6 +1,8 @@
 <?php
 /**
  * Application DIC Configuration
+ *
+ * @uses \Slim\Container $container
  */
 
 use Slim\Container;
@@ -17,7 +19,7 @@ if ($settings['mode'] !== 'development') {
      * Overwrite default Slim errorHandler container
      */
     $container['errorHandler'] = function (Container $c) use ($settings) {
-        $handler = new App\Handlers\ErrorHandler($settings['displayErrorDetails']);
+        $handler = new App\ErrorHandler($settings['displayErrorDetails']);
         $handler->setView($c['view']);
         $handler->setLogger($c['logger']);
 
@@ -29,7 +31,7 @@ if ($settings['mode'] !== 'development') {
  * Overwrite default Slim notFoundHandler container
  */
 $container['notFoundHandler'] = function (Container $c) {
-    $handler = new App\Handlers\NotFoundHandler;
+    $handler = new App\NotFoundHandler;
     $handler->setView($c['view']);
     $handler->setLogger($c['logger']);
 
@@ -47,7 +49,7 @@ $container['flash'] = function () {
  * Setup Validator
  */
 $container['validator'] = function (Container $c) use ($settings) {
-    $params = $c->get('request')->getParams();
+    $params = $c['request']->getParams();
     $lang = $settings['lang'];
 
     return new Valitron\Validator($params, [], $lang['default']);

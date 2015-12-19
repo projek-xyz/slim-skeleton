@@ -1,5 +1,5 @@
 <?php
-namespace App\Handlers;
+namespace App;
 
 use App\Utils;
 use Slim\Handlers\Error;

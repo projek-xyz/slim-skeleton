@@ -2,7 +2,6 @@
 
 namespace App\Middlewares;
 
-use Slim\Http\Uri;
 use Slim\Http\Response;
 use Slim\Http\Request;
 use Psr\Http\Message\UriInterface;
@@ -13,7 +12,7 @@ use Psr\Http\Message\UriInterface;
 class CommonMiddleware
 {
     /**
-     * @var array
+     * @var string[]
      */
     private $settings = [
         'mode' => 'development',
@@ -92,13 +91,11 @@ class CommonMiddleware
             $url = parse_url($baseUrl);
             $uri = $uri->withScheme($url['scheme'])->withHost($url['host']);
 
-            // var_dump($reqUri);
             if ($port || isset($url['port'])) {
                 $port = $port == $url['port'] ? $port : $url['port'];
                 $uri = $uri->withPort($port);
             }
 
-            // var_dump($reqUri);
             return $reqUri !== rtrim($baseUrl, '/');
         }
 

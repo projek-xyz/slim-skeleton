@@ -8,8 +8,14 @@ use Projek\Slim\Plates;
  */
 trait ViewableAware
 {
+    /**
+     * @var \League\Plates\Engine
+     */
     private $view = null;
 
+    /**
+     * @param \Projek\Slim\Plates
+     */
     public function setView(Plates $view)
     {
         $this->view = $view->getPlates();

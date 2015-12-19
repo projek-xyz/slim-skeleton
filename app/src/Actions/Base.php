@@ -12,6 +12,9 @@ abstract class Base
      */
     private $container = null;
 
+    /**
+     * @param \Slim\Container
+     */
     public function __construct(Container $container = null)
     {
         if (null !== $container) {
@@ -27,6 +30,9 @@ abstract class Base
         ]);
     }
 
+    /**
+     * @return mixed
+     */
     public function __get($var)
     {
         return $this->container->get($var);

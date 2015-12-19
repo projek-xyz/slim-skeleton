@@ -40,12 +40,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "b69e03f43bc3742606cecc6018e39b7f45a31971"
+                "reference": "47ab6df982a3925def849d992110d82c0f0f4bb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/b69e03f43bc3742606cecc6018e39b7f45a31971",
-                "reference": "b69e03f43bc3742606cecc6018e39b7f45a31971",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/47ab6df982a3925def849d992110d82c0f0f4bb2",
+                "reference": "47ab6df982a3925def849d992110d82c0f0f4bb2",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-12-16 21:56:57"
+            "time": "2015-12-19 14:07:43"
         },
         {
             "name": "league/plates",
@@ -684,12 +684,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "98242cfe63c79f47faeb0b1b585e01d8cdf0e5c9"
+                "reference": "e88c825201589885e5dfb3d8bcdfb1b5216e5cc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/98242cfe63c79f47faeb0b1b585e01d8cdf0e5c9",
-                "reference": "98242cfe63c79f47faeb0b1b585e01d8cdf0e5c9",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/e88c825201589885e5dfb3d8bcdfb1b5216e5cc1",
+                "reference": "e88c825201589885e5dfb3d8bcdfb1b5216e5cc1",
                 "shasum": ""
             },
             "require": {
@@ -742,7 +742,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2015-12-16 19:05:42"
+            "time": "2015-12-17 13:22:04"
         },
         {
             "name": "vlucas/phpdotenv",

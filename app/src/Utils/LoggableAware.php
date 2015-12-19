@@ -8,8 +8,14 @@ use Projek\Slim\Monolog;
  */
 trait LoggableAware
 {
+    /**
+     * @var \Projek\Slim\Monolog
+     */
     private $logger = null;
 
+    /**
+     * @param \Projek\Slim\Monolog
+     */
     public function setLogger(Monolog $logger)
     {
         $this->logger = $logger;

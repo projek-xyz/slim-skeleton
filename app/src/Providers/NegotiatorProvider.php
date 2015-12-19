@@ -78,22 +78,21 @@ class NegotiatorProvider implements ServiceProviderInterface
             return $this->default['format'];
         }
 
-        $priorities = call_user_func_array('array_merge', array_values($this->formats));
-
         try {
+            $priorities = call_user_func_array('array_merge', array_values($this->formats));
             $accept = (new Negotiation\Negotiator())->getBest($accept, $priorities);
-        } catch (\Exception $exception) {
-            return $this->default['format'];
-        }
 
-        if ($accept) {
-            $accept = $accept->getValue();
+            if ($accept) {
+                $accept = $accept->getValue();
 
-            foreach ($this->formats as $extension => $headers) {
-                if (in_array($accept, $headers)) {
-                    return $extension;
+                foreach ($this->formats as $extension => $headers) {
+                    if (in_array($accept, $headers)) {
+                        return $extension;
+                    }
                 }
             }
+        } catch (\Exception $exception) {
+            return $this->default['format'];
         }
 
         return $this->default['format'];
@@ -112,12 +111,12 @@ class NegotiatorProvider implements ServiceProviderInterface
 
         try {
             $accept = (new Negotiation\LanguageNegotiator())->getBest($accept, $priorities);
+
+            if ($accept) {
+                return $accept->getValue();
+            }
         } catch (\Exception $exception) {
             return $this->default['language'];
-        }
-
-        if ($accept) {
-            return $accept->getValue();
         }
 
         return $this->default['language'];

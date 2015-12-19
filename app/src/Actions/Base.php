@@ -3,6 +3,15 @@ namespace App\Actions;
 
 use Slim\Container;
 
+/**
+ * @property-read \Slim\PDO\Database db
+ * @property-read \Slim\Flash\Messages flash
+ * @property-read \Projek\Slim\Plates view
+ * @property-read \Projek\Slim\Monolog log
+ * @property-read \Projek\Slim\Flysystem fs
+ * @property-read \Valitron\Validator validator
+ * @property-read \App\Providers\NegotiatorProvider negotiator
+ */
 abstract class Base
 {
     /**

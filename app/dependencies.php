@@ -1,8 +1,6 @@
 <?php
 /**
  * Application DIC Configuration
- *
- * @uses \Slim\Container $container
  */
 
 use Slim\Container;

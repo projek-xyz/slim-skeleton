@@ -48,28 +48,10 @@ class CommonMiddleware
                 ->withBody($req->getBody());
         }
 
-        if ($baseUrl = $this->settings['baseurl']) {
-            $reqUri = $uri->getScheme().'://'.$uri->getHost();
-
-            if ($port = $uri->getPort()) {
-                $reqUri .= ':'.$port;
-            }
-
-            $url = parse_url($baseUrl);
-            $uri = $uri->withScheme($url['scheme'])->withHost($url['host']);
-
-            var_dump($reqUri);
-            if ($port || isset($url['port'])) {
-                $port = $port == $url['port'] ? $port : $url['port'];
-                $uri = $uri->withPort($port);
-            }
-
-            // var_dump($reqUri);
-            if ($reqUri !== rtrim($baseUrl, '/')) {
-                return $res->withStatus(301)
-                    ->withHeader('Location', (string) $uri)
-                    ->withBody($req->getBody());
-            }
+        if ($this->filterBaseurl($uri)) {
+            return $res->withStatus(301)
+                ->withHeader('Location', (string) $uri)
+                ->withBody($req->getBody());
         }
 
         $server = $req->getServerParams();
@@ -92,6 +74,35 @@ class CommonMiddleware
         }
 
         return $res;
+    }
+
+    /**
+     * @param  \Psr\Http\Message\UriInterface $uri
+     * @return string
+     */
+    protected function filterBaseurl(UriInterface $uri)
+    {
+        if ($baseUrl = $this->settings['baseurl']) {
+            $reqUri = $uri->getScheme().'://'.$uri->getHost();
+
+            if ($port = $uri->getPort()) {
+                $reqUri .= ':'.$port;
+            }
+
+            $url = parse_url($baseUrl);
+            $uri = $uri->withScheme($url['scheme'])->withHost($url['host']);
+
+            // var_dump($reqUri);
+            if ($port || isset($url['port'])) {
+                $port = $port == $url['port'] ? $port : $url['port'];
+                $uri = $uri->withPort($port);
+            }
+
+            // var_dump($reqUri);
+            return $reqUri !== rtrim($baseUrl, '/');
+        }
+
+        return false;
     }
 
     /**

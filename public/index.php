@@ -29,14 +29,6 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-// Setup new environment
-// $env = $container->get('environment');
-// $env->replace([
-//     'REQUEST_SCHEME'       => 'https',
-//     'HTTP_HOST'            => 'localhost',
-//     'HTTP_ACCEPT_LANGUAGE' => 'id-ID,id;q=0.8,en-US;q=0.6',
-// ]);
-
 // Setup dependencies
 require_once APP_DIR.'dependencies.php';
 

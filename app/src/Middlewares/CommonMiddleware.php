@@ -47,11 +47,11 @@ class CommonMiddleware
                 ->withBody($req->getBody());
         }
 
-        if ($this->filterBaseurl($uri)) {
-            return $res->withStatus(301)
-                ->withHeader('Location', (string) $uri)
-                ->withBody($req->getBody());
-        }
+//        if ($this->filterBaseurl($uri)) {
+//            return $res->withStatus(301)
+//                ->withHeader('Location', (string) $uri)
+//                ->withBody($req->getBody());
+//        }
 
         $server = $req->getServerParams();
 

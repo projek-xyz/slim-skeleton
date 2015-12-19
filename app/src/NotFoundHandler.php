@@ -29,7 +29,7 @@ class NotFoundHandler extends NotFound
     protected function renderHtmlNotFoundOutput(ServerRequestInterface $request, ResponseInterface $response)
     {
         if (is_null($this->view)) {
-           return parent::renderHtmlNotFoundOutput($request, $response);
+            return parent::renderHtmlNotFoundOutput($request, $response);
         }
 
         $title = 'Page Not Found';

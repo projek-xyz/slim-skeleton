@@ -159,8 +159,7 @@ class CommonMiddleware
             $privates = [$privates];
         }
 
-        if (
-            is_null($privates) ||
+        if (is_null($privates) ||
             (is_array($privates) && in_array($path, $privates))
         ) {
             $res = $res->withHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');

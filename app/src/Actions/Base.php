@@ -15,8 +15,6 @@ use Slim\Container;
 abstract class Base
 {
     /**
-     * Slim DI Container
-     *
      * @var \Slim\Container
      */
     private $container = null;

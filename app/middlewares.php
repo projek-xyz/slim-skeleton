@@ -1,6 +1,8 @@
 <?php
 /**
  * Application Middlewares
+ *
+ * @var  array  $settings
  */
 
 use Slim\Http\Response;
@@ -20,6 +22,7 @@ $app->add(new App\Middlewares\CommonMiddleware([
 $app->add(function (Request $req, Response $res, Callable $next) {
     $res = $next($req, $res);
 
+    /** @var \App\Providers\NegotiatorProvider $negotiator */
     $negotiator = $this->get('negotiator');
     $context = [
         $req->getMethod() => (string) $req->getUri(),

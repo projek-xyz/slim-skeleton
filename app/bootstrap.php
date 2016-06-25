@@ -6,7 +6,7 @@ define('ASSET_DIR', ROOT_DIR.'asset/');
 define('WWW_DIR',   ROOT_DIR.'public/');
 
 // Loading vendors
-require ROOT_DIR.'vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 if (file_exists(ROOT_DIR.'.env')) {
     (new Dotenv\Dotenv(ROOT_DIR))->load();

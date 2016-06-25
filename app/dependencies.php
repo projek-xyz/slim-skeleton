@@ -17,7 +17,7 @@ if ($settings['mode'] !== 'development') {
      * Overwrite default Slim errorHandler container
      */
     $container['errorHandler'] = function (Container $c) use ($settings) {
-        $handler = new App\ErrorHandler($settings['displayErrorDetails']);
+        $handler = new App\Handlers\ErrorHandler($settings['displayErrorDetails']);
         $handler->setView($c['view']);
         $handler->setLogger($c['logger']);
 
@@ -29,7 +29,7 @@ if ($settings['mode'] !== 'development') {
  * Overwrite default Slim notFoundHandler container
  */
 $container['notFoundHandler'] = function (Container $c) {
-    $handler = new App\NotFoundHandler;
+    $handler = new App\Handlers\NotFoundHandler;
     $handler->setView($c['view']);
     $handler->setLogger($c['logger']);
 

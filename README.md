@@ -46,12 +46,12 @@ Now, you should open [http://localhost:8888](http://localhost:8888) in your favo
 │   ├── database/         // Database directory
 │   └── uploads/          // Uploaded files directory
 ├── public/               // Webroot directory
+│   ├── images/           // Static images directory
+│   ├── styles/           // Stylesheets directory
+│   ├── favicon.ico       // Sample favicon
+│   ├── .htaccess.sample  // Sample .htaccess file for apache2
+│   └── index.php         // Entry point to application
 └── tests/                // Testing directory
-    ├── images/           // Static images directory
-    ├── styles/           // Stylesheets directory
-    ├── favicon.ico       // Sample favicon
-    ├── .htaccess.sample  // Sample .htaccess file for apache2
-    └── index.php         // Entry point to application
 ```
 
 ## Contributing

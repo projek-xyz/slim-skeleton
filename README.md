@@ -19,21 +19,10 @@ I've make this package available to install via `composer create-project` so mak
 $ composer create-project -n -s dev projek-xyz/slim-skeleton my-app --prefer-dist
 ```
 
-then enter `my-app` directory you just create.
+then enter `my-app` directory you just create and start the server.
 
 ```bash
 $ cd my-app
-```
-
-Create `.env` file based on `.env.example`.
-
-```bash
-$ cp .env.example .env
-```
-
-Start the server.
-
-```bash
 $ php -S localhost:8888 -t public
 ```
 

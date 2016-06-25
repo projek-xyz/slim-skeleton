@@ -3,10 +3,12 @@ namespace App\Handlers;
 
 use App\Utils;
 use Slim\Handlers\NotFound;
+use App\Contracts\ShouldHasLogger;
+use App\Contracts\ShouldRenderView;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class NotFoundHandler extends NotFound
+class NotFoundHandler extends NotFound implements ShouldHasLogger, ShouldRenderView
 {
     use Utils\ViewableAware;
     use Utils\LoggableAware;
@@ -26,10 +28,10 @@ class NotFoundHandler extends NotFound
     /**
      * {inheritdoc}
      */
-    protected function renderHtmlNotFoundOutput(ServerRequestInterface $request, ResponseInterface $response)
+    protected function renderHtmlNotFoundOutput(ServerRequestInterface $request)
     {
         if (is_null($this->view)) {
-            return parent::renderHtmlNotFoundOutput($request, $response);
+            return parent::renderHtmlNotFoundOutput($request);
         }
 
         $title = 'Page Not Found';
@@ -38,6 +40,6 @@ class NotFoundHandler extends NotFound
 
         $this->view->addData(compact('title', 'desc', 'homeUrl'));
 
-        return $this->view->render('error-404');
+        return $this->view->render('errors/404');
     }
 }

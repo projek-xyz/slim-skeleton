@@ -16,7 +16,7 @@
 
     <testsuites>
         <testsuite name="Projek Slim Skeleton Test Suite">
-            <directory>./src/</directory>
+            <directory>./unit/</directory>
         </testsuite>
     </testsuites>
 
@@ -25,5 +25,9 @@
             <directory>../app/src/</directory>
         </whitelist>
     </filter>
+
+    <php>
+        <env name="APP_ENV" value="testing"/>
+    </php>
 
 </phpunit>

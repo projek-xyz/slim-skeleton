@@ -1,10 +1,10 @@
 <?php
 namespace App\Providers;
 
+use App\Models;
 use Slim\PDO\Database;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use InvalidArgumentException;
 
 class DatabaseProvider implements ServiceProviderInterface
 {
@@ -15,15 +15,37 @@ class DatabaseProvider implements ServiceProviderInterface
      */
     public function register(Container $container)
     {
-        $settings = $container->get('settings');
-
-        if (!isset($settings['db'])) {
-            throw new InvalidArgumentException('Database configuration not found');
+        if (!isset($container['settings']['db'])) {
+            throw new \InvalidArgumentException('Database configuration not found');
         }
 
-        $db = $this->initialize($settings['db']);
+        $container['db'] = function (Container $container) {
+            $db = $this->initializeDbSettings($container['settings']['db']);
 
-        $container['db'] = new Database($db['dsn'], $db['user'], $db['pass']);
+            return new Database($db['dsn'], $db['user'], $db['pass']);
+        };
+
+        $container['data'] = function (Container $container) {
+            $db = $container['db'];
+
+            return function ($class) use ($db) {
+                if (!class_exists($class)) {
+                    throw new \LogicException("Data model class {$class} not exists ");
+                }
+
+                $model = new \ReflectionClass($class);
+
+                if (!$model->isSubclassOf(Models::class)) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Data model must be instance of %s, %s given',
+                        Models::class,
+                        $model->getName()
+                    ));
+                }
+
+                return $model->newInstance($db);
+            };
+        };
     }
 
     /**
@@ -33,7 +55,7 @@ class DatabaseProvider implements ServiceProviderInterface
      *
      * @return array
      */
-    private function initialize(array $settings)
+    private function initializeDbSettings(array $settings)
     {
         if (!$settings['dsn']) {
             $settings['dsn'] = sprintf(

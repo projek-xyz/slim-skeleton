@@ -5,22 +5,24 @@ use App\Providers;
 return [
     // Application basename
     'basename' => 'Slim-App',
-    // Application baseurl
-    'baseurl' => getenv('APP_BASEURL') ?: '',
 
-    // Application title and description
+    // Application title, email and description
     'title' => 'Slim Skeleton',
     'description' => 'PHP Application Skeleton for Slim v3 Microframework',
+    'email' => getenv('APP_EMAIL') ?: 'admin@example.com',
+
+    // Application baseurl
+    'baseurl' => getenv('APP_URL') ?: '',
 
     // Application TimeZone
-    'timezone' => 'Asia/Jakarta',
+    'timezone' => getenv('APP_TIMEZONE') ?: 'UTC',
 
     // Application Mode
-    'mode' => getenv('APP_ENV') ?: 'development',
+    'mode' => getenv('APP_ENV') ?: 'production',
 
     // Language settings
     'lang' => [
-        // 'directory' => APP_DIR.'langs',
+        // 'directory' => APP_DIR.'langs', // Not implemented yet.
         'default'   => 'id',
     ],
 
@@ -35,11 +37,12 @@ return [
         'charset' => 'utf8',
     ],
 
-    // Database settings
-    'fs' => [
-        'local' => [
-            'path' => ASSET_DIR,
-        ]
+    // Mailer settings
+    'mailer' => [
+        'host'      => getenv('EMAIL_HOST') ?: '',
+        'port'      => getenv('EMAIL_PORT') ?: '',
+        'username'  => getenv('EMAIL_USER') ?: '',
+        'password'  => getenv('EMAIL_PASS') ?: '',
     ],
 
     // Loggin settings
@@ -59,6 +62,7 @@ return [
 
     // List of Pimple Service Providers
     'providers' => [
+        Providers\ErrorHandlersProvider::class,
         // Providers\DatabaseProvider::class,
         Providers\NegotiatorProvider::class,
         Projek\Slim\MonologProvider::class,

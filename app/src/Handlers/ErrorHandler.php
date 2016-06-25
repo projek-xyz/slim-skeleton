@@ -3,11 +3,13 @@ namespace App\Handlers;
 
 use App\Utils;
 use Slim\Handlers\Error;
+use App\Contracts\ShouldHasLogger;
+use App\Contracts\ShouldRenderView
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Exception;
 
-class ErrorHandler extends Error
+class ErrorHandler extends Error implements ShouldHasLogger, ShouldRenderView
 {
     use Utils\ViewableAware;
     use Utils\LoggableAware;
@@ -50,6 +52,6 @@ class ErrorHandler extends Error
 
         $this->view->addData(compact('title', 'html'));
 
-        return $this->view->render('error-500');
+        return $this->view->render('errors/500');
     }
 }

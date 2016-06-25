@@ -34,7 +34,7 @@ $app->add(function (Request $req, Response $res, Callable $next) {
         $context['params'] = $params;
     }
 
-    $this->get('logger')->debug($req->getUri()->getPath(), $context);
+    $this->logger->debug($req->getUri()->getPath(), $context);
 
     return $res;
 });

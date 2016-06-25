@@ -34,8 +34,6 @@ class EmailProvider implements ServiceProviderInterface
             $mailer->debugMode($settings['mode']);
             $mailer->setSender($settings['email'], $settings['name']);
 
-            $view->addFolder('email', APP_DIR.'views/email');
-
             return $mailer;
         };
     }

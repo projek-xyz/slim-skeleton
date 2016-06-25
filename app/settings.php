@@ -68,5 +68,6 @@ return [
         Projek\Slim\MonologProvider::class,
         Projek\Slim\PlatesProvider::class,
         Providers\EmailProvider::class,
+        Providers\AppProvider::class,
     ]
 ];

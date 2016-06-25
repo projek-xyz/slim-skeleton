@@ -12,6 +12,7 @@ use BadMethodCallException;
  * @property-read \Valitron\Validator validator
  * @property-read callable data
  * @property-read callable upload
+ * @property-read \App\Mailer mailer
  * @method \App\Models data(string $modelClass)
  */
 trait ContainerAwareTrait

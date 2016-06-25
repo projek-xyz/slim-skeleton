@@ -16,14 +16,25 @@
 I've make this package available to install via `composer create-project` so make sure you've already have [composer](https://getcomposer.org/download/) installed globally in your system.
 
 ```bash
-$ composer create-project -n -s dev projek-xyz/slim-skeleton my-app
+$ composer create-project -n -s dev projek-xyz/slim-skeleton my-app --prefer-dist
 ```
 
-then enter `my-app` directory you just create and run the server.
+then enter `my-app` directory you just create.
 
 ```bash
 $ cd my-app
-$ php -S localhost:8888 -t public public/index.php
+```
+
+Create `.env` file based on `.env.example`.
+
+```bash
+$ cp .env.example .env
+```
+
+Start the server.
+
+```bash
+$ php -S localhost:8888 -t public
 ```
 
 Now, you should open [http://localhost:8888](http://localhost:8888) in your favorite web browser.
@@ -33,13 +44,8 @@ Now, you should open [http://localhost:8888](http://localhost:8888) in your favo
 ```
 ├── app/                  // Root for application codes
 │   ├── cache/            // cache directory
-│   ├── logs/             // Log directory fror Monolog
-│   ├── src/              // Class files within `App` namespace
-│   │   ├── Actions/      // Router Actions directory
-│   │   ├── Handlers/     // Custom Handlers directory
-│   │   ├── Providers/    // Service Providers directory
-│   │   └── Utils/        // Utilities directory
-│   ├── tests/            // Test suites directory
+│   ├── logs/             // Log directory for Monolog
+│   ├── src/              // Application directory, all classes under 'App' namespace
 │   ├── views/            // View templates directory for Plates
 │   ├── .env.sample       // Sample .env file for phpdotenv
 │   ├── dependencies.php  // Services for Pimple
@@ -50,20 +56,13 @@ Now, you should open [http://localhost:8888](http://localhost:8888) in your favo
 ├── asset/                // Assets directory
 │   ├── database/         // Database directory
 │   └── uploads/          // Uploaded files directory
-└── public/               // Webroot directory
+├── public/               // Webroot directory
+└── tests/                // Testing directory
     ├── images/           // Static images directory
     ├── styles/           // Stylesheets directory
     ├── favicon.ico       // Sample favicon
     ├── .htaccess.sample  // Sample .htaccess file for apache2
     └── index.php         // Entry point to application
-```
-
-## Testing
-
-To make sure everything's works fine before it ready to use, so I put all test cases are available in [**app/tests**](app/tests) directory. Simply run:
-
-```bash
-$ composer run-script test
 ```
 
 ## Contributing

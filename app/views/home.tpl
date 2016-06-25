@@ -1,4 +1,4 @@
-<?php $this->layout('layouts/base') ?>
+<?php $this->layout('_layouts/base') ?>
 
 <h1 id="heading"><?php echo $this->e($_title_) ?></h1>
 <p id="content"><?php echo $this->e($_desc_) ?></p>

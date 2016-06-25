@@ -9,9 +9,9 @@ use Pimple\ServiceProviderInterface;
 class DatabaseProvider implements ServiceProviderInterface
 {
     /**
-     * Register this database provider with a Pimple container
+     * Register this data provider with a Pimple container
      *
-     * @param \Pimple\Container $container
+     * @param Container $container
      */
     public function register(Container $container)
     {

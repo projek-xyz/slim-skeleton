@@ -47,7 +47,7 @@ class NegotiatorProvider implements ServiceProviderInterface
     /**
      * Register this content negotiator provider with a Pimple container
      *
-     * @param \Pimple\Container $container
+     * @param Container $container
      */
     public function register(Container $container)
     {

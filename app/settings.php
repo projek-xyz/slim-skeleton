@@ -67,5 +67,6 @@ return [
         Providers\NegotiatorProvider::class,
         Projek\Slim\MonologProvider::class,
         Projek\Slim\PlatesProvider::class,
+        Providers\EmailProvider::class,
     ]
 ];

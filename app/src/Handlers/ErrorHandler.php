@@ -4,7 +4,7 @@ namespace App\Handlers;
 use App\Utils;
 use Slim\Handlers\Error;
 use App\Contracts\ShouldHasLogger;
-use App\Contracts\ShouldRenderView
+use App\Contracts\ShouldRenderView;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Exception;

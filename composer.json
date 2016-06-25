@@ -16,6 +16,11 @@
     "issues": "https://github.com/projek-xyz/slim-skeleton/issues",
     "source": "https://github.com/projek-xyz/slim-skeleton"
   },
+  "scripts": {
+    "test": "php vendor/bin/phpunit -c tests/phpunit.xml",
+    "lint": "php vendor/bin/phpcs --standard=PSR2 -n -p app/src/",
+    "post-root-package-install": "php -r \"copy('.env.example', '.env');\""
+  },
   "autoload": {
     "psr-4": {
       "App\\": "app/src/"
@@ -30,12 +35,11 @@
   "prefer-stable": true,
   "require": {
     "php": ">=5.5.0",
-    "projek-xyz/slim-flysystem": "~0.1",
     "projek-xyz/slim-plates": "~0.2",
     "projek-xyz/slim-monolog": "~0.1",
-    "slim/flash": "~0.1.0",
+    "slim/flash": "~0.1",
     "slim/pdo": "~1.8",
-    "slim/slim": "~3.0-dev",
+    "slim/slim": "~3.4.0",
     "vlucas/valitron": "~1.2",
     "vlucas/phpdotenv": "~2.1",
     "willdurand/negotiation": "~2.0"

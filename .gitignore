@@ -1,6 +1,5 @@
 # Generic
 # --------------------------
-Thumbs.db
 Desktop.ini
 Icon?
 .directory
@@ -22,13 +21,12 @@ Icon?
 
 # IDE Project Configurations
 # --------------------------
-nbproject/
-.idea/
-.settings/
+nbproject
+.idea
+.settings
 .project
 *.sublime-*
 
 # But Keep these
 # --------------------------
-!.htaccess
 !.gitkeep

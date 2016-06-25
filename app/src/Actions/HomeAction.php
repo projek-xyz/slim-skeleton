@@ -1,7 +1,7 @@
 <?php
 namespace App\Actions;
 
-class HomeAction extends Base
+class HomeAction extends AbstractAction
 {
     public function index($req, $res, $args)
     {

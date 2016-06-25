@@ -21,18 +21,30 @@ class DatabaseProvider implements ServiceProviderInterface
             throw new InvalidArgumentException('Database configuration not found');
         }
 
-        $db = $settings['db'];
+        $db = $this->initialize($settings['db']);
 
-        if (!$db['dsn']) {
-            $db['dsn'] = sprintf(
+        $container['db'] = new Database($db['dsn'], $db['user'], $db['pass']);
+    }
+
+    /**
+     * Initialize database settings
+     *
+     * @param  array  $settings
+     *
+     * @return array
+     */
+    private function initialize(array $settings)
+    {
+        if (!$settings['dsn']) {
+            $settings['dsn'] = sprintf(
                 '%s:host=%s;dbname=%s;charset=%s',
-                $db['driver'],
-                $db['host'],
-                $db['name'],
-                $db['charset']
+                $settings['driver'],
+                $settings['host'],
+                $settings['name'],
+                $settings['charset']
             );
         }
 
-        $container['db'] = new Database($db['dsn'], $db['user'], $db['pass']);
+        return $settings;
     }
 }

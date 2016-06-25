@@ -34,7 +34,7 @@ class NotFoundHandler extends NotFound
 
         $title = 'Page Not Found';
         $desc = 'The page you are looking for could not be found. Check the address bar to ensure your URL is spelled correctly. If all else fails, you can visit our home page at the link below.';
-        $homeUrl = (string)($request->getUri()->withPath('')->withQuery('')->withFragment(''));
+        $homeUrl = (string) $request->getUri()->withPath('')->withQuery('')->withFragment('');
 
         $this->view->addData(compact('title', 'desc', 'homeUrl'));
 

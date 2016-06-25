@@ -12,7 +12,7 @@ use Slim\Container;
  * @property-read \Valitron\Validator validator
  * @property-read \App\Providers\NegotiatorProvider negotiator
  */
-abstract class Base
+abstract class AbstractAction
 {
     /**
      * @var \Slim\Container
@@ -28,16 +28,27 @@ abstract class Base
             $this->container = $container;
         }
 
-        $view = $this->container->get('view');
         $settings = $this->container->get('settings');
 
-        $view->addData([
+        $this->addviewData([
             '_title_' => $settings['title'],
             '_desc_'  => $settings['description'],
         ]);
     }
 
     /**
+     * Share data to views
+     *
+     * @param  array  $datas
+     * @param  string|null  $templates
+     */
+    protected function addviewData(array $datas, $templates = null)
+    {
+        $this->view->addData($datas, $templates);
+    }
+
+    /**
+     * @param  string $var
      * @return mixed
      */
     public function __get($var)

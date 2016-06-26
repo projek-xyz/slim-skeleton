@@ -27,14 +27,14 @@ exports.config = {
     // https://docs.saucelabs.com/reference/platforms-configurator
     //
     capabilities: [
-        { browserName: 'chrome' },
-        { browserName: 'firefox' },
-        { browserName: 'internet explorer' },
-        { browserName: 'safari' },
-        { browserName: 'opera' },
-        { browserName: 'iPad' },
-        { browserName: 'iPhone' },
-        { browserName: 'android' }
+        { browserName: 'chrome' }
+        // { browserName: 'firefox' },
+        // { browserName: 'internet explorer' },
+        // { browserName: 'safari' },
+        // { browserName: 'opera' },
+        // { browserName: 'iPad' },
+        // { browserName: 'iPhone' },
+        // { browserName: 'android' }
     ],
     //
     // ===================
@@ -54,14 +54,14 @@ exports.config = {
     coloredLogs: true,
     //
     // Saves a screenshot to a given path if a command fails.
-    screenshotPath: './tests/shots/',
+    screenshotPath: './tests/screens/',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
     //
     // Set a base URL in order to shorten url command calls. If your url parameter starts
     // with "/", the base url gets prepended.
-    baseUrl: 'http://creasi.co',
+    baseUrl: 'http://slim-app.projek.xyz',
     //
     // Default timeout in milliseconds for request
     // if Selenium Grid doesn't send response
@@ -122,8 +122,9 @@ exports.config = {
         const chai = require('chai');
         global.expect = chai.expect;
         global.assert = chai.assert;
+
         chai.should();
-    },
+    }
     //
     // Hook that gets executed before the suite starts
     // beforeSuite: (suite) => {

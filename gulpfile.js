@@ -115,8 +115,8 @@ gulp.task('serve', ['build'], () => {
 
     // Let's assume that you already setup your app server vhost
     if (_.configs.url.indexOf('localhost') !== -1) {
-        return connect.server({ base: './public' }, () => {
-                return sync;
+        return connect.server(_.configs.server, () => {
+            return sync;
         });
     }
 
@@ -167,7 +167,7 @@ gulp.task('wdio', (done) => {
         conf.build = out;
     });
 
-    gulp.src('./build/webdriver.js')
+    gulp.src('./asset/webdriver.js')
         .pipe($.webdriver(conf));
 
     return done();

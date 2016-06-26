@@ -47,7 +47,7 @@ return [
 
     // Loggin settings
     'logger' => [
-        'directory' => APP_DIR.'logs',
+        'directory' => STORAGE_DIR.'logs',
         'filename'  => date('Y-m-d').'.log',
         'level'     => 'DEBUG'
     ],

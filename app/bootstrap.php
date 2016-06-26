@@ -1,9 +1,10 @@
 <?php
 
-define('APP_DIR',   __DIR__.'/');
-define('ROOT_DIR',  dirname(APP_DIR).'/');
-define('ASSET_DIR', ROOT_DIR.'asset/');
-define('WWW_DIR',   ROOT_DIR.'public/');
+define('APP_DIR',     __DIR__.'/');
+define('ROOT_DIR',    dirname(APP_DIR).'/');
+define('ASSET_DIR',   ROOT_DIR.'asset/');
+define('STORAGE_DIR', ROOT_DIR.'storage/');
+define('WWW_DIR',     ROOT_DIR.'public/');
 
 use App\Handlers;
 use Slim\Container;

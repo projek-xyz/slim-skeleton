@@ -36,6 +36,7 @@ trait ContainerAwareTrait
      * Get \Slim\Container name
      *
      * @param  string $name Container Name
+     *
      * @return mixed
      * @throws \Slim\Exception\ContainerValueNotFoundException
      */
@@ -48,6 +49,7 @@ trait ContainerAwareTrait
      * Call \Slim\Container callable name
      *
      * @param  string $method Container Name
+     *
      * @return mixed
      * @throws \BadMethodCallException
      */

@@ -8,7 +8,6 @@
 
 namespace App\Providers;
 
-use App\Mailer;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

@@ -4,17 +4,15 @@ namespace App;
 use PHPMailer;
 use League\Plates\Engine;
 
-class Mailer
+class Mailer implements Contracts\ShouldRenderView, Contracts\ShouldHasLogger
 {
+    use Utils\ViewableAware;
+    use Utils\LoggableAware;
+
     /**
      * @var  PHPMailer
      */
     protected $mail;
-
-    /**
-     * @var  Engine
-     */
-    protected $view;
 
     /**
      * @var  array
@@ -40,13 +38,11 @@ class Mailer
 
     /**
      * @param  array  $settings
-     * @param  Engine  $view
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(array $settings = [], Engine $view)
+    public function __construct(array $settings = [])
     {
-        $this->view = $view;
         $settings = array_merge($this->settings, $settings);
 
         $this->mail = new PHPMailer(true);
@@ -99,6 +95,7 @@ class Mailer
      * Add recipient email address.
      *
      * @param  string  $address
+     * @param  string  $name
      *
      * @return $this
      */
@@ -151,7 +148,7 @@ class Mailer
     /**
      * Add attachments.
      *
-     * @param  array  $attachments
+     * @param  array  $files
      *
      * @return $this
      */

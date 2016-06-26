@@ -27,9 +27,11 @@ class EmailProvider implements ServiceProviderInterface
 
         $container['mailer'] = function (Container $container) {
             $settings = $container['settings'];
-            $view = $container['view'];
 
-            $mailer = new Mailer($settings['mailer'], $view->getPlates());
+            $mailer = new Mailer($settings['mailer']);
+
+            $mailer->setView($container['view']);
+            $mailer->setLogger($container['logger']);
 
             $mailer->debugMode($settings['mode']);
             $mailer->setSender($settings['email'], $settings['name']);

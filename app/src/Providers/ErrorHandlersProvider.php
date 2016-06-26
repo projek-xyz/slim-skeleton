@@ -29,7 +29,7 @@ class ErrorHandlersProvider implements ServiceProviderInterface
             };
         }
 
-        $container['notFoundHandler'] = function (Container $container) use ($settings) {
+        $container['notFoundHandler'] = function (Container $container) {
             return $this->initHandler(new Handlers\NotFoundHandler(), $container);
         };
     }

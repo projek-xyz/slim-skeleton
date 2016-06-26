@@ -6,7 +6,6 @@ define('ASSET_DIR',   ROOT_DIR.'asset/');
 define('STORAGE_DIR', ROOT_DIR.'storage/');
 define('WWW_DIR',     ROOT_DIR.'public/');
 
-use App\Handlers;
 use Slim\Container;
 
 // Loading vendors

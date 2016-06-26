@@ -6,10 +6,6 @@ use Slim\Container;
 abstract class Actions
 {
     use Utils\ContainerAware;
-    /**
-     * @var \Slim\Container
-     */
-    private $container = null;
 
     /**
      * @param \Slim\Container

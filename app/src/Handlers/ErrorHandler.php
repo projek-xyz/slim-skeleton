@@ -2,14 +2,14 @@
 namespace App\Handlers;
 
 use App\Utils;
-use Slim\Handlers\Error;
-use App\Contracts\ShouldHasLogger;
-use App\Contracts\ShouldRenderView;
+use App\Contracts\LoggableInterface;
+use App\Contracts\ViewableInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Handlers\Error;
 use Exception;
 
-class ErrorHandler extends Error implements ShouldHasLogger, ShouldRenderView
+class ErrorHandler extends Error implements LoggableInterface, ViewableInterface
 {
     use Utils\ViewableAware;
     use Utils\LoggableAware;

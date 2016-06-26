@@ -35,7 +35,7 @@ class ErrorHandlersProvider implements ServiceProviderInterface
     }
 
     /**
-     * @param  \App\Contracts\ShouldRenderView|\App\Contracts\ShouldHasLogger  $handlerClass
+     * @param  \App\Contracts\ViewableInterface|\App\Contracts\LoggableInterface  $handlerClass
      * @param  Container  $container
      *
      * @return \Slim\Handlers\Error|\Slim\Handlers\NotFound

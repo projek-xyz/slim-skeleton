@@ -3,7 +3,7 @@ namespace App\Contracts;
 
 use Projek\Slim\Monolog;
 
-interface ShouldHasLogger
+interface LoggableInterface
 {
     /**
      * @param  Monolog  $logger

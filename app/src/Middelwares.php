@@ -3,5 +3,5 @@ namespace App;
 
 abstract class Middlewares
 {
-    use Utils\ContainerAwareTrait;
+    use Utils\ContainerAware;
 }

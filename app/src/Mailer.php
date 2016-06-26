@@ -4,7 +4,8 @@ namespace App;
 use PHPMailer;
 use League\Plates\Engine;
 
-class Mailer implements Contracts\ShouldRenderView, Contracts\ShouldHasLogger
+class Mailer implements Contracts\ViewableInterface,
+                        Contracts\LoggableInterface
 {
     use Utils\ViewableAware;
     use Utils\LoggableAware;

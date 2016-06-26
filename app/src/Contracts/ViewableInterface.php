@@ -3,7 +3,7 @@ namespace App\Contracts;
 
 use Projek\Slim\Plates;
 
-interface ShouldRenderView
+interface ViewableInterface
 {
     /**
      * @param  Plates  $view

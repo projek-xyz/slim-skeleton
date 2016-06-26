@@ -16,7 +16,7 @@ use BadMethodCallException;
  * @property-read \App\Mailer mailer
  * @method \App\Models data(string $modelClass)
  */
-trait ContainerAwareTrait
+trait ContainerAware
 {
     /**
      * Slim\Container instance

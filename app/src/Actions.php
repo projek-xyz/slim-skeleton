@@ -5,7 +5,7 @@ use Slim\Container;
 
 abstract class Actions
 {
-    use Utils\ContainerAwareTrait;
+    use Utils\ContainerAware;
     /**
      * @var \Slim\Container
      */

@@ -10,6 +10,7 @@ use BadMethodCallException;
  * @property-read \Projek\Slim\Plates view
  * @property-read \App\Providers\NegotiatorProvider negotiator
  * @property-read \Valitron\Validator validator
+ * @property-read \Projek\Slim\Monolog logger
  * @property-read callable data
  * @property-read callable upload
  * @property-read \App\Mailer mailer

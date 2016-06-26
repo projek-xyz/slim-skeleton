@@ -32,26 +32,27 @@ Now, you should open [http://localhost:8888](http://localhost:8888) in your favo
 
 ```
 ├── app/                  // Root for application codes
-│   ├── cache/            // cache directory
-│   ├── logs/             // Log directory for Monolog
+│   ├── data/             // Database directory
 │   ├── src/              // Application directory, all classes under 'App' namespace
 │   ├── views/            // View templates directory for Plates
 │   ├── .env.sample       // Sample .env file for phpdotenv
+│   ├── bootstrap.php     // Application bootstraper file
 │   ├── dependencies.php  // Services for Pimple
 │   ├── middlewares.php   // Middlewares declaration
-│   ├── phpunit.xml       // Sample phpunit configuration file
 │   ├── routers.php       // Application routes
 │   └── settings.php      // Application settings
-├── asset/                // Assets directory
-│   ├── database/         // Database directory
-│   └── uploads/          // Uploaded files directory
+├── asset/                // Assets source directory
 ├── public/               // Webroot directory
 │   ├── images/           // Static images directory
 │   ├── styles/           // Stylesheets directory
-│   ├── favicon.ico       // Sample favicon
-│   ├── .htaccess.sample  // Sample .htaccess file for apache2
 │   └── index.php         // Entry point to application
+├── storage/              // Assets directory
+│   ├── cache/            // cache directory
+│   └── logs/             // Log directory for Monolog
 └── tests/                // Testing directory
+    ├── specs/            // Integration test directory
+    ├── units/            // Functional unit test directory
+    └── phpunit.xml       // Sample phpunit configuration file
 ```
 
 ## Contributing

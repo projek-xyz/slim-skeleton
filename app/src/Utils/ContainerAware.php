@@ -65,5 +65,4 @@ trait ContainerAware
 
         throw new BadMethodCallException("Method $method is not a valid method");
     }
-
 }

@@ -24,8 +24,8 @@ class AppProvider implements ServiceProviderInterface
             $view = $container['view'];
 
             $view->addFolder('layouts', APP_DIR.'views/_layouts');
-            $view->addFolder('error',   APP_DIR.'views/errors');
-            $view->addFolder('email',   APP_DIR.'views/emails');
+            $view->addFolder('error', APP_DIR.'views/errors');
+            $view->addFolder('email', APP_DIR.'views/emails');
         }
     }
 }

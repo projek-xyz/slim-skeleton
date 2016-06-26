@@ -9,7 +9,6 @@ class HomeAction extends Actions
 {
     /**
      * @api  GET  /
-     * 
      * @param  Request  $req
      * @param  Response  $res
      * @param  array  $args

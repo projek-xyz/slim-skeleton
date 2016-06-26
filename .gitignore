@@ -5,19 +5,20 @@ Icon?
 .directory
 *.cache
 *.old
+*.log
 *.zip
 *~
 
 # Development files
 # --------------------------
-/app/cache/*
-/app/logs/*
-/.env
+storage/cache/*
+storage/logs/*
+.env
 
 # Dependency folders
 # --------------------------
-/vendor/
-/node_modules/
+vendor/
+node_modules/
 
 # IDE Project Configurations
 # --------------------------

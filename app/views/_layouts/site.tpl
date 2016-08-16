@@ -1,4 +1,4 @@
-<?php $this->layout('layouts::base') ?>
+<?php $this->layout('layout::base') ?>
 
 <?php $this->start('app-content') ?>
 

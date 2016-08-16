@@ -28,12 +28,15 @@ class NotFoundHandler extends NotFound implements LoggableInterface, ViewableInt
             return parent::renderHtmlNotFoundOutput($request);
         }
 
-        $title = 'Page Not Found';
-        $desc = 'The page you are looking for could not be found. Check the address bar to ensure your URL is spelled correctly. If all else fails, you can visit our home page at the link below.';
         $homeUrl = (string) $request->getUri()->withPath('')->withQuery('')->withFragment('');
+        $title = 'Page Not Found';
+        $desc = implode('<br>', [
+            'The page you are looking for could not be found. Check the address bar to ensure your URL is spelled correctly.',
+            'If all else fails, you can visit our home page at the link below.'
+        ]);
 
         $this->view->addData(compact('title', 'desc', 'homeUrl'));
 
-        return $this->view->render('errors/404');
+        return $this->view->render('error::404');
     }
 }

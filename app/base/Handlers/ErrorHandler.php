@@ -49,6 +49,6 @@ class ErrorHandler extends Error implements LoggableInterface, ViewableInterface
             'html' => implode(PHP_EOL, $html)
         ]);
 
-        return $this->view->render('errors/500');
+        return $this->view->render('error::500');
     }
 }

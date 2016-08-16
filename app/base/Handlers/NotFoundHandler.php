@@ -1,9 +1,9 @@
 <?php
-namespace App\Handlers;
+namespace Base\Handlers;
 
-use App\Utils;
-use App\Contracts\LoggableInterface;
-use App\Contracts\ViewableInterface;
+use Base\Utils;
+use Base\Contracts\LoggableInterface;
+use Base\Contracts\ViewableInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Handlers\NotFound;

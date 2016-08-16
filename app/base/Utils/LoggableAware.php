@@ -1,5 +1,5 @@
 <?php
-namespace App\Utils;
+namespace Base\Utils;
 
 use Projek\Slim\Monolog;
 

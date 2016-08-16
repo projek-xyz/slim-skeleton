@@ -23,12 +23,14 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "app/src/"
+      "App\\": "app/src/",
+      "Base\\": "app/base/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "App\\Tests\\": "tests/unit/"
+      "App\\Tests\\": "tests/unit/",
+      "Base\\Tests\\": "tests/base/"
     }
   },
   "minimum-stability": "dev",

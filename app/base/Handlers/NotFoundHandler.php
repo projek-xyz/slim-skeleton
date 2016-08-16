@@ -13,21 +13,15 @@ class NotFoundHandler extends NotFound implements LoggableInterface, ViewableInt
     use Utils\ViewableAware;
     use Utils\LoggableAware;
 
-    /**
-     * {inheritdoc}
-     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $this->logger->warning('Not found', [
-            $request->getMethod() => (string) $request->getUri()
+        $this->logger->warning('Page Not Found', [
+            $request->getMethod() => (string) $request->getUri()->withPath('')->withQuery('')->withFragment('')
         ]);
 
         return parent::__invoke($request, $response);
     }
 
-    /**
-     * {inheritdoc}
-     */
     protected function renderHtmlNotFoundOutput(ServerRequestInterface $request)
     {
         if (is_null($this->view)) {

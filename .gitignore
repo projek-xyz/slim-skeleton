@@ -11,8 +11,6 @@ Icon?
 
 # Development files
 # --------------------------
-storage/cache/*
-storage/logs/*
 .env
 
 # Dependency folders

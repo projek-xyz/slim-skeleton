@@ -16,9 +16,6 @@ abstract class Actions
 
         $this->container = $container;
 
-        $this->view->addData([
-            '_title_' => $settings['title'],
-            '_desc_'  => $settings['description'],
-        ]);
+        $this->view->addData($settings['app']);
     }
 }

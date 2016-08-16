@@ -33,11 +33,6 @@
       "Base\\Tests\\": "tests/base/"
     }
   },
-  "configs": {
-    "preferred-dist": true
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "require": {
     "php": ">=5.5.0",
     "projek-xyz/slim-plates": "~0.2",
@@ -53,5 +48,10 @@
   "require-dev": {
     "phpunit/phpunit": "~4.0",
     "squizlabs/php_codesniffer": "^2.6"
-  }
+  },
+  "config": {
+    "preferred-dist": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

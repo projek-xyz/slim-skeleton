@@ -101,21 +101,6 @@ class Helpers {
     }
 
     /**
-     * Print out something replacing default `console.log`
-     *
-     * @param  {String} message
-     * @param  {String} color
-     * @return {Mixed}
-     */
-    echo (message, color) {
-        color = color && color in gutil.colors ? color : 'green';
-
-        const cb = gutil.colors[color];
-
-        return gutil.log(cb(message));
-    }
-
-    /**
      * Simple helper to finalize each tasks
      *
      * @param  {Object}   stream Gulp pipe object
@@ -147,15 +132,24 @@ class Helpers {
             filename += ` (${err.lineNumber})`;
         }
 
-        this.echo([
+        helper.e([
             `[Error]`,
             `  message: ${message}`,
             ` filename: ${filename}`
         ].join('\n'), 'red');
     }
-
 }
 
-module.exports = (gulp, sync) => {
-    return new Helpers(gulp, sync);
+var helper = (gulp, sync) => {
+  return new Helpers(gulp, sync);
 };
+
+helper.e = (message, color) => {
+  color = color && color in gutil.colors ? color : 'green';
+
+  const cb = gutil.colors[color];
+
+  return gutil.log(cb(message));
+};
+
+module.exports = helper;

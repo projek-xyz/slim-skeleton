@@ -182,7 +182,7 @@ gulp.task('clean', (done) => {
     const del = require('del');
 
     del(_.paths.dest + _.configs.patterns.assets).then(() => {
-        echo('Assets directory cleaned', 'green');
+        _.e('Assets directory cleaned', 'green');
     });
 
     return done();

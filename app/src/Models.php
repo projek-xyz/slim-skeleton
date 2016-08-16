@@ -15,7 +15,7 @@ use Slim\PDO\Statement\StatementContainer;
 abstract class Models implements Countable
 {
     /**
-     * @var \Slim\PDO\Database
+     * @var Database
      */
     protected $db;
 
@@ -27,7 +27,7 @@ abstract class Models implements Countable
     /**
      * @var string
      */
-    protected $primary = '';
+    protected $primary = 'id';
 
     /**
      * @var bool
@@ -40,7 +40,7 @@ abstract class Models implements Countable
     protected $timestamps = true;
 
     /**
-     * @param \Slim\PDO\Database $db
+     * @param Database $db
      */
     public function __construct(Database $db)
     {
@@ -59,8 +59,8 @@ abstract class Models implements Countable
             return false;
         }
 
-        if (false === $this->destructive) {
-            $pairs['deleted'] = 'N';
+        if ($this->timestamps) {
+            $pairs['created_at'] = $pairs['updated_at'] = $this->freshDate();
         }
 
         $query = $this->db->insert(array_keys($pairs))
@@ -68,6 +68,38 @@ abstract class Models implements Countable
             ->values(array_values($pairs));
 
         return (int) $query->execute(true);
+    }
+
+    /**
+     * Insert batch data into table
+     *
+     * @param  array  $data
+     * @return int
+     */
+    public function insert(array $data)
+    {
+        if (!$this->table) {
+            return false;
+        }
+
+        try {
+            $this->db->beginTransaction();
+
+            foreach ($data as $i => $entry) {
+                $this->db->insert(array_keys($entry))
+                    ->into($this->table)
+                    ->values(array_values($entry))
+                    ->execute();
+            }
+
+            $this->db->commit();
+        } catch (\PDOException $e) {
+            $this->db->rollBack();
+
+            throw $e;
+        }
+
+        return false;
     }
 
     /**
@@ -114,6 +146,10 @@ abstract class Models implements Countable
             return false;
         }
 
+        if ($this->timestamps) {
+            $pairs['updated_at'] = $this->freshDate();
+        }
+
         $query = $this->db->update(array_filter($pairs))->table($this->table);
 
         $this->normalizeTerms($query, $terms);
@@ -134,7 +170,7 @@ abstract class Models implements Countable
         }
 
         if (false === $this->destructive) {
-            return $this->update(['deleted' => 'Y'], $terms);
+            return $this->update(['deleted_at' => $this->freshDate()], $terms);
         }
 
         $query = $this->db->delete($this->table);
@@ -148,17 +184,16 @@ abstract class Models implements Countable
      * Count all data
      *
      * @param  callable|array|int  $terms
-     * @param  string  $column
-     * @param  bool  $distinct
      * @return int
      */
-    public function count($terms = null, $column = '', $distinct = false)
+    public function count($terms = null)
     {
         if (!$this->table) {
             return 0;
         }
 
-        $query = $this->db->select()->count(($column ?: '*'), 'count', $distinct)->from($this->table);
+        $query = $this->db->select(['count(*) count'])
+            ->from($this->table);
 
         $this->normalizeTerms($query, $terms);
 
@@ -186,6 +221,8 @@ abstract class Models implements Countable
     {
         if (is_callable($terms)) {
             $terms($query);
+        } elseif (is_numeric($terms) && !is_float($terms)) {
+            $query->where($this->primary, '=', (int) $terms);
         } elseif (is_array($terms)) {
             foreach ($terms as $key => $value) {
                 $sign = '=';
@@ -199,16 +236,16 @@ abstract class Models implements Countable
                     $query->whereNull($key);
                 }
             }
-
-            if (!isset($terms['deleted']) && false === $this->destructive) {
-                $query->where('deleted', '=', 'N');
-            }
-        } elseif (is_numeric($terms) && !is_float($terms)) {
-            $query->where($this->primary, '=', (int) $terms);
-
-            if (false === $this->destructive) {
-                $query->where('deleted', '=', 'N');
-            }
         }
+    }
+
+    /**
+     * Generate new data
+     *
+     * @return  string
+     */
+    protected function freshDate()
+    {
+        return date('Y-m-d H:i:s');
     }
 }

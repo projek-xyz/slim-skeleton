@@ -3,6 +3,8 @@
 const fs = require('fs');
 const gutil = require('gulp-util');
 
+const config = require(__dirname + '/config');
+
 class Helpers {
 
   /**
@@ -23,25 +25,20 @@ class Helpers {
 
     // Require the package.json
     this.package = require(__dirname + '/../package');
-
-    // Setup configurations
-    this.configs = this._loadConfig(__dirname + '/config');
   }
 
   /**
-   * Initialize configuration
+   * Get configurations
    *
-   * @return {Object}
+   * @return  {Object}
    */
-  _loadConfig (configFile) {
-    const configs = require(configFile);
-
+  get conf () {
     // Declaring 'serve' config
-    configs.port = process.env.APP_PORT || configs.serve.port; // 8080;
-    configs.host = process.env.APP_HOST || configs.serve.host; // 'localhost';
-    configs.url  = process.env.APP_URL  || configs.serve.url;  // 'localhost:8000';
+    config.port = process.env.APP_PORT || config.serve.port; // 8080;
+    config.host = process.env.APP_HOST || config.serve.host; // 'localhost';
+    config.url  = process.env.APP_URL  || config.serve.url;  // 'localhost:8000';
 
-    return configs;
+    return config;
   }
 
   /**
@@ -69,13 +66,13 @@ class Helpers {
   get paths () {
     const deps = this.dependencies.join(',')
     const paths = {
-      src: this.configs.paths.src,
-      dest: this.configs.paths.dest
+      src: this.conf.paths.src,
+      dest: this.conf.paths.dest
     };
 
-    for (let key in this.configs.patterns) {
+    for (let key in this.conf.patterns) {
       paths[key] = [
-        this.configs.paths.src + this.configs.patterns[key],
+        this.conf.paths.src + this.conf.patterns[key],
         'node_modules/' + deps + '**/*.{js,css,scss}'
       ];
     }
@@ -114,7 +111,7 @@ class Helpers {
    * @return {boolean}
    */
   get isLocal() {
-    return this.configs.url.includes('localhost');
+    return this.conf.url.includes('localhost');
   }
 
   /**

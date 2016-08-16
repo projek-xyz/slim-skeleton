@@ -6,21 +6,21 @@ var gulp = require('gulp');
 // load all plugins with prefix 'gulp'
 const $ = require('gulp-load-plugins')();
 
+const connect     = require('gulp-connect-php');
 const sequence    = require('run-sequence');
 const browserSync = require('browser-sync');
 
-// Load build helpers
 const _ = require('./asset/helpers')(gulp, browserSync);
 
 /* Task: Compile SCSS
  --------------------------------------------------------------------------------- */
 
 gulp.task('build:styles', () => {
-    _.configs.sass.includePaths = _.depsDir;
+    _.conf.sass.includePaths = _.depsDir;
 
     const asset = gulp.src(_.paths.styles, { base: _.paths.src })
-        .pipe($.sass(_.configs.sass).on('error', $.sass.logError))
-        .pipe($.autoprefixer(_.configs.autoprefixer))
+        .pipe($.sass(_.conf.sass).on('error', $.sass.logError))
+        .pipe($.autoprefixer(_.conf.autoprefixer))
         .pipe($.cleanCss())
         .on('error', _.errorHandler);
 
@@ -36,7 +36,7 @@ gulp.task('build:scripts', () => {
     const asset = gulp.src(_.paths.scripts, { base: _.paths.src })
         .pipe($.babel({ presets: ['es2015'] }))
         .on('error', _.errorHandler)
-        .pipe($.uglify(_.configs.uglify))
+        .pipe($.uglify(_.conf.uglify))
         .on('error', _.errorHandler);
 
     return _.build(asset);
@@ -50,7 +50,7 @@ gulp.task('build:scripts', () => {
 gulp.task('build:images', () => {
     const asset = gulp.src(_.paths.images, { base: _.paths.src })
         .pipe($.changed(_.paths.dest))
-        .pipe($.imagemin(_.configs.imagemin))
+        .pipe($.imagemin(_.conf.imagemin))
         .on('error', _.errorHandler);
 
     return _.build(asset);
@@ -81,11 +81,11 @@ gulp.task('build:fonts', (done) => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('modernizr', function () {
-    const conf = _.configs.modernizr;
+    const conf = _.conf.modernizr;
 
     return gulp.src(_.paths.src + '**/*.{js,scss}')
         .pipe($.modernizr(conf.filename, conf.options))
-        .pipe($.uglify(_.configs.uglify))
+        .pipe($.uglify(_.conf.uglify))
         .on('error', _.errorHandler)
         .pipe(gulp.dest(_.paths.dest + 'vendor/'));
 });
@@ -95,22 +95,23 @@ gulp.task('modernizr', function () {
 /* Task: Serve
  --------------------------------------------------------------------------------- */
 
-gulp.task('serve', ['build'], () => {
-    const connect = require('gulp-connect-php');
-    const sync = browserSync.init({
-        port: _.configs.port,
-        host: _.configs.host,
-        proxy: { target: _.configs.url },
-        open: 'open' in _.configs.serve ? _.configs.serve.open : false,
-        logConnections: false
-    });
+gulp.task('serve', ['watch'], () => {
+    const sync = () => {
+        browserSync.init({
+            port: _.conf.port,
+            host: _.conf.host,
+            proxy: { target: _.conf.url },
+            open: 'open' in _.conf.serve ? _.conf.serve.open : false,
+            logConnections: false
+        });
+    };
 
     // Let's assume that you already setup your app server vhost
     if (_.isLocal) {
-        return connect.server(_.configs.server, () => sync);
+        connect.server(_.conf.server, sync);
+    } else {
+        sync();
     }
-
-    return sync;
 });
 
 
@@ -118,7 +119,7 @@ gulp.task('serve', ['build'], () => {
 /* Task: Watch
  --------------------------------------------------------------------------------- */
 
-gulp.task('watch', ['serve'], (done) => {
+gulp.task('watch', ['build'], (done) => {
     // SCSS & Minify
     gulp.watch(_.paths.styles,  ['build:styles']);
     // ES2015 & Uglify
@@ -126,7 +127,7 @@ gulp.task('watch', ['serve'], (done) => {
     // Imagemin
     gulp.watch(_.paths.images,  ['build:images']);
     // Reload
-    gulp.watch(_.configs.patterns.server)
+    gulp.watch(_.conf.patterns.server)
         .on('change', browserSync.reload);
 
     // Done
@@ -145,7 +146,7 @@ gulp.task('wdio', (done) => {
         build: '',
         user: process.env.BROWSERSTACK_USER,
         key: process.env.BROWSERSTACK_KEY,
-        baseUrl: _.configs.url,
+        baseUrl: _.conf.url,
         host: 'hub.browserstack.com',
         debug: true,
         forcelocal: process.env.APP_ENV == 'local',
@@ -171,7 +172,7 @@ gulp.task('wdio', (done) => {
 gulp.task('clean', (done) => {
     const del = require('del');
 
-    del(_.paths.dest + _.configs.patterns.assets).then(() => {
+    del(_.paths.dest + _.conf.patterns.assets).then(() => {
         _.e('Assets directory cleaned', 'green');
     });
 

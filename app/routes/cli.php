@@ -5,7 +5,7 @@
  * @var \Slim\App $app
  */
 
-$app->get('/', function () {
-    return 'hallo'.PHP_EOL;
-})->setName('home-page');
+use App\Commands\DefaultCommand;
+
+$app->get('/', DefaultCommand::class)->setName('default-command');
 

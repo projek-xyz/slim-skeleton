@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-const path = require('path');
 const gutil = require('gulp-util');
 
 class Helpers {
@@ -26,13 +25,7 @@ class Helpers {
     this.package = require(__dirname + '/../package');
 
     // Setup configurations
-    this.configs = this._getConfigs(__dirname + '/config');
-
-    // Setup paths
-    this.paths = this._getPaths();
-
-    // Simply determine whether this build is for production use?
-    this.production = this.configs.mode !== 'dev';
+    this.configs = this._loadConfig(__dirname + '/config');
   }
 
   /**
@@ -40,10 +33,8 @@ class Helpers {
    *
    * @return {Object}
    */
-  _getConfigs (configFile) {
+  _loadConfig (configFile) {
     const configs = require(configFile);
-
-    configs.mode = this._getMode(process.env.MODE);
 
     // Declaring 'serve' config
     configs.port = process.env.APP_PORT || configs.serve.port; // 8080;
@@ -56,16 +47,15 @@ class Helpers {
   /**
    * Get enviroment development mode
    *
-   * @param  {String} envMode Mode from system envvars
    * @return {String}
    */
-  _getMode (envMode) {
+  get mode () {
     // Determine build mode, default is 'dev'
     let mode = 'dev';
 
     // If mode is invalid, back to 'dev' mode
-    if (['dev', 'prod'].indexOf(envMode) !== -1) {
-        mode = envMode;
+    if (['dev', 'prod'].indexOf(process.env.MODE) !== -1) {
+        mode = process.env.MODE;
     }
 
     return mode;
@@ -76,7 +66,8 @@ class Helpers {
    *
    * @return {Object}
    */
-  _getPaths () {
+  get paths () {
+    const deps = this.dependencies.join(',')
     const paths = {
       src: this.configs.paths.src,
       dest: this.configs.paths.dest
@@ -85,7 +76,7 @@ class Helpers {
     for (let key in this.configs.patterns) {
       paths[key] = [
         this.configs.paths.src + this.configs.patterns[key],
-        this._getDepsDir() + '**/*.{js,css,scss}'
+        'node_modules/' + deps + '**/*.{js,css,scss}'
       ];
     }
 
@@ -93,12 +84,37 @@ class Helpers {
   }
 
   /**
+   * Get list dependencies
+   *
+   * @return {Object}
+   */
+  get dependencies () {
+    return Object.keys(this.package.dependencies)
+  }
+
+  /**
    * Get concated dependencies from 'package.json' file
    *
-   * @return {String}
+   * @return {Array}
    */
-  _getDepsDir () {
-    return 'node_modules/{' + Object.keys(this.package.dependencies).join(',') + '}/';
+  get depsDir () {
+    let deps = this.dependencies,
+        dirs = [];
+
+    for (let dep in deps) {
+      dirs.push('node_modules/' + deps[dep]);
+    }
+
+    return dirs;
+  }
+
+  /**
+   * Determine is in local environment
+   *
+   * @return {boolean}
+   */
+  get isLocal() {
+    return this.configs.url.includes('localhost');
   }
 
   /**
@@ -109,7 +125,9 @@ class Helpers {
    * @return {Object}
    */
   build (stream, done) {
-    const pipe = stream.pipe(this._gulp.dest(this.paths.dest)).pipe(this._sync.stream());
+    const pipe = stream
+      .pipe(this._gulp.dest(this.paths.dest))
+      .pipe(this._sync.stream());
 
     if (done) {
         return done();
@@ -127,6 +145,7 @@ class Helpers {
   errorHandler (err) {
     helper.e(`[Error] ${err.stack}`, 'red');
   }
+
 }
 
 var helper = (gulp, sync) => {

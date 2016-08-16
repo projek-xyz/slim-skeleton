@@ -1,9 +1,7 @@
-'use strict';
-
 /* Gulp set up
  --------------------------------------------------------------------------------- */
 
-const gulp = require('gulp');
+var gulp = require('gulp');
 
 // load all plugins with prefix 'gulp'
 const $ = require('gulp-load-plugins')();
@@ -18,16 +16,11 @@ const _ = require('./asset/helpers')(gulp, browserSync);
  --------------------------------------------------------------------------------- */
 
 gulp.task('build:styles', () => {
-    _.configs.sass.includePaths = [
-        `${_.paths.src}vendor`,
-        _._getDepsDir()
-    ];
+    _.configs.sass.includePaths = _.depsDir;
 
     const asset = gulp.src(_.paths.styles, { base: _.paths.src })
-        // .pipe($.sourcemaps.init())
         .pipe($.sass(_.configs.sass).on('error', $.sass.logError))
         .pipe($.autoprefixer(_.configs.autoprefixer))
-        // .pipe($.sourcemaps.write())
         .pipe($.cleanCss())
         .on('error', _.errorHandler);
 
@@ -41,10 +34,8 @@ gulp.task('build:styles', () => {
 
 gulp.task('build:scripts', () => {
     const asset = gulp.src(_.paths.scripts, { base: _.paths.src })
-        // .pipe($.sourcemaps.init())
         .pipe($.babel({ presets: ['es2015'] }))
         .on('error', _.errorHandler)
-        // .pipe($.sourcemaps.write())
         .pipe($.uglify(_.configs.uglify))
         .on('error', _.errorHandler);
 
@@ -73,12 +64,13 @@ gulp.task('build:images', () => {
 gulp.task('build:fonts', (done) => {
     const path = require('path');
 
-    gulp.src(_.paths.fonts)
+    gulp.src(_.paths.fonts, { base: _.paths.src })
         .pipe($.changed(_.paths.dest))
         .pipe(gulp.dest((file) => {
             file.path = file.base + path.basename(file.path);
-        return _.paths.dest + 'fonts/';
-    }));
+            return _.paths.dest + 'fonts/';
+        }
+    ));
 
     return done();
 });
@@ -114,10 +106,8 @@ gulp.task('serve', ['build'], () => {
     });
 
     // Let's assume that you already setup your app server vhost
-    if (_.configs.url.indexOf('localhost') !== -1) {
-        return connect.server(_.configs.server, () => {
-            return sync;
-        });
+    if (_.isLocal) {
+        return connect.server(_.configs.server, () => sync);
     }
 
     return sync;
@@ -129,9 +119,9 @@ gulp.task('serve', ['build'], () => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('watch', ['serve'], (done) => {
-    // SCSS
+    // SCSS & Minify
     gulp.watch(_.paths.styles,  ['build:styles']);
-    // Uglify
+    // ES2015 & Uglify
     gulp.watch(_.paths.scripts, ['build:scripts']);
     // Imagemin
     gulp.watch(_.paths.images,  ['build:images']);

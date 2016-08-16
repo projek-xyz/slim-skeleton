@@ -1,5 +1,5 @@
 <?php
-namespace App\Utils;
+namespace App;
 
 use Slim\Container;
 use BadMethodCallException;
@@ -13,8 +13,8 @@ use BadMethodCallException;
  * @property-read \Projek\Slim\Monolog logger
  * @property-read callable data
  * @property-read callable upload
- * @property-read \App\Mailer mailer
- * @method \App\Models data(string $modelClass)
+ * @property-read \Base\Mailer mailer
+ * @method \Base\Models data(string $modelClass)
  */
 trait ContainerAware
 {

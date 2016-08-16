@@ -1,5 +1,5 @@
 <?php
-namespace App;
+namespace Base;
 
 use PHPMailer;
 use League\Plates\Engine;

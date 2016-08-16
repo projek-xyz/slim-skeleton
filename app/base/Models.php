@@ -1,12 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: feryardiant
- * Date: 26/06/2016
- * Time: 05.33
- */
-
-namespace App;
+namespace Base;
 
 use Countable;
 use Slim\PDO\Database;

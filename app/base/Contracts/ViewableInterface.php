@@ -1,5 +1,5 @@
 <?php
-namespace App\Contracts;
+namespace Base\Contracts;
 
 use Projek\Slim\Plates;
 

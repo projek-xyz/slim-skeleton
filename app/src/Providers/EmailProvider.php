@@ -1,14 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: feryardiant
- * Date: 26/06/2016
- * Time: 04.39
- */
-
 namespace App\Providers;
 
-use App\Mailer;
+use Base\Mailer;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

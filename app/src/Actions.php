@@ -5,20 +5,17 @@ use Slim\Container;
 
 abstract class Actions
 {
-    use Utils\ContainerAware;
+    use ContainerAware;
 
     /**
-     * @param \Slim\Container
+     * @param  Container $container
      */
     public function __construct(Container $container)
     {
+        $settings = $container->get('settings');
+
         $this->container = $container;
 
-        $settings = $this->container->get('settings');
-
-        $this->view->addData([
-            '_title_' => $settings['title'],
-            '_desc_'  => $settings['description'],
-        ]);
+        $this->view->addData($settings['app']);
     }
 }

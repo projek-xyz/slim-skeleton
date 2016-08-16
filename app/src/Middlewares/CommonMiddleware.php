@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Middlewares;
 
 use Slim\Http\Response;

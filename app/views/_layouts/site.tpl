@@ -2,6 +2,7 @@
 
 <?php $this->start('app-content') ?>
 
-    <div class="container"><?php echo $this->section('content') ?></div>
+<div class="container"><?php echo $this->section('content') ?></div>
 
 <?php $this->stop() ?>
+

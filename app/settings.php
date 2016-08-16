@@ -7,9 +7,11 @@ return [
     'basename' => 'Slim-App',
 
     // Application title, email and description
-    'title' => 'Slim Skeleton',
-    'description' => 'PHP Application Skeleton for Slim v3 Microframework',
-    'email' => getenv('APP_EMAIL') ?: 'admin@example.com',
+    'app' => [
+        'title' => 'Slim Skeleton',
+        'description' => 'PHP Application Skeleton for Slim v3 Microframework',
+        'email' => getenv('APP_EMAIL') ?: 'admin@example.com',
+    ],
 
     // Application baseurl
     'baseurl' => getenv('APP_URL') ?: '',

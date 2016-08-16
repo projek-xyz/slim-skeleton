@@ -33,6 +33,9 @@
       "Base\\Tests\\": "tests/base/"
     }
   },
+  "configs": {
+    "preferred-dist": true
+  },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
@@ -41,7 +44,7 @@
     "projek-xyz/slim-monolog": "~0.1",
     "slim/flash": "~0.1",
     "slim/pdo": "~1.8",
-    "slim/slim": "~3.4.0",
+    "slim/slim": "~3.5",
     "vlucas/valitron": "~1.2",
     "vlucas/phpdotenv": "~2.1",
     "willdurand/negotiation": "~2.0",

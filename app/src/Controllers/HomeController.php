@@ -1,21 +1,19 @@
 <?php
-namespace App\Actions;
+namespace App\Controllers;
 
-use App\Actions;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class HomeAction extends Actions
+class HomeController extends Controller
 {
     /**
      * @api  GET  /
      * @param  Request  $req
-     * @param  Response  $res
-     * @param  array  $args
-     *
+     * @param  Response $res
+     * @param  array    $args
      * @return Response
      */
-    public function index(Request $req, Response $res, $args)
+    public function __invoke(Request $req, Response $res, $args)
     {
         if (isset($args['name'])) {
             return $this->view->render('hello', [

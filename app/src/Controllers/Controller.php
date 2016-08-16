@@ -1,9 +1,10 @@
 <?php
-namespace App;
+namespace App\Controllers;
 
+use App\ContainerAware;
 use Slim\Container;
 
-abstract class Actions
+abstract class Controller
 {
     use ContainerAware;
 

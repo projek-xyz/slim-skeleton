@@ -7,154 +7,153 @@ const config = require(__dirname + '/config');
 
 class Helpers {
 
-  /**
-   * Class constructor
-   *
-   * @param  {Object} gulp GULP Object
-   * @param  {Object} sync BrowserSync Object
-   */
-  constructor (gulp, sync) {
-    this._gulp = gulp;
-    this._sync = sync;
+    /**
+     * Class constructor
+     *
+     * @param  {Object} gulp GULP Object
+     * @param  {Object} sync BrowserSync Object
+     */
+    constructor (gulp, sync) {
+        this._gulp = gulp;
+        this._sync = sync;
 
-    // Load .env so we can share envvars while development
-    const stats = fs.statSync('./.env');
-    if (stats.isFile()) {
-        require('dotenv').config();
+        // Load .env so we can share envvars while development
+        const stats = fs.statSync('./.env');
+        if (stats.isFile()) {
+            require('dotenv').config();
+        }
+
+        // Require the package.json
+        this.package = require(__dirname + '/../package');
     }
 
-    // Require the package.json
-    this.package = require(__dirname + '/../package');
-  }
+    /**
+     * Get configurations
+     *
+     * @return  {Object}
+     */
+    get conf () {
+        // Declaring 'serve' config
+        config.port = process.env.APP_PORT || config.serve.port; // 8080;
+        config.host = process.env.APP_HOST || config.serve.host; // 'localhost';
+        config.url  = process.env.APP_URL  || config.serve.url;  // 'localhost:8000';
 
-  /**
-   * Get configurations
-   *
-   * @return  {Object}
-   */
-  get conf () {
-    // Declaring 'serve' config
-    config.port = process.env.APP_PORT || config.serve.port; // 8080;
-    config.host = process.env.APP_HOST || config.serve.host; // 'localhost';
-    config.url  = process.env.APP_URL  || config.serve.url;  // 'localhost:8000';
-
-    return config;
-  }
-
-  /**
-   * Get enviroment development mode
-   *
-   * @return {String}
-   */
-  get mode () {
-    // Determine build mode, default is 'dev'
-    let mode = 'dev';
-
-    // If mode is invalid, back to 'dev' mode
-    if (['dev', 'prod'].indexOf(process.env.MODE) !== -1) {
-        mode = process.env.MODE;
+        return config;
     }
 
-    return mode;
-  }
+    /**
+     * Get enviroment development mode
+     *
+     * @return {String}
+     */
+    get mode () {
+        // Determine build mode, default is 'dev'
+        let mode = 'dev';
 
-  /**
-   * Initialize paths
-   *
-   * @return {Object}
-   */
-  get paths () {
-    const deps = this.dependencies.join(',')
-    const paths = {
-      src: this.conf.paths.src,
-      dest: this.conf.paths.dest
-    };
+        // If mode is invalid, back to 'dev' mode
+        if (['dev', 'prod'].indexOf(process.env.MODE) !== -1) {
+            mode = process.env.MODE;
+        }
 
-    for (let key in this.conf.patterns) {
-      paths[key] = [
-        this.conf.paths.src + this.conf.patterns[key],
-        'node_modules/' + deps + '**/*.{js,css,scss}'
-      ];
+        return mode;
     }
 
-    return paths;
-  }
+    /**
+     * Initialize paths
+     *
+     * @return {Object}
+     */
+    get paths () {
+        const deps = this.dependencies.join(',')
+        const paths = {
+            src: this.conf.paths.src,
+            dest: this.conf.paths.dest
+        };
 
-  /**
-   * Get list dependencies
-   *
-   * @return {Object}
-   */
-  get dependencies () {
-    return Object.keys(this.package.dependencies)
-  }
+        for (let key in this.conf.patterns) {
+            paths[key] = [
+                this.conf.paths.src + this.conf.patterns[key],
+                'node_modules/' + deps + '**/*.{js,css,scss}'
+            ];
+        }
 
-  /**
-   * Get concated dependencies from 'package.json' file
-   *
-   * @return {Array}
-   */
-  get depsDir () {
-    let deps = this.dependencies,
-        dirs = [];
-
-    for (let dep in deps) {
-      dirs.push('node_modules/' + deps[dep]);
+        return paths;
     }
 
-    return dirs;
-  }
-
-  /**
-   * Determine is in local environment
-   *
-   * @return {boolean}
-   */
-  get isLocal() {
-    return this.conf.url.includes('localhost');
-  }
-
-  /**
-   * Simple helper to finalize each tasks
-   *
-   * @param  {Object}   stream Gulp pipe object
-   * @param  {Function} done   Gulp done function
-   * @return {Object}
-   */
-  build (stream, done) {
-    const pipe = stream
-      .pipe(this._gulp.dest(this.paths.dest))
-      .pipe(this._sync.stream());
-
-    if (done) {
-        return done();
+    /**
+    * Get list dependencies
+    *
+    * @return {Object}
+    */
+    get dependencies () {
+        return Object.keys(this.package.dependencies)
     }
 
-    return pipe;
-  }
+    /**
+    * Get concated dependencies from 'package.json' file
+    *
+    * @return {Array}
+    */
+    get depsDir () {
+        let deps = this.dependencies,
+            dirs = [];
 
-  /**
-   * Simple error handler
-   *
-   * @param  {Object} err Error instance
-   * @return {Mixed}
-   */
-  errorHandler (err) {
-    helper.e(`[Error] ${err.stack}`, 'red');
-  }
+        for (let dep in deps) {
+            dirs.push('node_modules/' + deps[dep]);
+        }
+
+        return dirs;
+    }
+
+    /**
+    * Determine is in local environment
+    *
+    * @return {boolean}
+    */
+    get isLocal() {
+        return this.conf.url.includes('localhost');
+    }
+
+    /**
+    * Simple helper to finalize each tasks
+    *
+    * @param  {Object}   stream Gulp pipe object
+    * @param  {Function} done   Gulp done function
+    * @return {Object}
+    */
+    build (stream, done) {
+        const pipe = stream
+            .pipe(this._gulp.dest(this.paths.dest))
+            .pipe(this._sync.stream());
+
+        if (done) {
+            return done();
+        }
+
+        return pipe;
+    }
+
+    /**
+     * Simple error handler
+     *
+     * @param  {Object} err Error instance
+     */
+    errorHandler (err) {
+        helper.e(`[Error] ${err.stack}`, 'red');
+    }
 
 }
 
 var helper = (gulp, sync) => {
-  return new Helpers(gulp, sync);
+    return new Helpers(gulp, sync);
 };
 
 helper.e = (message, color) => {
-  color = color && color in gutil.colors ? color : 'green';
+    color = color && color in gutil.colors ? color : 'green';
 
-  const cb = gutil.colors[color];
+    const cb = gutil.colors[color];
 
-  return gutil.log(cb(message));
+    return gutil.log(cb(message));
 };
 
 module.exports = helper;

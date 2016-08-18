@@ -28,15 +28,28 @@ class Helpers {
     }
 
     /**
+     * Determine is in local environment
+     *
+     * @return {boolean}
+     */
+    get isLocal () {
+        return this.conf.url.includes('localhost');
+    }
+
+    /**
      * Get configurations
      *
      * @return  {Object}
      */
     get conf () {
         // Declaring 'serve' config
-        config.port = process.env.APP_PORT || config.serve.port; // 8080;
+        config.port = process.env.APP_PORT || config.serve.port; // 8088;
         config.host = process.env.APP_HOST || config.serve.host; // 'localhost';
         config.url  = process.env.APP_URL  || config.serve.url;  // 'localhost:8000';
+
+        if (!config.url || config.url.includes('localhost')) {
+            config.url = config.host + ':8000';
+        }
 
         return config;
     }
@@ -106,12 +119,32 @@ class Helpers {
     }
 
     /**
-    * Determine is in local environment
-    *
-    * @return {boolean}
-    */
-    get isLocal() {
-        return this.conf.url.includes('localhost');
+     * Get server configuration
+     *
+     * @return  {Object}
+     */
+    get server () {
+        let server = this.conf.server || {},
+            config = {
+                port: server.host || this.conf.port - 1,
+                hostname: server.host || this.conf.host,
+                base: server.base || './public',
+                router: server.router || './server.php',
+            };
+
+        if ('url' in this.conf) {
+            config.port = this.conf.url.split(':').pop();
+        }
+
+        if ('bin' in server) {
+            config.bin = server.bin;
+        }
+
+        if ('ini' in server) {
+            config.ini = server.ini;
+        }
+
+        return config;
     }
 
     /**

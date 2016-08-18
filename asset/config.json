@@ -1,14 +1,12 @@
 {
   "serve": {
-    "port" : 8080,
-    "host" : "localhost",
-    "open" : false
+    "port": 8088,
+    "host": "localhost",
+    "open": false
   },
   "server": {
-    "port"   : 8000,
-    "host"   : "localhost",
-    "base"   : "./public",
-    "router" : "./server.php"
+    "bin": "c:/tools/php/php7.0/php.exe",
+    "port": 8000
   },
   "sass": {
     "outputStyle"  : "compact"

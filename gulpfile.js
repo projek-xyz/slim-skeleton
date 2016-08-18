@@ -95,12 +95,12 @@ gulp.task('modernizr', function () {
 /* Task: Serve
  --------------------------------------------------------------------------------- */
 
-gulp.task('serve', ['watch'], () => {
+gulp.task('serve', () => {
     const sync = () => {
-        browserSync.init({
+        browserSync({
             port: _.conf.port,
             host: _.conf.host,
-            proxy: { target: _.conf.url },
+            proxy: _.conf.url,
             open: 'open' in _.conf.serve ? _.conf.serve.open : false,
             logConnections: false
         });
@@ -108,10 +108,10 @@ gulp.task('serve', ['watch'], () => {
 
     // Let's assume that you already setup your app server vhost
     if (_.isLocal) {
-        connect.server(_.conf.server, sync);
-    } else {
-        sync();
+        return connect.server(_.server, sync);
     }
+
+    sync();
 });
 
 
@@ -119,7 +119,7 @@ gulp.task('serve', ['watch'], () => {
 /* Task: Watch
  --------------------------------------------------------------------------------- */
 
-gulp.task('watch', ['build'], (done) => {
+gulp.task('watch', ['serve'], (done) => {
     // SCSS & Minify
     gulp.watch(_.paths.styles,  ['build:styles']);
     // ES2015 & Uglify

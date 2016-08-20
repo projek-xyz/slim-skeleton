@@ -10,8 +10,8 @@ class Helpers {
     /**
      * Class constructor
      *
-     * @param  {Object} gulp GULP Object
-     * @param  {Object} sync BrowserSync Object
+     * @param  {Gulp} gulp GULP Object
+     * @param  {BrowserSync} sync BrowserSync Object
      */
     constructor (gulp, sync) {
         this._gulp = gulp;
@@ -39,7 +39,7 @@ class Helpers {
     /**
      * Get configurations
      *
-     * @return  {Object}
+     * @return {Object}
      */
     get conf () {
         // Declaring 'serve' config
@@ -121,7 +121,7 @@ class Helpers {
     /**
      * Get server configuration
      *
-     * @return  {Object}
+     * @return {Object}
      */
     get server () {
         let server = this.conf.server || {},
@@ -151,7 +151,7 @@ class Helpers {
     * Simple helper to finalize each tasks
     *
     * @param  {Object}   stream Gulp pipe object
-    * @param  {Function} done   Gulp done function
+    * @param  {Function|null} done   Gulp done function
     * @return {Object}
     */
     build (stream, done) {
@@ -177,6 +177,11 @@ class Helpers {
 
 }
 
+/**
+ * @param  {Gulp} gulp
+ * @param  {BrowserSync} sync
+ * @return {Helpers}
+ */
 var helper = (gulp, sync) => {
     return new Helpers(gulp, sync);
 };

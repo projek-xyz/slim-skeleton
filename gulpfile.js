@@ -96,22 +96,12 @@ gulp.task('modernizr', function () {
  --------------------------------------------------------------------------------- */
 
 gulp.task('serve', () => {
-    const sync = () => {
-        browserSync({
-            port: _.conf.port,
-            host: _.conf.host,
-            proxy: _.conf.url,
-            open: 'open' in _.conf.serve ? _.conf.serve.open : false,
-            logConnections: false
-        });
-    };
-
     // Let's assume that you already setup your app server vhost
     if (_.isLocal) {
-        return connect.server(_.server, sync);
+        return _.serve();
     }
 
-    sync();
+    _.sync();
 });
 
 
@@ -128,7 +118,7 @@ gulp.task('watch', ['serve'], (done) => {
     gulp.watch(_.paths.images,  ['build:images']);
     // Reload
     gulp.watch(_.conf.patterns.server)
-        .on('change', browserSync.reload);
+        .on('change', _._bs.reload);
 
     // Done
     return done();
@@ -136,30 +126,12 @@ gulp.task('watch', ['serve'], (done) => {
 
 
 
-/* Task: Serve
+/* Task: Test Behaviour
  --------------------------------------------------------------------------------- */
 
-gulp.task('wdio', (done) => {
-    const exec = require('child_process').exec;
-    const conf = {
-        project: 'Creasi CMS',
-        build: '',
-        user: process.env.BROWSERSTACK_USER,
-        key: process.env.BROWSERSTACK_KEY,
-        baseUrl: _.conf.url,
-        host: 'hub.browserstack.com',
-        debug: true,
-        forcelocal: process.env.APP_ENV == 'local',
-        'browserstack.debug': true,
-        'browserstack.local': process.env.APP_ENV == 'local'
-    };
-
-    exec('git rev-parse --short HEAD', { cwd: '.' }, (err, out) => {
-        conf.build = out;
-    });
-
+gulp.task('test:bdd', (done) => {
     gulp.src('./asset/webdriver.js')
-        .pipe($.webdriver(conf));
+        .pipe($.webdriver(_.wdio));
 
     return done();
 });

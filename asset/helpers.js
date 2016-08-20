@@ -3,6 +3,8 @@
 const fs = require('fs');
 const gutil = require('gulp-util');
 
+const browserSync = require('browser-sync');
+
 const config = require(__dirname + '/config');
 
 class Helpers {
@@ -11,11 +13,12 @@ class Helpers {
      * Class constructor
      *
      * @param  {Gulp} gulp GULP Object
-     * @param  {BrowserSync} sync BrowserSync Object
      */
-    constructor (gulp, sync) {
+    constructor (gulp) {
         this._gulp = gulp;
-        this._sync = sync;
+
+        this._bs = browserSync;
+        this.php = require('gulp-connect-php');
 
         // Load .env so we can share envvars while development
         const stats = fs.statSync('./.env');
@@ -52,6 +55,33 @@ class Helpers {
         }
 
         return config;
+    }
+
+    /**
+     * Get webdriver.io config
+     *
+     * @return {Object}
+     */
+    get wdio () {
+        const exec = require('child_process').exec;
+        const conf = {
+            project: 'Creasi CMS',
+            build: '',
+            user: process.env.BROWSERSTACK_USER,
+            key: process.env.BROWSERSTACK_KEY,
+            baseUrl: _.conf.url,
+            host: 'hub.browserstack.com',
+            debug: true,
+            forcelocal: process.env.APP_ENV == 'local',
+            'browserstack.debug': true,
+            'browserstack.local': process.env.APP_ENV == 'local'
+        };
+
+        exec('git rev-parse --short HEAD', { cwd: '.' }, (err, out) => {
+            conf.build = out;
+        });
+
+        return conf;
     }
 
     /**
@@ -148,6 +178,30 @@ class Helpers {
     }
 
     /**
+     * Get browsersync callable instance
+     *
+     * @return {Function}
+     */
+    get sync () {
+        return () => {
+            browserSync({
+                port: this.conf.port,
+                host: this.conf.host,
+                proxy: this.conf.url,
+                open: 'open' in this.conf.serve ? this.conf.serve.open : false,
+                logConnections: false
+            });
+        }
+    }
+
+    /**
+     * Run php server with browsersync
+     */
+    serve () {
+        return this.php.server(this.server, this.sync);
+    }
+
+    /**
     * Simple helper to finalize each tasks
     *
     * @param  {Object}   stream Gulp pipe object
@@ -157,13 +211,9 @@ class Helpers {
     build (stream, done) {
         const pipe = stream
             .pipe(this._gulp.dest(this.paths.dest))
-            .pipe(this._sync.stream());
+            .pipe(this._bs.stream());
 
-        if (done) {
-            return done();
-        }
-
-        return pipe;
+        return done ? done() : pipe;
     }
 
     /**

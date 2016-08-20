@@ -131,18 +131,23 @@ class Mailer implements Contracts\ViewableInterface, Contracts\LoggableInterface
     public function withBody($body, array $data = [])
     {
         if (strpos($body, '::') !== false) {
-            if (!$this->view instanceof Engine) {
-                throw new \LogicException('View must be instance of ' . Engine::class);
-            }
-
-            $this->mail->isHTML(true);
-
-            $body = $this->view->render($body, $data);
+            $body = $this->withView($body, $data);
         }
 
         $this->mail->Body = $body;
 
         return $this;
+    }
+
+    protected function withView($view, $data)
+    {
+        if (!$this->view instanceof Engine) {
+            throw new \LogicException('View must be instance of ' . Engine::class);
+        }
+
+        $this->mail->isHTML(true);
+
+        return $this->view->render($view, $data);
     }
 
     /**

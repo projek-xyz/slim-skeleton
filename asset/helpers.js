@@ -64,17 +64,15 @@ class Helpers {
      */
     get wdio () {
         const exec = require('child_process').exec;
-        const conf = {
+
+        let conf = {
             project: 'Creasi CMS',
-            build: '',
             user: process.env.BROWSERSTACK_USER,
             key: process.env.BROWSERSTACK_KEY,
-            baseUrl: _.conf.url,
+            baseUrl: this.conf.url,
             host: 'hub.browserstack.com',
             debug: true,
-            forcelocal: process.env.APP_ENV == 'local',
-            'browserstack.debug': true,
-            'browserstack.local': process.env.APP_ENV == 'local'
+            forcelocal: this.isLocal
         };
 
         exec('git rev-parse --short HEAD', { cwd: '.' }, (err, out) => {

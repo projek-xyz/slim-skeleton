@@ -139,6 +139,13 @@ class Mailer implements Contracts\ViewableInterface, Contracts\LoggableInterface
         return $this;
     }
 
+    /**
+     * Render view template as email body
+     *
+     * @param  string $view
+     * @param  array  $data
+     * @return string
+     */
     protected function withView($view, $data)
     {
         if (!$this->view instanceof Engine) {

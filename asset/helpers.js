@@ -43,7 +43,7 @@ class Helpers {
     /**
      * Get configurations
      *
-     * @return {Object}
+     * @return {config}
      */
     get conf () {
         // Declaring 'serve' config
@@ -202,7 +202,7 @@ class Helpers {
     * Simple helper to finalize each tasks
     *
     * @param  {Object}   stream Gulp pipe object
-    * @param  {Function|null} done   Gulp done function
+    * @param  {Function=} done  Gulp done function (Optional)
     * @return {Object}
     */
     build (stream, done) {

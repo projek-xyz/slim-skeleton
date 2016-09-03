@@ -6,17 +6,17 @@ use Projek\Slim\Contracts\LoggableInterface;
 use Projek\Slim\Contracts\ViewableInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LogLevel;
 use Slim\Handlers\Error;
 use Exception;
 
-class ErrorHandler extends Error implements LoggableInterface, ViewableInterface
+class ErrorHandler extends Error implements ViewableInterface
 {
     use Utils\ViewableAware;
-    use Utils\LoggableAware;
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, Exception $exception)
     {
-        $this->logger->critical($exception->getMessage(), [
+        log(LogLevel::CRITICAL, $exception->getMessage(), [
             $request->getMethod() => (string) $request->getUri()
         ]);
 

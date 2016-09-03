@@ -27,3 +27,16 @@ function setting($name, $default = null)
 
     return isset($settings[$name]) ? $settings[$name] : $default;
 }
+
+/**
+ * @param  integer $level   The logging level
+ * @param  string  $message The log message
+ * @param  array   $context The log context
+ * @return bool    Whether the record has been processed
+ */
+function log($level, $message, array $context = [])
+{
+    $log = app('logger');
+
+    return $log->log($level, $message, $context);
+}

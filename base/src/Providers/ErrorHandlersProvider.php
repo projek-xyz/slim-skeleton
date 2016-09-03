@@ -26,15 +26,14 @@ class ErrorHandlersProvider implements ServiceProviderInterface
     }
 
     /**
-     * @param  \Projek\Slim\Contracts\ViewableInterface|\Projek\Slim\Contracts\LoggableInterface  $handlerClass
+     * @param  \Projek\Slim\Contracts\ViewableInterface $handlerClass
      * @param  Container  $container
      *
-     * @return \Slim\Handlers\Error|\Slim\Handlers\NotFound
+     * @return \Slim\Handlers\Error|\Slim\Handlers\NotFound|\Projek\Slim\Contracts\ViewableInterface
      */
     private function initHandler($handlerClass, Container $container)
     {
         $handlerClass->setView($container['view']);
-        $handlerClass->setLogger($container['logger']);
 
         return $handlerClass;
     }

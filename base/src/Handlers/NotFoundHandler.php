@@ -6,16 +6,16 @@ use Projek\Slim\Contracts\LoggableInterface;
 use Projek\Slim\Contracts\ViewableInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LogLevel;
 use Slim\Handlers\NotFound;
 
-class NotFoundHandler extends NotFound implements LoggableInterface, ViewableInterface
+class NotFoundHandler extends NotFound implements ViewableInterface
 {
     use Utils\ViewableAware;
-    use Utils\LoggableAware;
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $this->logger->warning('Page Not Found', [
+        log(LogLevel::WARNING, 'Page Not Found', [
             $request->getMethod() => (string) $request->getUri()->withPath('')->withQuery('')->withFragment('')
         ]);
 

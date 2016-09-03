@@ -57,7 +57,7 @@ return [
 
     // View settings
     'view' => [
-        'directory'           => APP_DIR.'views',
+        'directory'           => RES_DIR.'views',
         'assetPath'           => ROOT_DIR.'public',
         'fileExtension'       => 'tpl',
         'timestampInFilename' => false,

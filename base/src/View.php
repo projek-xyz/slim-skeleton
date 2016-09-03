@@ -69,6 +69,22 @@ class View
     }
 
     /**
+     * Get view directory
+     *
+     * @param  string|null $path
+     *
+     * @return string
+     */
+    public function directory($path = null)
+    {
+        if (null === $path) {
+            return $this->plates->getDirectory();
+        }
+
+        return $this->plates->getDirectory().'/'.$path;
+    }
+
+    /**
      * Set Asset path from Plates Asset Extension
      *
      * @param  \League\Plates\Extension\ExtensionInterface $extension
@@ -118,7 +134,7 @@ class View
      */
     public function registerFunction($name, $callback)
     {
-        return $this->plates->registerFunction($name, $callback);
+            return $this->plates->registerFunction($name, $callback);
     }
 
     /**

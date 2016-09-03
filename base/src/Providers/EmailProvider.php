@@ -10,7 +10,7 @@ class EmailProvider implements ServiceProviderInterface
     /**
      * Registering application error handler provider
      *
-     * @param  Container  $container
+     * @param Container|\Interop\Container\ContainerInterface $container
      */
     public function register(Container $container)
     {

@@ -9,7 +9,7 @@ const $ = require('gulp-load-plugins')();
 const connect  = require('gulp-connect-php');
 const sequence = require('run-sequence');
 
-const _ = require('./asset/helpers')(gulp);
+const _ = require('./res/helpers')(gulp);
 
 /* Task: Compile SCSS
  --------------------------------------------------------------------------------- */
@@ -95,7 +95,7 @@ gulp.task('modernizr', function () {
  --------------------------------------------------------------------------------- */
 
 gulp.task('serve', () => {
-    // Let's assume that you already setup your app server vhost
+    // Let's assume that you already setup your config server vhost
     if (_.isLocal) {
         return _.serve();
     }
@@ -129,7 +129,7 @@ gulp.task('watch', ['serve'], (done) => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('test:bdd', (done) => {
-    gulp.src('./asset/webdriver.js')
+    gulp.src('./res/webdriver.js')
         .pipe($.webdriver(_.wdio));
 
     return done();

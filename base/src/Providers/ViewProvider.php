@@ -12,7 +12,7 @@ class ViewProvider implements ServiceProviderInterface
     /**
      * Register this plates view provider with a Pimple container
      *
-     * @param \Pimple\Container $container
+     * @param Container|\Interop\Container\ContainerInterface $container
      */
     public function register(Container $container)
     {

@@ -4,15 +4,15 @@ use App\Providers;
 use Projek\Slim\Providers as ProjekProviders;
 
 return [
-    // Application basename
-    'basename' => 'Slim-App',
-
     // Application title, email and description
     'app' => [
         'title' => 'Slim Skeleton',
         'description' => 'PHP Application Skeleton for Slim v3 Microframework',
         'email' => getenv('APP_EMAIL') ?: 'admin@example.com',
     ],
+
+    // Application basename
+    'basename' => 'Slim-App',
 
     // Application baseurl
     'baseurl' => getenv('APP_URL') ?: '',
@@ -69,8 +69,7 @@ return [
         // ProjekProviders\DatabaseProvider::class,
         ProjekProviders\NegotiatorProvider::class,
         ProjekProviders\LoggerProvider::class,
-        ProjekProviders\ViewProvider::class,
+        Providers\ViewProvider::class,
         ProjekProviders\EmailProvider::class,
-        Providers\AppProvider::class,
     ]
 ];

@@ -8,20 +8,20 @@ use BadMethodCallException;
  * @property-read \Slim\PDO\Database db
  * @property-read \Slim\Flash\Messages flash
  * @property-read \Projek\Slim\View view
- * @property-read \App\Providers\NegotiatorProvider negotiator
+ * @property-read \Projek\Slim\Providers\NegotiatorProvider negotiator
  * @property-read \Valitron\Validator validator
  * @property-read \Projek\Slim\Logger logger
  * @property-read callable data
  * @property-read callable upload
- * @property-read \Base\Mailer mailer
- * @method \Base\Models data(string $modelClass)
+ * @property-read \Projek\Slim\Mailer mailer
+ * @method \Projek\Slim\Models data(string $modelClass)
  */
 trait ContainerAware
 {
     /**
      * Slim\Container instance
      *
-     * @var \Slim\Container
+     * @var Container
      */
     private $container;
 
@@ -50,9 +50,10 @@ trait ContainerAware
      * Call \Slim\Container callable name
      *
      * @param  string $method Container Name
+     * @param  array  $params Parameters
      *
      * @return mixed
-     * @throws \BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function __call($method, $params)
     {

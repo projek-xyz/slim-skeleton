@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8cf2144142c80ea8c5f03148858c7988",
-    "content-hash": "afb0d86c1397e43e26e4d25910f22454",
+    "hash": "f421eb3b6557800e1cd36fc4348fa86a",
+    "content-hash": "e6f48817513621d0493076215e53d509",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -312,6 +312,76 @@
                 "dependency injection"
             ],
             "time": "2015-09-11 15:10:35"
+        },
+        {
+            "name": "projek-xyz/slim",
+            "version": "dev-refactory",
+            "dist": {
+                "type": "path",
+                "url": "base",
+                "reference": "6b80ed14ee5fc73fa4c82585de07315274e3b1ff",
+                "shasum": null
+            },
+            "require": {
+                "league/plates": "^3.1",
+                "monolog/monolog": "^1.21",
+                "php": ">=5.5.0",
+                "phpmailer/phpmailer": "^5.2",
+                "slim/flash": "~0.1",
+                "slim/pdo": "~1.8",
+                "slim/slim": "~3.5",
+                "vlucas/phpdotenv": "~2.1",
+                "vlucas/valitron": "~1.2",
+                "willdurand/negotiation": "~2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "^2.6"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Projek\\Slim\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Projek\\Slim\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "php vendor/bin/phpunit -c tests/phpunit.xml"
+                ],
+                "lint": [
+                    "php vendor/bin/phpcs --standard=PSR2 -n -p app/src/"
+                ],
+                "post-root-package-install": [
+                    "php -r \"copy('.env.txt', '.env');\""
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fery Wardiyanto",
+                    "email": "hallo@feryardiant.me",
+                    "homepage": "http://feryardiant.me"
+                }
+            ],
+            "description": "Slim Framework 3.x Application Core",
+            "homepage": "http://www.projek.xyz/slim-skeleton",
+            "keywords": [
+                "core",
+                "microframework",
+                "slim",
+                "starter"
+            ],
+            "support": {
+                "issues": "https://github.com/projek-xyz/slim-core/issues",
+                "source": "https://github.com/projek-xyz/slim-core"
+            }
         },
         {
             "name": "psr/http-message",

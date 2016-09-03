@@ -15,7 +15,7 @@ class Logger
      *
      * @var string
      */
-    private $name = 'slim-app';
+    private $name = 'slim-config';
 
     /**
      * Logger settings
@@ -43,7 +43,7 @@ class Logger
      * @param string $name     Logger name
      * @param array  $settings Logger settings
      */
-    public function __construct($name = 'slim-app', $settings = [])
+    public function __construct($name = 'slim-config', $settings = [])
     {
         $this->name = $name;
         $this->monolog = new Monolog($this->name);

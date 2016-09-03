@@ -59,9 +59,9 @@ exports.config = {
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
     //
-    // Set a base URL in order to shorten url command calls. If your url parameter starts
-    // with "/", the base url gets prepended.
-    baseUrl: 'http://slim-app.projek.xyz',
+    // Set a src URL in order to shorten url command calls. If your url parameter starts
+    // with "/", the src url gets prepended.
+    baseUrl: 'http://slim-api.projek.xyz',
     //
     // Default timeout in milliseconds for request
     // if Selenium Grid doesn't send response

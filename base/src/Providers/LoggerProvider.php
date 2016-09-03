@@ -11,7 +11,7 @@ class LoggerProvider implements ServiceProviderInterface
     /**
      * Register this monolog provider with a Pimple container
      *
-     * @param Container $container
+     * @param Container|\Interop\Container\ContainerInterface $container
      */
     public function register(Container $container)
     {
@@ -21,7 +21,7 @@ class LoggerProvider implements ServiceProviderInterface
             throw new InvalidArgumentException('Logger configuration not found');
         }
 
-        $basename = isset($settings['basename']) ? $settings['basename'] : 'slim-app';
+        $basename = isset($settings['basename']) ? $settings['basename'] : 'slim-config';
 
         $container['logger'] = new Logger($basename, $settings['logger']);
     }

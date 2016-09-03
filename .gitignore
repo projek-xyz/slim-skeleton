@@ -12,6 +12,7 @@ Icon?
 # Development files
 # --------------------------
 .env
+tests/base
 
 # Dependency folders
 # --------------------------

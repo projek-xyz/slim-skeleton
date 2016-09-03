@@ -16,11 +16,15 @@
 
     <testsuites>
         <testsuite name="Projek Slim Skeleton Test Suite">
+            <directory>./api/</directory>
+            <directory>./base/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
+            <directory>../src/api/</directory>
+            <directory>../base/src/</directory>
         </whitelist>
     </filter>
 

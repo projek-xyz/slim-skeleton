@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\Sample;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -21,6 +22,8 @@ class HomeController extends Controller
                 'desc' => 'Welcome to world',
             ]);
         }
+
+        $this->data(Sample::class);
 
         return $this->view->render('home');
     }

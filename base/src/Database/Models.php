@@ -1,11 +1,11 @@
 <?php
-namespace Projek\Slim\Databases;
+namespace Projek\Slim\Database;
 
-use Countable;
+use Projek\Slim\Contracts\ModelInterface;
 use Slim\PDO\Database;
 use Slim\PDO\Statement\StatementContainer;
 
-abstract class Models implements Countable
+abstract class Models implements ModelInterface
 {
     /**
      * @var Database
@@ -28,18 +28,24 @@ abstract class Models implements Countable
     protected $timestamps = true;
 
     /**
-     * @param Database $db
+     * @var array
      */
-    public function __construct(Database $db)
+    protected $attributes = [];
+
+    /**
+     * @param Database|array|null $props
+     */
+    public function __construct($props = null)
     {
-        $this->db = $db;
+        if ($props instanceof Database) {
+            $this->setDatabase($props);
+        } elseif (is_array($props)) {
+            $this->setAttributes($props);
+        }
     }
 
     /**
-     * Create new data
-     *
-     * @param array $pairs column value pairs of data
-     * @return int|false
+     * @inheritdoc
      */
     public function create(array $pairs)
     {
@@ -48,7 +54,7 @@ abstract class Models implements Countable
         }
 
         if ($this->timestamps) {
-            $pairs['created_at'] = $pairs['updated_at'] = $this->freshDate();
+            $pairs[ModelInterface::CREATED] = $pairs[ModelInterface::UPDATED] = $this->freshDate();
         }
 
         $query = $this->db->insert(array_keys($pairs))
@@ -59,10 +65,7 @@ abstract class Models implements Countable
     }
 
     /**
-     * Insert batch data into table
-     *
-     * @param  array  $data
-     * @return int
+     * @inheritdoc
      */
     public function insert(array $data)
     {
@@ -91,11 +94,7 @@ abstract class Models implements Countable
     }
 
     /**
-     * Get basic data
-     *
-     * @param string[]           $columns Array of column
-     * @param callable|array|int $terms   column value pairs of term data you wanna find to
-     * @return \PDOStatement|false
+     * @inheritdoc
      */
     public function get(array $columns = [], $terms = null)
     {
@@ -111,10 +110,7 @@ abstract class Models implements Countable
     }
 
     /**
-     * Find existing item(s) from table
-     *
-     * @param callable|array|int $terms column value pairs of term data you wanna find to
-     * @return \PDOStatement|false
+     * @inheritdoc
      */
     public function find($terms = null)
     {
@@ -122,11 +118,7 @@ abstract class Models implements Countable
     }
 
     /**
-     * Update existing item from table
-     *
-     * @param array              $pairs column value pairs of data
-     * @param callable|array|int $terms column value pairs of term data you wanna update to
-     * @return int|false
+     * @inheritdoc
      */
     public function update(array $pairs, $terms = null)
     {
@@ -135,7 +127,7 @@ abstract class Models implements Countable
         }
 
         if ($this->timestamps) {
-            $pairs['updated_at'] = $this->freshDate();
+            $pairs[ModelInterface::UPDATED] = $this->freshDate();
         }
 
         $query = $this->db->update(array_filter($pairs))->table($this->table);
@@ -146,10 +138,7 @@ abstract class Models implements Countable
     }
 
     /**
-     * Delete Item from table
-     *
-     * @param  callable|array|int  $terms
-     * @return int
+     * @inheritdoc
      */
     public function delete($terms)
     {
@@ -189,9 +178,7 @@ abstract class Models implements Countable
     }
 
     /**
-     * Retrieve table primary key
-     *
-     * @return string
+     * @inheritdoc
      */
     public function primary()
     {
@@ -235,5 +222,32 @@ abstract class Models implements Countable
     protected function freshDate()
     {
         return date('Y-m-d H:i:s');
+    }
+
+    protected function setDatabase(Database $db)
+    {
+        $this->db = $db;
+    }
+
+    protected function setAttributes(array $params = [])
+    {
+        $this->attributes = $params;
+    }
+
+    public function __get($field)
+    {
+        return isset($this->attributes[$field]) ? $this->attributes[$field] : null;
+    }
+
+    public function __set($field, $value)
+    {
+        $this->attributes[$field] = $value;
+    }
+
+    public static function __callStatic($method, $params)
+    {
+        $model = app()->data(static::class);
+
+        return call_user_func_array([$model, $method], $params);
     }
 }

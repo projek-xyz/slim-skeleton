@@ -1,5 +1,5 @@
 <?php
-namespace Projek\Slim\Databases;
+namespace Projek\Slim\Database;
 
 trait SoftDelete
 {

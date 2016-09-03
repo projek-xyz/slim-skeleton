@@ -1,10 +1,10 @@
 <?php
 namespace Projek\Slim\Providers;
 
-use Projek\Slim\Models;
-use Slim\PDO\Database;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Projek\Slim\Database\Models;
+use Slim\PDO\Database;
 
 class DatabaseProvider implements ServiceProviderInterface
 {
@@ -21,8 +21,11 @@ class DatabaseProvider implements ServiceProviderInterface
 
         $container['db'] = function (Container $container) {
             $db = $this->initializeDbSettings($container['settings']['db']);
+            $config = [
+                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_CLASS
+            ];
 
-            return new Database($db['dsn'], $db['user'], $db['pass']);
+            return new Database($db['dsn'], $db['user'], $db['pass'], $config);
         };
 
         $container['data'] = function (Container $container) {

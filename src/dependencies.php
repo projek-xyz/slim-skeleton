@@ -18,7 +18,7 @@ $container['flash'] = function () {
 /**
  * Setup Validator
  *
- * @uses   $settings
+ * @uses   $app
  * @param  Container  $c
  *
  * @return \Valitron\Validator

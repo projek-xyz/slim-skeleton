@@ -1,7 +1,7 @@
 <?php
-namespace App\Providers;
+namespace Projek\Slim\Providers;
 
-use Base\Mailer;
+use Projek\Slim\Mailer;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

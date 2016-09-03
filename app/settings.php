@@ -1,6 +1,7 @@
 <?php
 
 use App\Providers;
+use Projek\Slim\Providers as ProjekProviders;
 
 return [
     // Application basename
@@ -64,12 +65,12 @@ return [
 
     // List of Pimple Service Providers
     'providers' => [
-        Providers\ErrorHandlersProvider::class,
-        // Providers\DatabaseProvider::class,
-        Providers\NegotiatorProvider::class,
-        Projek\Slim\MonologProvider::class,
-        Projek\Slim\PlatesProvider::class,
-        Providers\EmailProvider::class,
+        ProjekProviders\ErrorHandlersProvider::class,
+        // ProjekProviders\DatabaseProvider::class,
+        ProjekProviders\NegotiatorProvider::class,
+        ProjekProviders\LoggerProvider::class,
+        ProjekProviders\ViewProvider::class,
+        ProjekProviders\EmailProvider::class,
         Providers\AppProvider::class,
     ]
 ];

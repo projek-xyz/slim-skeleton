@@ -1,5 +1,5 @@
 <?php
-namespace Base;
+namespace Projek\Slim;
 
 use PHPMailer;
 use League\Plates\Engine;

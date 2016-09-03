@@ -1,5 +1,5 @@
 <?php
-namespace App\Providers;
+namespace Projek\Slim\Providers;
 
 use Negotiation;
 use Pimple\Container;

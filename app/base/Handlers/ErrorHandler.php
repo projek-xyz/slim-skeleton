@@ -1,9 +1,9 @@
 <?php
-namespace Base\Handlers;
+namespace Projek\Slim\Handlers;
 
-use Base\Utils;
-use Base\Contracts\LoggableInterface;
-use Base\Contracts\ViewableInterface;
+use Projek\Slim\Utils;
+use Projek\Slim\Contracts\LoggableInterface;
+use Projek\Slim\Contracts\ViewableInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Handlers\Error;

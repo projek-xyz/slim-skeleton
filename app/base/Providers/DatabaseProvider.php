@@ -1,7 +1,7 @@
 <?php
-namespace App\Providers;
+namespace Projek\Slim\Providers;
 
-use Base\Models;
+use Projek\Slim\Models;
 use Slim\PDO\Database;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;

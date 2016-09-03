@@ -1,12 +1,12 @@
 <?php
-namespace Base\Contracts;
+namespace Projek\Slim\Contracts;
 
-use Projek\Slim\Plates;
+use Projek\Slim\View;
 
 interface ViewableInterface
 {
     /**
-     * @param  Plates  $view
+     * @param  View  $view
      */
-    public function setView(Plates $view);
+    public function setView(View $view);
 }

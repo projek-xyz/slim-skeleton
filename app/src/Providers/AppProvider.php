@@ -3,7 +3,7 @@ namespace App\Providers;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Projek\Slim\Plates;
+use Projek\Slim\View;
 
 class AppProvider implements ServiceProviderInterface
 {
@@ -25,7 +25,7 @@ class AppProvider implements ServiceProviderInterface
         }
     }
 
-    private function registerFolders(array $folders, Plates $view)
+    private function registerFolders(array $folders, View $view)
     {
         foreach ($folders as $name => $folder) {
             if (is_dir($folder)) {

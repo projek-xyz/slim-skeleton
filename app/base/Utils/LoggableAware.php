@@ -1,7 +1,7 @@
 <?php
-namespace Base\Utils;
+namespace Projek\Slim\Utils;
 
-use Projek\Slim\Monolog;
+use Projek\Slim\Logger;
 
 /**
  * Utilities used by error handlers.
@@ -9,14 +9,14 @@ use Projek\Slim\Monolog;
 trait LoggableAware
 {
     /**
-     * @var \Projek\Slim\Monolog
+     * @var \Projek\Slim\Logger
      */
     private $logger = null;
 
     /**
      * @param \Projek\Slim\Monolog
      */
-    public function setLogger(Monolog $logger)
+    public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
     }

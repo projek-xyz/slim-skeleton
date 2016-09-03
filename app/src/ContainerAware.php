@@ -7,10 +7,10 @@ use BadMethodCallException;
 /**
  * @property-read \Slim\PDO\Database db
  * @property-read \Slim\Flash\Messages flash
- * @property-read \Projek\Slim\Plates view
+ * @property-read \Projek\Slim\View view
  * @property-read \App\Providers\NegotiatorProvider negotiator
  * @property-read \Valitron\Validator validator
- * @property-read \Projek\Slim\Monolog logger
+ * @property-read \Projek\Slim\Logger logger
  * @property-read callable data
  * @property-read callable upload
  * @property-read \Base\Mailer mailer

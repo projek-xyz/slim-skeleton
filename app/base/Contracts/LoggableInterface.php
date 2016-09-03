@@ -1,12 +1,12 @@
 <?php
-namespace Base\Contracts;
+namespace Projek\Slim\Contracts;
 
-use Projek\Slim\Monolog;
+use Projek\Slim\Logger;
 
 interface LoggableInterface
 {
     /**
-     * @param  Monolog  $logger
+     * @param  Logger  $logger
      */
-    public function setLogger(Monolog $logger);
+    public function setLogger(Logger $logger);
 }

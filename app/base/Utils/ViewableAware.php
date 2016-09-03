@@ -1,7 +1,7 @@
 <?php
-namespace Base\Utils;
+namespace Projek\Slim\Utils;
 
-use Projek\Slim\Plates;
+use Projek\Slim\View;
 
 /**
  * Utilities used by error handlers.
@@ -16,7 +16,7 @@ trait ViewableAware
     /**
      * @param \Projek\Slim\Plates
      */
-    public function setView(Plates $view)
+    public function setView(View $view)
     {
         $this->view = $view->getPlates();
     }

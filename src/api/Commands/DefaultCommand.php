@@ -1,10 +1,11 @@
 <?php
 namespace App\Commands;
 
+use Projek\Slim\Action;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class DefaultCommand extends Command
+class DefaultCommand extends Action
 {
     /**
      * @api  GET  /

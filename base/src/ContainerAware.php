@@ -1,7 +1,6 @@
 <?php
-namespace App;
+namespace Projek\Slim;
 
-use Slim\Container;
 use BadMethodCallException;
 
 /**

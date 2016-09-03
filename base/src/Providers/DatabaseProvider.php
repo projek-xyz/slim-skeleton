@@ -9,8 +9,6 @@ use Slim\PDO\Database;
 class DatabaseProvider implements ServiceProviderInterface
 {
     /**
-     * Register this data provider with a Pimple container
-     *
      * @param Container|\Interop\Container\ContainerInterface $container
      */
     public function register(Container $container)

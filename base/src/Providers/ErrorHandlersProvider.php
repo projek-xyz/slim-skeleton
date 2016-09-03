@@ -1,15 +1,13 @@
 <?php
 namespace Projek\Slim\Providers;
 
-use Base\Handlers;
+use Projek\Slim\Handlers;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
 class ErrorHandlersProvider implements ServiceProviderInterface
 {
     /**
-     * Registering application error handler provider
-     *
      * @param Container|\Interop\Container\ContainerInterface $container
      */
     public function register(Container $container)
@@ -28,7 +26,7 @@ class ErrorHandlersProvider implements ServiceProviderInterface
     }
 
     /**
-     * @param  \App\Contracts\ViewableInterface|\App\Contracts\LoggableInterface  $handlerClass
+     * @param  \Projek\Slim\Contracts\ViewableInterface|\Projek\Slim\Contracts\LoggableInterface  $handlerClass
      * @param  Container  $container
      *
      * @return \Slim\Handlers\Error|\Slim\Handlers\NotFound

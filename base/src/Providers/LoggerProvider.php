@@ -9,8 +9,6 @@ use Projek\Slim\Logger;
 class LoggerProvider implements ServiceProviderInterface
 {
     /**
-     * Register this monolog provider with a Pimple container
-     *
      * @param Container|\Interop\Container\ContainerInterface $container
      */
     public function register(Container $container)

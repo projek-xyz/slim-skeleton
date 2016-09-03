@@ -22,7 +22,7 @@ $app->add(new App\Middlewares\CommonMiddleware([
 $app->add(function (Request $req, Response $res, Callable $next) {
     $res = $next($req, $res);
 
-    /** @var \App\Providers\NegotiatorProvider $negotiator */
+    /** @var \Projek\Slim\Providers\NegotiatorProvider $negotiator */
     $negotiator = $this->get('negotiator');
     $context = [
         $req->getMethod() => (string) $req->getUri(),

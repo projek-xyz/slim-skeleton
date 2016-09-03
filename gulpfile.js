@@ -6,11 +6,10 @@ var gulp = require('gulp');
 // load all plugins with prefix 'gulp'
 const $ = require('gulp-load-plugins')();
 
-const connect     = require('gulp-connect-php');
-const sequence    = require('run-sequence');
-const browserSync = require('browser-sync');
+const connect  = require('gulp-connect-php');
+const sequence = require('run-sequence');
 
-const _ = require('./asset/helpers')(gulp, browserSync);
+const _ = require('./asset/helpers')(gulp);
 
 /* Task: Compile SCSS
  --------------------------------------------------------------------------------- */
@@ -33,13 +32,13 @@ gulp.task('build:styles', () => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('build:scripts', () => {
-    const asset = gulp.src(_.paths.scripts, { base: _.paths.src })
+    const scripts = gulp.src(_.paths.scripts, { base: _.paths.src })
         .pipe($.babel({ presets: ['es2015'] }))
         .on('error', _.errorHandler)
         .pipe($.uglify(_.conf.uglify))
         .on('error', _.errorHandler);
 
-    return _.build(asset);
+    return _.build(scripts);
 });
 
 
@@ -48,12 +47,12 @@ gulp.task('build:scripts', () => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('build:images', () => {
-    const asset = gulp.src(_.paths.images, { base: _.paths.src })
+    const images = gulp.src(_.paths.images, { base: _.paths.src })
         .pipe($.changed(_.paths.dest))
         .pipe($.imagemin(_.conf.imagemin))
         .on('error', _.errorHandler);
 
-    return _.build(asset);
+    return _.build(images);
 });
 
 

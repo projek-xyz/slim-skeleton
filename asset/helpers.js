@@ -4,6 +4,7 @@ const fs = require('fs');
 const gutil = require('gulp-util');
 
 const browserSync = require('browser-sync');
+const exec = require('child_process').exec;
 
 const config = require(__dirname + '/config');
 
@@ -63,8 +64,6 @@ class Helpers {
      * @return {Object}
      */
     get wdio () {
-        const exec = require('child_process').exec;
-
         let conf = {
             project: 'Creasi CMS',
             user: process.env.BROWSERSTACK_USER,
@@ -227,11 +226,10 @@ class Helpers {
 
 /**
  * @param  {Gulp} gulp
- * @param  {BrowserSync} sync
  * @return {Helpers}
  */
-var helper = (gulp, sync) => {
-    return new Helpers(gulp, sync);
+var helper = (gulp) => {
+    return new Helpers(gulp);
 };
 
 helper.e = (message, color) => {

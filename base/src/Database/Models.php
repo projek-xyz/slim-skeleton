@@ -1,5 +1,5 @@
 <?php
-namespace Projek\Slim;
+namespace Projek\Slim\Databases;
 
 use Countable;
 use Slim\PDO\Database;
@@ -21,11 +21,6 @@ abstract class Models implements Countable
      * @var string
      */
     protected $primary = 'id';
-
-    /**
-     * @var bool
-     */
-    protected $destructive = false;
 
     /**
      * @var bool
@@ -123,7 +118,7 @@ abstract class Models implements Countable
      */
     public function find($terms = null)
     {
-        return $this->get([], $terms);
+        return $this->get([], $terms)->fetch();
     }
 
     /**
@@ -158,12 +153,12 @@ abstract class Models implements Countable
      */
     public function delete($terms)
     {
-        if (!$this->table) {
-            return false;
+        if (method_exists($this, 'softDelete')) {
+            return $this->softDelete($terms);
         }
 
-        if (false === $this->destructive) {
-            return $this->update(['deleted_at' => $this->freshDate()], $terms);
+        if (!$this->table) {
+            return false;
         }
 
         $query = $this->db->delete($this->table);

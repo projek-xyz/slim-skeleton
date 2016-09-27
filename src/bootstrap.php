@@ -40,6 +40,12 @@ if ($settings['mode'] !== 'production') {
     $settings['displayErrorDetails'] = true;
 }
 
+// Let's just use PHP Native sesion
+if (!isset($_SESSION)) {
+    session_name($settings['basename']);
+    session_start();
+}
+
 return new Slim\App(
     new Container($app)
 );

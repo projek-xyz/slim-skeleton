@@ -62,15 +62,4 @@ return [
         'fileExtension'       => 'tpl',
         'timestampInFilename' => false,
     ],
-
-    // List of Pimple Service Providers
-    'providers' => [
-        ProjekProviders\AppProvider::class,
-        ProjekProviders\ErrorHandlersProvider::class,
-        ProjekProviders\DatabaseProvider::class,
-        ProjekProviders\NegotiatorProvider::class,
-        ProjekProviders\LoggerProvider::class,
-        Providers\ViewProvider::class,
-        ProjekProviders\EmailProvider::class,
-    ]
 ];

@@ -4,9 +4,7 @@ namespace Projek\Slim;
 
 /**
  * @property-read \Slim\PDO\Database db
- * @property-read \Slim\Flash\Messages flash
  * @property-read \Projek\Slim\View view
- * @property-read \Projek\Slim\Providers\NegotiatorProvider negotiator
  * @property-read \Valitron\Validator validator
  * @property-read \Projek\Slim\Logger logger
  * @property-read callable data

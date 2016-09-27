@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Projek\Slim\Database\Models;
+use Projek\Slim\Models;
 
 class Sample extends Models
 {

@@ -49,11 +49,11 @@ class Logger
         $this->monolog = new Monolog($this->name);
         $this->settings += $settings;
 
-        if (null !== $this->settings['timezone']) {
-            if (is_string($this->settings['timezone'])) {
-                $this->settings['timezone'] = new \DateTimeZone($this->settings['timezone']);
+        if ($timezone = setting('timezone')) {
+            if (is_string($timezone)) {
+                $timezone = new \DateTimeZone($timezone);
             }
-            Monolog::setTimezone($this->settings['timezone']);
+            Monolog::setTimezone($timezone);
         }
 
         $this->monolog->setHandlers($this->settings['handlers']);

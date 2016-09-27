@@ -8,29 +8,40 @@ class Container extends SlimContainer
 {
     static $instance = null;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(array $value = [])
     {
         parent::__construct($value);
 
         $settings = $this->get('settings');
 
-        $this->registerProviders($settings['providers']);
+        $this->register(new DefaultServicesProvider);
 
-        // Let's just use PHP Native sesion
-        if (!isset($_SESSION)) {
-            session_name($settings['basename']);
-            session_start();
+        if (isset($settings['providers'])) {
+            $this->registerServicesProviders($settings['providers']);
         }
 
         static::$instance = $this;
     }
 
+    /**
+     * Retrieve static instane of the Container
+     *
+     * @return static
+     */
     public static function instance()
     {
         return static::$instance;
     }
 
-    private function registerProviders(array $providers)
+    /**
+     * Register multiple ServiceProviders
+     *
+     * @param  array $providers
+     */
+    private function registerServicesProviders(array $providers)
     {
         foreach ($providers as $provider) {
             $this->register(new $provider);

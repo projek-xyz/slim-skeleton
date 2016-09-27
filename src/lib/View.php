@@ -24,21 +24,15 @@ class View
     private $plates;
 
     /**
-     * @var \Psr\Http\Message\ResponseInterface
-     */
-    private $response;
-
-    /**
      * Create new Projek\Slim\Plates instance
      *
-     * @param string[]                                 $settings
-     * @param null|\Psr\Http\Message\ResponseInterface $response
+     * @param  string[] $settings
+     * @param  null|\Psr\Http\Message\ResponseInterface $response
      */
-    public function __construct(array $settings, ResponseInterface $response = null)
+    public function __construct(array $settings)
     {
         $this->settings = array_merge($this->settings, $settings);
         $this->plates = new Engine($this->settings['directory'], $this->settings['fileExtension']);
-        $this->response = $response;
 
         if (null !== $this->settings['assetPath']) {
             $this->setAssetPath($this->settings['assetPath']);
@@ -134,20 +128,7 @@ class View
      */
     public function registerFunction($name, $callback)
     {
-            return $this->plates->registerFunction($name, $callback);
-    }
-
-    /**
-     * Set response
-     *
-     * @param  \Psr\Http\Message\ResponseInterface $response
-     * @return self
-     */
-    public function setResponse(ResponseInterface $response)
-    {
-        $this->response = $response;
-
-        return $this;
+        return $this->plates->registerFunction($name, $callback);
     }
 
     /**
@@ -155,17 +136,11 @@ class View
      *
      * @param  string   $name
      * @param  string[] $data
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return string
      * @throws \LogicException
      */
     public function render($name, array $data = [])
     {
-        if (! isset($this->response)) {
-            throw new \LogicException(
-                sprintf('Invalid %s object instance', ResponseInterface::class)
-            );
-        }
-
-        return $this->response->write($this->plates->render($name, $data));
+        return $this->plates->render($name, $data);
     }
 }

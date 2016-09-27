@@ -3,28 +3,30 @@ namespace Projek\Slim;
 
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
-use Slim\Flash\Messages;
+use Slim\Handlers\Strategies\RequestResponse;
+use Slim\Http\Headers;
 use Slim\PDO\Database;
 use Valitron\Validator;
 
 class DefaultServicesProvider implements ServiceProviderInterface
 {
     /**
-     * @param Container|\Interop\Container\ContainerInterface $container
+     * @param PimpleContainer|\Interop\Container\ContainerInterface $container
      */
     public function register(PimpleContainer $container)
     {
         $settings = $container->get('settings');
 
-        require_once __DIR__.'/helpers.php';
-
         if ($settings['mode'] === 'production') {
-            $container['errorHandler'] = function (PimpleContainer $container) use ($settings) {
-                return $this->initializeHandlers(new Handlers\ErrorHandler($settings['displayErrorDetails']), $container);
+            $container['errorHandler'] = function ($container) use ($settings) {
+                return $this->initializeHandlers(
+                    new Handlers\ErrorHandler($settings['displayErrorDetails']),
+                    $container
+                );
             };
         }
 
-        $container['notFoundHandler'] = function (PimpleContainer $container) {
+        $container['notFoundHandler'] = function ($container) {
             return $this->initializeHandlers(new Handlers\NotFoundHandler(), $container);
         };
 
@@ -41,7 +43,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
             return new Database($db['dsn'], $db['user'], $db['pass'], $config);
         };
 
-        $container['data'] = function (PimpleContainer $container) {
+        $container['data'] = function ($container) {
             $db = $container['db'];
 
             return function ($class) use ($db) {
@@ -63,16 +65,13 @@ class DefaultServicesProvider implements ServiceProviderInterface
             };
         };
 
-        $container['view'] = function (PimpleContainer $container) {
-            $engine = new View(
-                $container->get('settings')['view'],
-                $container->get('response')
-            );
+        $container['view'] = function ($container) use ($settings) {
+            $view = new View($settings['view']);
 
-            $engine->loadExtension(
+            $view->loadExtension(
                 new ViewExtension(
-                    $container->get('router'),
-                    $container->get('request')->getUri()
+                    $container['router'],
+                    $container['request']->getUri()
                 )
             );
 
@@ -82,18 +81,40 @@ class DefaultServicesProvider implements ServiceProviderInterface
                 'partial' => '_partials',
                 'section' => '_sections',
                 'email' => '_emails',
-            ], $engine);
-
-            $settings = $container->get('settings');
+            ], $view);
 
             if (isset($settings['app'])) {
-                $engine->addData($settings['app']);
+                $view->addData($settings['app']);
             }
 
-            return $engine;
+            return $view;
         };
 
-        $container['mailer'] = function (PimpleContainer $container) {
+        /**
+         * PSR-7 Response object
+         *
+         * @param Container $container
+         *
+         * @return \Psr\Http\Message\ResponseInterface
+         */
+        $container['response'] = function ($container) use ($settings) {
+            $headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
+            $response = new Response(200, $headers);
+
+            return $response->withProtocolVersion($settings['httpVersion']);
+        };
+
+        /**
+         * This service MUST return a SHARED instance
+         * of \Slim\Interfaces\InvocationStrategyInterface.
+         *
+         * @return \Slim\Interfaces\InvocationStrategyInterface
+         */
+        $container['foundHandler'] = function () {
+            return new RequestResponse;
+        };
+
+        $container['mailer'] = function ($container) {
             $settings = $container['settings'];
 
             $mailer = new Mailer($settings['mailer']);
@@ -114,9 +135,11 @@ class DefaultServicesProvider implements ServiceProviderInterface
          *
          * @return Validator
          */
-        $container['validator'] = function (PimpleContainer $container) use ($settings) {
+        $container['validator'] = function ($container) use ($settings) {
             return new Validator($container['request']->getParams(), [], $settings['lang']['default']);
         };
+
+        require_once __DIR__.'/helpers.php';
     }
 
     /**

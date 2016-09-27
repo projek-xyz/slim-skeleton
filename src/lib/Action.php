@@ -4,6 +4,7 @@ namespace Projek\Slim;
 
 /**
  * @property-read \Slim\PDO\Database db
+ * @property-read \Slim\Collection settings
  * @property-read \Valitron\Validator validator
  * @property-read Mailer mailer
  * @property-read Logger logger

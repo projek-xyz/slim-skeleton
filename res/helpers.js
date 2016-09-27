@@ -34,7 +34,7 @@ class Helpers {
      * @return {boolean}
      */
     get isLocal () {
-        return this.conf.url.includes('localhost');
+        return this.conf.url.includes('localhost') && !('CI' in process.env);
     }
 
     /**
@@ -64,7 +64,7 @@ class Helpers {
     get wdio () {
         let conf = {
             project: this.package.name,
-            baseUrl: this.conf.url,
+            baseUrl: 'http://' + this.conf.url,
             host: 'hub.browserstack.com',
             user: process.env.BROWSERSTACK_USER,
             key: process.env.BROWSERSTACK_KEY,

@@ -18,7 +18,7 @@
     },
     "scripts": {
         "test": "php vendor/bin/phpunit -c tests/phpunit.xml",
-        "lint": "php vendor/bin/phpcs --standard=PSR2 -n -p app/src/",
+        "lint": "php vendor/bin/phpcs --standard=PSR2 -n -p src/api,src/lib",
         "post-root-package-install": "php -r \"copy('.env.txt', '.env');\""
     },
     "autoload": {

@@ -3,7 +3,7 @@ namespace Projek\Slim;
 
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
-use Slim\Handlers\Strategies\RequestResponse;
+use Projek\Slim\Handlers\FoundHandler;
 use Slim\Http\Headers;
 use Slim\PDO\Database;
 use Valitron\Validator;
@@ -65,15 +65,8 @@ class DefaultServicesProvider implements ServiceProviderInterface
             };
         };
 
-        $container['view'] = function ($container) use ($settings) {
+        $container['view'] = function () use ($settings) {
             $view = new View($settings['view']);
-
-            $view->loadExtension(
-                new ViewExtension(
-                    $container['router'],
-                    $container['request']->getUri()
-                )
-            );
 
             $this->initializeViewFolders([
                 'error' => '_errors',
@@ -93,11 +86,9 @@ class DefaultServicesProvider implements ServiceProviderInterface
         /**
          * PSR-7 Response object
          *
-         * @param Container $container
-         *
          * @return \Psr\Http\Message\ResponseInterface
          */
-        $container['response'] = function ($container) use ($settings) {
+        $container['response'] = function () use ($settings) {
             $headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
             $response = new Response(200, $headers);
 
@@ -111,7 +102,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
          * @return \Slim\Interfaces\InvocationStrategyInterface
          */
         $container['foundHandler'] = function () {
-            return new RequestResponse;
+            return new FoundHandler;
         };
 
         $container['mailer'] = function ($container) {

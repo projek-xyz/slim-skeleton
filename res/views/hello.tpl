@@ -1,4 +1,4 @@
 <?php $this->layout('layout::site') ?>
 
-<h1 id="heading">Hello, <?php echo $this->e($name) ?></h1>
-<p id="content"><?php echo $this->e($description) ?></p>
+<h1 id="heading">Hello, <?= $this->e($name) ?></h1>
+<p id="content"><?= $this->e($description) ?></p>

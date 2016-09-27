@@ -2,9 +2,7 @@
 namespace Projek\Slim;
 
 use League\Plates\Engine;
-use League\Plates\Extension\Asset;
 use League\Plates\Extension\ExtensionInterface;
-use Psr\Http\Message\ResponseInterface;
 
 class View
 {
@@ -19,24 +17,17 @@ class View
     ];
 
     /**
-     * @var \League\Plates\Engine
+     * @var Engine
      */
     private $plates;
 
     /**
-     * Create new Projek\Slim\Plates instance
-     *
      * @param  string[] $settings
-     * @param  null|\Psr\Http\Message\ResponseInterface $response
      */
     public function __construct(array $settings)
     {
         $this->settings = array_merge($this->settings, $settings);
         $this->plates = new Engine($this->settings['directory'], $this->settings['fileExtension']);
-
-        if (null !== $this->settings['assetPath']) {
-            $this->setAssetPath($this->settings['assetPath']);
-        }
     }
 
     /**
@@ -47,19 +38,6 @@ class View
     public function getPlates()
     {
         return $this->plates;
-    }
-
-    /**
-     * Set Asset path from Plates Asset Extension
-     *
-     * @param  string $assetPath
-     * @return \League\Plates\Engine
-     */
-    public function setAssetPath($assetPath)
-    {
-        return $this->plates->loadExtension(
-            new Asset($assetPath, $this->settings['timestampInFilename'])
-        );
     }
 
     /**

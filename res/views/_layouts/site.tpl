@@ -2,9 +2,9 @@
 
 <?php $this->start('config-content') ?>
 
-<div class="container"><?php echo $this->section('content') ?></div>
+<div class="container"><?= $this->section('content') ?></div>
 
-<script src="<?php echo $this->asset('/scripts/main.js') ?>"></script>
+<script src="<?= base_url('/scripts/main.js') ?>"></script>
 
 <?php $this->stop() ?>
 

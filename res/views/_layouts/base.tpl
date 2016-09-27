@@ -7,7 +7,7 @@
     <title><?= $this->e($title) ?></title>
 
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato:300">
-    <link rel="stylesheet" type="text/css" href="<?= $this->asset('/styles/main.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?= base_url('styles/main.css') ?>">
 </head>
 <body>
 

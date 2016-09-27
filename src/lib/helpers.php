@@ -57,3 +57,34 @@ if (!function_exists('logger')) {
         return $log->log($level, $message, $context);
     }
 }
+
+if (!function_exists('base_url')) {
+    /**
+     * Get application base url
+     *
+     * @param  string $permalink
+     *
+     * @return string
+     */
+    function base_url($permalink = '')
+    {
+        /** @var \Slim\Http\Uri $uri */
+        $uri = app('request')->getUri();
+
+        return $uri->getBaseUrl().'/'.ltrim($permalink, '/');
+    }
+}
+
+if (!function_exists('path_for')) {
+    /**
+     * @param string $name
+     * @param array  $data
+     * @param array  $queryParams
+     *
+     * @return string
+     */
+    function path_for($name, array $data = [], array $queryParams = [])
+    {
+        return app('router')->pathFor($name, $data, $queryParams);
+    }
+}

@@ -4,13 +4,13 @@ namespace Projek\Slim;
 
 /**
  * @property-read \Slim\PDO\Database db
- * @property-read \Projek\Slim\View view
  * @property-read \Valitron\Validator validator
- * @property-read \Projek\Slim\Logger logger
+ * @property-read Mailer mailer
+ * @property-read Logger logger
+ * @property-read View view
  * @property-read callable data
  * @property-read callable upload
- * @property-read \Projek\Slim\Mailer mailer
- * @method \Projek\Slim\Models data(string $modelClass)
+ * @method Models data(string $modelClass)
  */
 abstract class Action
 {

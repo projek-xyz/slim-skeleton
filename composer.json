@@ -35,12 +35,10 @@
     },
     "require": {
         "php": ">=5.5.0",
-        "slim/flash": "~0.1",
         "slim/pdo": "~1.8",
         "slim/slim": "~3.5",
         "vlucas/valitron": "~1.2",
         "vlucas/phpdotenv": "~2.1",
-        "willdurand/negotiation": "~2.0",
         "phpmailer/phpmailer": "^5.2",
         "monolog/monolog": "^1.21",
         "league/plates": "^3.1"

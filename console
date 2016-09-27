@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-/** @define "APP_DIR" "config/" */
-$app = require __DIR__ . '/config/bootstrap.php';
+/** @define "APP_DIR" "src/" */
+$app = require __DIR__ . '/src/bootstrap.php';
 
 // Setup dependencies
 require_once APP_DIR.'dependencies.php';

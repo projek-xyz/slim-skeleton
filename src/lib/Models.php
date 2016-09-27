@@ -1,11 +1,10 @@
 <?php
-namespace Projek\Slim\Database;
+namespace Projek\Slim;
 
-use Projek\Slim\Contracts\ModelInterface;
 use Slim\PDO\Database;
 use Slim\PDO\Statement\StatementContainer;
 
-abstract class Models implements ModelInterface
+abstract class Models implements Contracts\ModelInterface
 {
     /**
      * @var Database
@@ -33,15 +32,36 @@ abstract class Models implements ModelInterface
     protected $attributes = [];
 
     /**
+     * @var bool
+     */
+    protected $destructive = false;
+
+    /**
      * @param Database|array|null $props
      */
     public function __construct($props = null)
     {
         if ($props instanceof Database) {
-            $this->setDatabase($props);
+            $this->db = $props;
         } elseif (is_array($props)) {
-            $this->setAttributes($props);
+            $this->attributes = $props;
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function show($terms = null, array $columns = [])
+    {
+        if (!$this->table) {
+            return false;
+        }
+
+        $query = $this->select($columns);
+
+        $this->normalizeTerms($query, $terms);
+
+        return $query->execute();
     }
 
     /**
@@ -54,12 +74,10 @@ abstract class Models implements ModelInterface
         }
 
         if ($this->timestamps) {
-            $pairs[ModelInterface::CREATED] = $pairs[ModelInterface::UPDATED] = $this->freshDate();
+            $pairs[self::CREATED] = $pairs[self::UPDATED] = $this->freshDate();
         }
 
-        $query = $this->db->insert(array_keys($pairs))
-            ->into($this->table)
-            ->values(array_values($pairs));
+        $query = $this->insert(array_keys($pairs))->values(array_values($pairs));
 
         return (int) $query->execute(true);
     }
@@ -67,70 +85,17 @@ abstract class Models implements ModelInterface
     /**
      * @inheritdoc
      */
-    public function insert(array $data)
-    {
-        if (!$this->table) {
-            return false;
-        }
-
-        try {
-            $this->db->beginTransaction();
-
-            foreach ($data as $i => $entry) {
-                $this->db->insert(array_keys($entry))
-                    ->into($this->table)
-                    ->values(array_values($entry))
-                    ->execute();
-            }
-
-            $this->db->commit();
-        } catch (\PDOException $e) {
-            $this->db->rollBack();
-
-            throw $e;
-        }
-
-        return false;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function get(array $columns = [], $terms = null)
-    {
-        if (!$this->table) {
-            return false;
-        }
-
-        $query = $this->db->select($columns)->from($this->table);
-
-        $this->normalizeTerms($query, $terms);
-
-        return $query->execute();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function find($terms = null)
-    {
-        return $this->get([], $terms)->fetch();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function update(array $pairs, $terms = null)
+    public function edit(array $pairs, $terms = null)
     {
         if (!$this->table) {
             return false;
         }
 
         if ($this->timestamps) {
-            $pairs[ModelInterface::UPDATED] = $this->freshDate();
+            $pairs[self::UPDATED] = $this->freshDate();
         }
 
-        $query = $this->db->update(array_filter($pairs))->table($this->table);
+        $query = $this->update($pairs);
 
         $this->normalizeTerms($query, $terms);
 
@@ -140,17 +105,17 @@ abstract class Models implements ModelInterface
     /**
      * @inheritdoc
      */
-    public function delete($terms)
+    public function remove($terms)
     {
-        if (method_exists($this, 'softDelete')) {
-            return $this->softDelete($terms);
+        if (false === $this->destructive) {
+            return $this->update([self::DELETED => $this->freshDate()], $terms);
         }
 
         if (!$this->table) {
             return false;
         }
 
-        $query = $this->db->delete($this->table);
+        $query = $this->delete();
 
         $this->normalizeTerms($query, $terms);
 
@@ -169,8 +134,7 @@ abstract class Models implements ModelInterface
             return 0;
         }
 
-        $query = $this->db->select(['count(*) count'])
-            ->from($this->table);
+        $query = $this->select(['count(*) count']);
 
         $this->normalizeTerms($query, $terms);
 
@@ -215,6 +179,55 @@ abstract class Models implements ModelInterface
     }
 
     /**
+     * Select data from table
+     *
+     * @param  array $columns
+     * @return \Slim\PDO\Statement\SelectStatement
+     */
+    protected function select(array $columns = [])
+    {
+        $columns = !is_array($columns) ? func_get_args() : $columns;
+
+        if (empty($columns)) {
+            $columns = ['*'];
+        }
+
+        return $this->db->select($columns)->from($this->table);
+    }
+
+    /**
+     * Select data from table
+     *
+     * @param  array $pairs
+     * @return \Slim\PDO\Statement\InsertStatement
+     */
+    protected function insert($pairs)
+    {
+        return $this->db->insert($pairs)->into($this->table);
+    }
+
+    /**
+     * Select data from table
+     *
+     * @param  array $pairs
+     * @return \Slim\PDO\Statement\UpdateStatement
+     */
+    protected function update($pairs)
+    {
+        return $this->db->update(array_filter($pairs))->table($this->table);
+    }
+
+    /**
+     * Select data from table
+     *
+     * @return \Slim\PDO\Statement\DeleteStatement
+     */
+    protected function delete()
+    {
+        return $this->db->delete($this->table);
+    }
+
+    /**
      * Generate new data
      *
      * @return  string
@@ -222,16 +235,6 @@ abstract class Models implements ModelInterface
     protected function freshDate()
     {
         return date('Y-m-d H:i:s');
-    }
-
-    protected function setDatabase(Database $db)
-    {
-        $this->db = $db;
-    }
-
-    protected function setAttributes(array $params = [])
-    {
-        $this->attributes = $params;
     }
 
     public function __get($field)
@@ -247,6 +250,16 @@ abstract class Models implements ModelInterface
     public static function __callStatic($method, $params)
     {
         $model = app()->data(static::class);
+        $aliases = [
+            'get' => 'show',
+            'add' => 'create',
+            'put' => 'edit',
+            'del' => 'remove',
+        ];
+
+        if (isset($aliases[$method])) {
+            $method = $aliases[$method];
+        }
 
         return call_user_func_array([$model, $method], $params);
     }

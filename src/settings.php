@@ -51,7 +51,7 @@ return [
     // Loggin settings
     'logger' => [
         'directory' => STORAGE_DIR.'logs',
-        'filename'  => date('Y-m-d').'.log',
+        'rotate'    => true,
         'level'     => 'DEBUG'
     ],
 

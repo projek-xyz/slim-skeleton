@@ -24,7 +24,7 @@ class Logger
      */
     private $settings = [
         'directory' => null,
-        'filename' => null,
+        'rotate' => false,
         'timezone' => null,
         'level' => Monolog::DEBUG,
         'handlers' => [],
@@ -47,7 +47,7 @@ class Logger
     {
         $this->name = $name;
         $this->monolog = new Monolog($this->name);
-        $this->settings = array_merge($this->settings, $settings);
+        $this->settings += $settings;
 
         if (null !== $this->settings['timezone']) {
             if (is_string($this->settings['timezone'])) {
@@ -67,7 +67,13 @@ class Logger
             if ($path === 'syslog') {
                 $this->useSyslog($this->settings['level'], $this->name);
             } elseif (is_dir($path)) {
-                $this->useRotatingFiles($this->settings['level'], $this->name.'.log');
+                $path .= $this->name.'.log';
+
+                if ($this->settings['rotate']) {
+                    $this->useRotatingFiles($this->settings['level'], $path);
+                } else {
+                    $this->useFiles($this->settings['level'], $path);
+                }
             }
         }
     }
@@ -157,8 +163,9 @@ class Logger
      */
     public function useErrorLog($level = Monolog::DEBUG, $messageType = Handler\ErrorLogHandler::OPERATING_SYSTEM)
     {
-        $handler = new Handler\ErrorLogHandler($messageType, $level);
-        $this->monolog->pushHandler($handler);
+        $this->monolog->pushHandler(
+            $handler = new Handler\ErrorLogHandler($messageType, $level)
+        );
         $handler->setFormatter($this->getDefaultFormatter());
     }
 
@@ -171,10 +178,8 @@ class Logger
      */
     public function useFiles($level = Monolog::DEBUG, $filename = null)
     {
-        $filename || $filename = $this->name.'.log';
-        $path = $this->settings['directory'].'/'.$filename;
         $this->monolog->pushHandler(
-            $handler = new Handler\StreamHandler($path, $level)
+            $handler = new Handler\StreamHandler($filename, $level)
         );
         $handler->setFormatter($this->getDefaultFormatter());
     }
@@ -187,10 +192,8 @@ class Logger
      */
     public function useRotatingFiles($level = Monolog::DEBUG, $filename = null)
     {
-        $filename || $filename = $this->name.'.log';
-        $path = $this->settings['directory'].'/'.$filename;
         $this->monolog->pushHandler(
-            $handler = new Handler\RotatingFileHandler($path, 5, $level)
+            $handler = new Handler\RotatingFileHandler($filename, 5, $level)
         );
         $handler->setFormatter($this->getDefaultFormatter());
     }

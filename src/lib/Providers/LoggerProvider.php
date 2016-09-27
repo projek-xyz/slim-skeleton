@@ -20,6 +20,7 @@ class LoggerProvider implements ServiceProviderInterface
         }
 
         $basename = isset($settings['basename']) ? $settings['basename'] : 'slim-config';
+        $settings['logger']['timezone'] = $settings['timezone'];
 
         $container['logger'] = new Logger($basename, $settings['logger']);
     }

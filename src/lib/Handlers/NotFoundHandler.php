@@ -15,7 +15,7 @@ class NotFoundHandler extends NotFound implements ViewableInterface
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
-        log(LogLevel::WARNING, 'Page Not Found', [
+        logger(LogLevel::WARNING, 'Page Not Found', [
             $request->getMethod() => (string) $request->getUri()->withPath('')->withQuery('')->withFragment('')
         ]);
 

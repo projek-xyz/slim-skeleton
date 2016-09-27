@@ -16,7 +16,7 @@ class ErrorHandler extends Error implements ViewableInterface
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, Exception $exception)
     {
-        log(LogLevel::CRITICAL, $exception->getMessage(), [
+        logger(LogLevel::CRITICAL, $exception->getMessage(), [
             $request->getMethod() => (string) $request->getUri()
         ]);
 

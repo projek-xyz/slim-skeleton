@@ -43,14 +43,14 @@ if (!function_exists('setting')) {
     }
 }
 
-if (!function_exists('log')) {
+if (!function_exists('logger')) {
     /**
      * @param  integer $level   The logging level
      * @param  string  $message The log message
      * @param  array   $context The log context
      * @return bool    Whether the record has been processed
      */
-    function log($level, $message, array $context = [])
+    function logger($level, $message, array $context = [])
     {
         $log = app('logger');
 

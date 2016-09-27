@@ -4,7 +4,6 @@ const fs = require('fs');
 const gutil = require('gulp-util');
 
 const browserSync = require('browser-sync');
-const exec = require('child_process').exec;
 
 const config = require(__dirname + '/asset');
 
@@ -17,9 +16,7 @@ class Helpers {
      */
     constructor (gulp) {
         this._gulp = gulp;
-
-        this._bs = browserSync;
-        this.php = require('gulp-connect-php');
+        this._bSync = browserSync;
 
         // Load .env so we can share envvars while development
         const stats = fs.statSync('./.env');
@@ -47,12 +44,13 @@ class Helpers {
      */
     get conf () {
         // Declaring 'serve' config
-        config.port = process.env.APP_PORT || config.serve.port; // 8088;
-        config.host = process.env.APP_HOST || config.serve.host; // 'localhost';
-        config.url  = process.env.APP_URL  || config.serve.url;  // 'localhost:8000';
+        config.port  = process.env.APP_PORT || config.serve.port; // 8088;
+        config.host  = process.env.APP_HOST || config.serve.host; // 'localhost';
+        config.url   = process.env.APP_URL  || config.serve.url;  // 'localhost:8088';
+        config.proxy = config.serve.proxy;  // 'localhost:8000';
 
         if (!config.url || config.url.includes('localhost')) {
-            config.url = config.host + ':8000';
+            config.url = config.host + ':' + config.port;
         }
 
         return config;
@@ -65,18 +63,18 @@ class Helpers {
      */
     get wdio () {
         let conf = {
-            project: 'Creasi CMS',
-            user: process.env.BROWSERSTACK_USER,
-            key: process.env.BROWSERSTACK_KEY,
+            project: this.package.name,
             baseUrl: this.conf.url,
             host: 'hub.browserstack.com',
-            debug: true,
-            forcelocal: this.isLocal
+            user: process.env.BROWSERSTACK_USER,
+            key: process.env.BROWSERSTACK_KEY,
+            browserstackLocal: true,
+            debug: true
         };
 
-        exec('git rev-parse --short HEAD', { cwd: '.' }, (err, out) => {
-            conf.build = out;
-        });
+        // if (this.isLocal) {
+        //     conf.baseUrl = process.env.BROWSERSTACK_URL
+        // }
 
         return conf;
     }
@@ -151,16 +149,15 @@ class Helpers {
      * @return {Object}
      */
     get server () {
-        let server = this.conf.server || {},
+        let server = this.conf.serve || {},
             config = {
-                port: server.host || this.conf.port - 1,
+                port: server.port || this.conf.port - 1,
                 hostname: server.host || this.conf.host,
-                base: server.base || './public',
-                router: server.router || './server.php',
+                base: server.base || './' + this.paths.dest.replace('/', '')
             };
 
-        if ('url' in this.conf) {
-            config.port = this.conf.url.split(':').pop();
+        if ('proxy' in this.conf) {
+            config.port = parseInt(this.conf.proxy.split(':').pop());
         }
 
         if ('bin' in server) {
@@ -181,21 +178,14 @@ class Helpers {
      */
     get sync () {
         return () => {
-            browserSync({
+            this._bSync({
                 port: this.conf.port,
                 host: this.conf.host,
-                proxy: this.conf.url,
+                proxy: this.conf.proxy,
                 open: 'open' in this.conf.serve ? this.conf.serve.open : false,
                 logConnections: false
             });
         }
-    }
-
-    /**
-     * Run php server with browsersync
-     */
-    serve () {
-        return this.php.server(this.server, this.sync);
     }
 
     /**
@@ -208,7 +198,7 @@ class Helpers {
     build (stream, done) {
         const pipe = stream
             .pipe(this._gulp.dest(this.paths.dest))
-            .pipe(this._bs.stream());
+            .pipe(this._bSync.stream());
 
         return done ? done() : pipe;
     }

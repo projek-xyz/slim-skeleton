@@ -86,7 +86,7 @@ gulp.task('modernizr', function () {
         .pipe($.modernizr(conf.filename, conf.options))
         .pipe($.uglify(_.conf.uglify))
         .on('error', _.errorHandler)
-        .pipe(gulp.dest(_.paths.dest + 'vendor/'));
+        .pipe(gulp.dest(_.paths.dest + 'scripts/'));
 });
 
 
@@ -95,12 +95,11 @@ gulp.task('modernizr', function () {
  --------------------------------------------------------------------------------- */
 
 gulp.task('serve', () => {
-    // Let's assume that you already setup your config server vhost
     if (_.isLocal) {
-        return _.serve();
+        connect.server(_.server, _.sync);
+    } else {
+        _.sync();
     }
-
-    _.sync();
 });
 
 
@@ -117,7 +116,7 @@ gulp.task('watch', ['serve'], (done) => {
     gulp.watch(_.paths.images,  ['build:images']);
     // Reload
     gulp.watch(_.conf.patterns.server)
-        .on('change', _._bs.reload);
+        .on('change', _._bSync.reload);
 
     // Done
     return done();
@@ -129,7 +128,7 @@ gulp.task('watch', ['serve'], (done) => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('test:bdd', (done) => {
-    gulp.src('./res/webdriver.js')
+    gulp.src('./tests/webdriver.js')
         .pipe($.webdriver(_.wdio));
 
     return done();

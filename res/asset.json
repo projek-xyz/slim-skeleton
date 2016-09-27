@@ -2,11 +2,8 @@
     "serve": {
         "port": 8088,
         "host": "localhost",
+        "proxy": "localhost:8000",
         "open": false
-    },
-    "server": {
-        "bin": "c:/tools/php/php7.0/php.exe",
-        "port": 8000
     },
     "sass": {
         "outputStyle"  : "compact"
@@ -27,7 +24,7 @@
     },
     "paths": {
         "src"  : "asset/",
-        "dest" : "public/"
+        "dest" : "www/"
     },
     "patterns": {
         "server"  : "app/**/*.php",

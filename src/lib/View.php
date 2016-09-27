@@ -11,9 +11,7 @@ class View
      */
     private $settings = [
         'directory' => null,
-        'assetPath' => null,
         'fileExtension' => 'php',
-        'timestampInFilename' => false,
     ];
 
     /**

@@ -2,18 +2,13 @@
 
 namespace Projek\Slim\Handlers;
 
-use Projek\Slim\Utils;
-use Projek\Slim\Contracts\LoggableInterface;
-use Projek\Slim\Contracts\ViewableInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
 use Slim\Handlers\NotFound;
 
-class NotFoundHandler extends NotFound implements ViewableInterface
+class NotFoundHandler extends NotFound
 {
-    use Utils\ViewableAware;
-
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
         logger(LogLevel::WARNING, 'Page Not Found', [
@@ -25,10 +20,6 @@ class NotFoundHandler extends NotFound implements ViewableInterface
 
     protected function renderHtmlNotFoundOutput(ServerRequestInterface $request)
     {
-        if (is_null($this->view)) {
-            return parent::renderHtmlNotFoundOutput($request);
-        }
-
         $homeUrl = (string) $request->getUri()->withPath('')->withQuery('')->withFragment('');
         $title = 'Page Not Found';
         $desc = implode('<br>', [
@@ -36,8 +27,6 @@ class NotFoundHandler extends NotFound implements ViewableInterface
             'If all else fails, you can visit our home page at the link below.'
         ]);
 
-        $this->view->addData(compact('title', 'desc', 'homeUrl'));
-
-        return $this->view->render('error::404');
+        return app('view')->render('error::404', compact('title', 'desc', 'homeUrl'));
     }
 }

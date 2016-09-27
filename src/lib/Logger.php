@@ -25,7 +25,6 @@ class Logger
     private $settings = [
         'directory' => null,
         'rotate' => false,
-        'timezone' => null,
         'level' => Monolog::DEBUG,
         'handlers' => [],
     ];

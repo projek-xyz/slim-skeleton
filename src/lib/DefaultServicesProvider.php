@@ -17,17 +17,24 @@ class DefaultServicesProvider implements ServiceProviderInterface
     {
         $settings = $container->get('settings');
 
+        /**
+         * This service MUST return a SHARED instance
+         * of \Slim\Interfaces\InvocationStrategyInterface.
+         *
+         * @return \Slim\Interfaces\InvocationStrategyInterface
+         */
+        $container['foundHandler'] = function () {
+            return new FoundHandler;
+        };
+
         if ($settings['mode'] === 'production') {
-            $container['errorHandler'] = function ($container) use ($settings) {
-                return $this->initializeHandlers(
-                    new Handlers\ErrorHandler($settings['displayErrorDetails']),
-                    $container
-                );
+            $container['errorHandler'] = function () use ($settings) {
+                return new Handlers\ErrorHandler($settings['displayErrorDetails']);
             };
         }
 
-        $container['notFoundHandler'] = function ($container) {
-            return $this->initializeHandlers(new Handlers\NotFoundHandler(), $container);
+        $container['notFoundHandler'] = function () {
+            return new Handlers\NotFoundHandler;
         };
 
         $container['logger'] = function () use ($settings) {
@@ -95,22 +102,11 @@ class DefaultServicesProvider implements ServiceProviderInterface
             return $response->withProtocolVersion($settings['httpVersion']);
         };
 
-        /**
-         * This service MUST return a SHARED instance
-         * of \Slim\Interfaces\InvocationStrategyInterface.
-         *
-         * @return \Slim\Interfaces\InvocationStrategyInterface
-         */
-        $container['foundHandler'] = function () {
-            return new FoundHandler;
-        };
-
         $container['mailer'] = function ($container) {
             $settings = $container['settings'];
 
             $mailer = new Mailer($settings['mailer']);
 
-            $mailer->setView($container['view']);
             $mailer->setLogger($container['logger']);
 
             $mailer->debugMode($settings['mode']);
@@ -134,19 +130,6 @@ class DefaultServicesProvider implements ServiceProviderInterface
     }
 
     /**
-     * @param  \Projek\Slim\Contracts\ViewableInterface $handlerClass
-     * @param  Container  $container
-     *
-     * @return \Slim\Handlers\Error|\Slim\Handlers\NotFound|\Projek\Slim\Contracts\ViewableInterface
-     */
-    private function initializeHandlers($handlerClass, PimpleContainer $container)
-    {
-        $handlerClass->setView($container['view']);
-
-        return $handlerClass;
-    }
-
-    /**
      * Initialize database settings
      *
      * @param  array  $settings
@@ -156,6 +139,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
     private function initializeDatabase(array $settings)
     {
         if (!$settings['dsn']) {
+            $settings['charset'] = isset($settings['charset']) ? $settings['charset'] : 'utf8';
             $settings['dsn'] = sprintf(
                 '%s:host=%s;dbname=%s;charset=%s',
                 $settings['driver'],

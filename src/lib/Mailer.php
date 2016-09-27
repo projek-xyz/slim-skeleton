@@ -4,9 +4,8 @@ namespace Projek\Slim;
 use PHPMailer;
 use League\Plates\Engine;
 
-class Mailer implements Contracts\ViewableInterface, Contracts\LoggableInterface
+class Mailer implements Contracts\LoggableInterface
 {
-    use Utils\ViewableAware;
     use Utils\LoggableAware;
 
     /**
@@ -131,30 +130,14 @@ class Mailer implements Contracts\ViewableInterface, Contracts\LoggableInterface
     public function withBody($body, array $data = [])
     {
         if (strpos($body, '::') !== false) {
-            $body = $this->withView($body, $data);
+            $this->mail->isHTML(true);
+
+            $body = app('view')->render($body, $data);
         }
 
         $this->mail->Body = $body;
 
         return $this;
-    }
-
-    /**
-     * Render view template as email body
-     *
-     * @param  string $view
-     * @param  array  $data
-     * @return string
-     */
-    protected function withView($view, $data)
-    {
-        if (!$this->view instanceof Engine) {
-            throw new \LogicException('View must be instance of ' . Engine::class);
-        }
-
-        $this->mail->isHTML(true);
-
-        return $this->view->render($view, $data);
     }
 
     /**

@@ -18,6 +18,7 @@ tests/base
 # --------------------------
 vendor/
 node_modules/
+composer.lock
 
 # IDE Project Configurations
 # --------------------------

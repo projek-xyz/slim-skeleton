@@ -21,7 +21,6 @@ node_modules/
 
 # IDE Project Configurations
 # --------------------------
-nbproject
 .idea
 .settings
 .project

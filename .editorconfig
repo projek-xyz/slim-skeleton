@@ -9,18 +9,15 @@ trim_trailing_whitespace = true
 insert_final_newline = false
 indent_style = space
 
-[{asset,public,tests}/**.{css,scss}]
+[{res,www,tests}/**.{css,scss}]
 indent_size = 2
 
-[{asset,public,tests}/**.js]
-indent_size = 4
-
-[{app,public,tests}/**.php]
+[{res,src,www,tests}/**.{js,php}]
 insert_final_newline = true
 indent_size = 4
 
-[*.{json,yml}]
-indent_size = 2
-
-[*.xml]
+[*.{json,xml}]
 indent_size = 4
+
+[*.yml]
+indent_size = 2

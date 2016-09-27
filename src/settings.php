@@ -31,12 +31,12 @@ return [
 
     // Database settings
     'db' => [
-        'dsn'     => getenv('APP_DB_DSN')    ?: '',
-        'driver'  => getenv('APP_DB_DRIVER') ?: 'mysql',
-        'host'    => getenv('APP_DB_HOST')   ?: 'localhost',
-        'user'    => getenv('APP_DB_USER')   ?: 'root',
-        'pass'    => getenv('APP_DB_PASS')   ?: '',
-        'name'    => getenv('APP_DB_NAME')   ?: '',
+        'dsn'     => getenv('DB_DSN')    ?: '',
+        'driver'  => getenv('DB_DRIVER') ?: 'mysql',
+        'host'    => getenv('DB_HOST')   ?: 'localhost',
+        'user'    => getenv('DB_USER')   ?: 'root',
+        'pass'    => getenv('DB_PASS')   ?: '',
+        'name'    => getenv('DB_NAME')   ?: '',
         'charset' => 'utf8',
     ],
 
@@ -58,7 +58,7 @@ return [
     // View settings
     'view' => [
         'directory'           => RES_DIR.'views',
-        'assetPath'           => ROOT_DIR.'public',
+        'assetPath'           => ROOT_DIR.'www',
         'fileExtension'       => 'tpl',
         'timestampInFilename' => false,
     ],

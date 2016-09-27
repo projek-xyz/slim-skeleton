@@ -156,7 +156,7 @@ gulp.task('clean', (done) => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('build', (done) => {
-    return sequence('build:styles', 'build:fonts', 'build:scripts', 'build:images', done);
+    return sequence('modernizr', 'build:styles', 'build:fonts', 'build:scripts', 'build:images', done);
 });
 
 

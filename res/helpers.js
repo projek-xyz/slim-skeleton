@@ -6,7 +6,7 @@ const gutil = require('gulp-util');
 const browserSync = require('browser-sync');
 const exec = require('child_process').exec;
 
-const config = require(__dirname + '/config');
+const config = require(__dirname + '/asset');
 
 class Helpers {
 
@@ -121,19 +121,19 @@ class Helpers {
     }
 
     /**
-    * Get list dependencies
-    *
-    * @return {Object}
-    */
+     * Get list dependencies
+     *
+     * @return {Object}
+     */
     get dependencies () {
         return Object.keys(this.package.dependencies)
     }
 
     /**
-    * Get concated dependencies from 'package.json' file
-    *
-    * @return {Array}
-    */
+     * Get concated dependencies from 'package.json' file
+     *
+     * @return {Array}
+     */
     get depsDir () {
         let deps = this.dependencies,
             dirs = [];
@@ -199,12 +199,12 @@ class Helpers {
     }
 
     /**
-    * Simple helper to finalize each tasks
-    *
-    * @param  {Object}   stream Gulp pipe object
-    * @param  {Function=} done  Gulp done function (Optional)
-    * @return {Object}
-    */
+     * Simple helper to finalize each tasks
+     *
+     * @param  {Object}   stream Gulp pipe object
+     * @param  {Function=} done  Gulp done function (Optional)
+     * @return {Object}
+     */
     build (stream, done) {
         const pipe = stream
             .pipe(this._gulp.dest(this.paths.dest))

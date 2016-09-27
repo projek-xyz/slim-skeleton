@@ -6,7 +6,7 @@ use Slim\Container as SlimContainer;
 
 class Container extends SlimContainer
 {
-    static $instance = null;
+    private static $instance = null;
 
     /**
      * {@inheritdoc}

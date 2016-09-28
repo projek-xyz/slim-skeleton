@@ -1,6 +1,6 @@
 <?php $this->layout('layout::base') ?>
 
-<?php $this->start('config-content') ?>
+<?php $this->start('page-content') ?>
 
     <div class="container"><?= $this->section('content') ?></div>
 

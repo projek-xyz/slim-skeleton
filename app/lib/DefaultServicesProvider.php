@@ -6,6 +6,7 @@ use League\Flysystem\Filesystem;
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
 use Projek\Slim\Handlers\FoundHandler;
+use Psr\Http\Message\UploadedFileInterface;
 use Slim\Http\Headers;
 use Slim\PDO\Database;
 use Valitron\Validator;
@@ -126,6 +127,20 @@ class DefaultServicesProvider implements ServiceProviderInterface
             return new Filesystem(
                 new Local(STORAGE_DIR, LOCK_EX, Local::DISALLOW_LINKS)
             );
+        };
+
+        $container['upload'] = function () use ($settings) {
+            return function (UploadedFileInterface $file) use ($settings) {
+                if ($file->getError() !== UPLOAD_ERR_OK) {
+                    return false;
+                }
+
+                if (!in_array($file->getClientMediaType(), $settings['upload']['extensions'])) {
+                    throw new \InvalidArgumentException('Filetype not allowed');
+                }
+
+                $file->moveTo($settings['upload']['directory'].'/'.$file->getClientFilename());
+            };
         };
 
         require_once __DIR__.'/helpers.php';

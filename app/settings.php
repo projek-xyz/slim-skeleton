@@ -59,4 +59,9 @@ return [
         'directory'     => RES_DIR.'views',
         'fileExtension' => 'tpl',
     ],
+
+    'upload' => [
+        'directory' => STORAGE_DIR.'uploads',
+        'extensions' => ['image/jpeg', 'image/png']
+    ],
 ];

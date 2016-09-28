@@ -13,6 +13,7 @@ namespace Projek\Slim;
  * @property-read callable data
  * @property-read callable upload
  * @method Models data(string $modelClass)
+ * @method void upoad(\Psr\Http\Message\UploadedFileInterface $file)
  */
 abstract class Action
 {

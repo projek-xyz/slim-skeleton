@@ -1,5 +1,4 @@
 <?php
-
 namespace Projek\Slim\Contracts;
 
 interface ModelInterface extends \Countable

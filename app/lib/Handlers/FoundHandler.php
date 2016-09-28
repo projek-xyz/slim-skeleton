@@ -1,5 +1,4 @@
 <?php
-
 namespace Projek\Slim\Handlers;
 
 use Psr\Http\Message\ResponseInterface;

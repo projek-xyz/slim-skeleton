@@ -1,5 +1,4 @@
 <?php
-
 namespace Projek\Slim;
 
 use Slim\Http\Response as SlimResponse;

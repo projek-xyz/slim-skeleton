@@ -1,5 +1,5 @@
 <?php
-namespace App\Middlewares;
+namespace Projek\Slim;
 
 use Slim\Http\Response;
 use Slim\Http\Request;
@@ -10,24 +10,7 @@ use Psr\Http\Message\UriInterface;
  */
 class DefaultMiddleware
 {
-    /**
-     * @var string[]
-     */
-    private $settings = [
-        'mode' => 'development',
-        'privateRoutes' => null,
-        'baseurl' => '',
-    ];
-
-    /**
-     * @param array $settings User settings
-     */
-    public function __construct(array $settings)
-    {
-        $this->settings = array_merge($this->settings, $settings);
-    }
-
-    /**
+     /**
      * Execute the middleware.
      *
      * @param  \Slim\Http\Request  $req
@@ -37,36 +20,19 @@ class DefaultMiddleware
      */
     public function __invoke(Request $req, Response $res, callable $next)
     {
-        $uri = $req->getUri();
-        $path = $this->filterTrailingSlash($uri);
-
-        if ($uri->getPath() !== $path) {
-            return $res->withStatus(301)
-                ->withHeader('Location', $path)
-                ->withBody($req->getBody());
-        }
-
-//        if ($this->filterBaseurl($uri)) {
-//            return $res->withStatus(301)
-//                ->withHeader('Location', (string) $uri)
-//                ->withBody($req->getBody());
-//        }
-
         $server = $req->getServerParams();
 
         if (!isset($server['REQUEST_TIME_FLOAT'])) {
             $server['REQUEST_TIME_FLOAT'] = microtime(true);
         }
 
-        $uri = $uri->withPath($path);
-        $req = $this->filterRequestMethod($req->withUri($uri));
+        $req = $this->filterRequestMethod($req);
 
+        /** @var Response $res */
         $res = $next($req, $res);
 
-        $res = $this->filterPrivateRoutes($uri, $res);
-
         // Only provide response calculation time in non-production env, tho.
-        if ($this->settings['mode'] !== 'production') {
+        if (setting('mode') !== 'production') {
             $time = (microtime(true) - $server['REQUEST_TIME_FLOAT']) * 1000;
             $res = $res->withHeader('X-Response-Time', sprintf('%2.3fms', $time));
         }
@@ -75,35 +41,9 @@ class DefaultMiddleware
     }
 
     /**
-     * @param  \Psr\Http\Message\UriInterface $uri
-     * @return string
-     */
-    protected function filterBaseurl(UriInterface $uri)
-    {
-        if ($baseUrl = $this->settings['baseurl']) {
-            $reqUri = $uri->getScheme().'://'.$uri->getHost();
-
-            if ($port = $uri->getPort()) {
-                $reqUri .= ':'.$port;
-            }
-
-            $url = parse_url($baseUrl);
-            $uri = $uri->withScheme($url['scheme'])->withHost($url['host']);
-
-            if ($port || isset($url['port'])) {
-                $port = $port == $url['port'] ? $port : $url['port'];
-                $uri = $uri->withPort($port);
-            }
-
-            return $reqUri !== rtrim($baseUrl, '/');
-        }
-
-        return false;
-    }
-
-    /**
      * Provide filter to trim trailing slashes in URI path
      *
+     * @deprecated
      * @param  \Psr\Http\Message\UriInterface $uri
      * @return string
      */
@@ -127,43 +67,17 @@ class DefaultMiddleware
     protected function filterRequestMethod(Request $req)
     {
         $method = strtoupper($req->getMethod());
-        $params = [];
 
-        if ($method == 'GET') {
-            $params = $req->getQueryParams();
-        } elseif ($method == 'POST') {
-            $params = $req->getParsedBody();
+        if ($method != 'POST') {
+            return $req;
         }
+
+        $params = $req->getParsedBody();
 
         if (isset($params['_method'])) {
             $req = $req->withMethod($params['_method']);
         }
 
         return $req;
-    }
-
-    /**
-     * Provide private routes to be exposes by search engine
-     *
-     * @param  \Psr\Http\Message\UriInterface $uri
-     * @param  \Slim\Http\Response            $res
-     * @return \Slim\Http\Response
-     */
-    protected function filterPrivateRoutes(UriInterface $uri, Response $res)
-    {
-        $privates = $this->settings['privateRoutes'];
-        $path = $uri->getPath();
-
-        if (is_string($privates) && $privates !== '') {
-            $privates = [$privates];
-        }
-
-        if (is_null($privates) ||
-            (is_array($privates) && in_array($path, $privates))
-        ) {
-            $res = $res->withHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
-        }
-
-        return $res;
     }
 }

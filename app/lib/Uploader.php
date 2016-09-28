@@ -1,5 +1,4 @@
 <?php
-
 namespace Projek\Slim;
 
 use Projek\Slim\Exception\UploadeFileException;

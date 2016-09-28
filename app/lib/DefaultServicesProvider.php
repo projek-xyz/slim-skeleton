@@ -173,17 +173,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
          * @return callable
          */
         $container['upload'] = function () use ($settings) {
-            return function (UploadedFileInterface $file) use ($settings) {
-                if ($file->getError() !== UPLOAD_ERR_OK) {
-                    return false;
-                }
-
-                if (!in_array($file->getClientMediaType(), $settings['upload']['extensions'])) {
-                    throw new \InvalidArgumentException('Filetype not allowed');
-                }
-
-                $file->moveTo($settings['upload']['directory'].'/'.$file->getClientFilename());
-            };
+            return new Uploader($settings['upload']);
         };
 
         if (class_exists(Client::class)) {

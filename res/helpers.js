@@ -18,10 +18,14 @@ class Helpers {
         this._gulp = gulp;
         this._bSync = browserSync;
 
-        // Load .env so we can share envvars while development
-        const stats = fs.statSync('./.env');
-        if (stats.isFile()) {
-            require('dotenv').config();
+        try {
+            // Load .env so we can share envvars while development
+            const stats = fs.statSync('./.env');
+            if (stats.isFile()) {
+                require('dotenv').config();
+            }
+        } catch (e) {
+            // Do nothing
         }
 
         // Require the package.json

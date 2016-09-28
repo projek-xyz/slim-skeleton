@@ -140,7 +140,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
             $mailer = new Mailer($settings['mailer']);
 
             $mailer->debugMode($settings['mode']);
-            $mailer->setSender($settings['email'], $settings['name']);
+            $mailer->setSender($settings['app']['email'], $settings['app']['title']);
 
             return $mailer;
         };

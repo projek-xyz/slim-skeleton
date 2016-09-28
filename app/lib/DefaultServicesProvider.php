@@ -61,11 +61,9 @@ class DefaultServicesProvider implements ServiceProviderInterface
                 $model = new \ReflectionClass($class);
 
                 if (!$model->isSubclassOf(Models::class)) {
-                    throw new \InvalidArgumentException(sprintf(
-                        'Data model must be instance of %s, %s given',
-                        Models::class,
-                        $model->getName()
-                    ));
+                    throw new \InvalidArgumentException(
+                        sprintf('Data model must be instance of %s, %s given', Models::class, $model->getName())
+                    );
                 }
 
                 return $model->newInstance($db);
@@ -102,12 +100,8 @@ class DefaultServicesProvider implements ServiceProviderInterface
             return $response->withProtocolVersion($settings['httpVersion']);
         };
 
-        $container['mailer'] = function ($container) {
-            $settings = $container['settings'];
-
+        $container['mailer'] = function () use ($settings) {
             $mailer = new Mailer($settings['mailer']);
-
-            $mailer->setLogger($container['logger']);
 
             $mailer->debugMode($settings['mode']);
             $mailer->setSender($settings['email'], $settings['name']);

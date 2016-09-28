@@ -26,7 +26,6 @@ class Logger
         'directory' => null,
         'rotate' => false,
         'level' => Monolog::DEBUG,
-        'handlers' => [],
     ];
 
     /**
@@ -46,7 +45,7 @@ class Logger
     {
         $this->name = $name;
         $this->monolog = new Monolog($this->name);
-        $this->settings += $settings;
+        $this->settings = array_merge($this->settings, $settings);
 
         if ($timezone = setting('timezone')) {
             if (is_string($timezone)) {
@@ -54,8 +53,6 @@ class Logger
             }
             Monolog::setTimezone($timezone);
         }
-
-        $this->monolog->setHandlers($this->settings['handlers']);
 
         $levels = array_keys(Monolog::getLevels());
         if (!in_array(strtoupper($this->settings['level']), $levels)) {

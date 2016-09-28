@@ -4,10 +4,8 @@ namespace Projek\Slim;
 use PHPMailer;
 use League\Plates\Engine;
 
-class Mailer implements Contracts\LoggableInterface
+class Mailer
 {
-    use Utils\LoggableAware;
-
     /**
      * @var  PHPMailer
      */
@@ -58,21 +56,6 @@ class Mailer implements Contracts\LoggableInterface
     }
 
     /**
-     * Setup Sender
-     *
-     * @param  string  $email
-     * @param  string  $name
-     *
-     * @return $this
-     */
-    public function setSender($email, $name)
-    {
-        $this->mail->setFrom($email, $name);
-
-        return $this;
-    }
-
-    /**
      * Set mailer debug mode
      *
      * @param  string  $mode
@@ -86,6 +69,21 @@ class Mailer implements Contracts\LoggableInterface
         }
 
         $this->mail->SMTPDebug = $this->debugMode[$mode];
+
+        return $this;
+    }
+
+    /**
+     * Setup Sender
+     *
+     * @param  string  $email
+     * @param  string  $name
+     *
+     * @return $this
+     */
+    public function setSender($email, $name)
+    {
+        $this->mail->setFrom($email, $name);
 
         return $this;
     }

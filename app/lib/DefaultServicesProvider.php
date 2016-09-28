@@ -1,6 +1,8 @@
 <?php
 namespace Projek\Slim;
 
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
 use Projek\Slim\Handlers\FoundHandler;
@@ -118,6 +120,12 @@ class DefaultServicesProvider implements ServiceProviderInterface
          */
         $container['validator'] = function ($container) use ($settings) {
             return new Validator($container['request']->getParams(), [], $settings['lang']['default']);
+        };
+
+        $container['filesystem'] = function () use ($settings) {
+            return new Filesystem(
+                new Local(STORAGE_DIR, LOCK_EX, Local::DISALLOW_LINKS)
+            );
         };
 
         require_once __DIR__.'/helpers.php';

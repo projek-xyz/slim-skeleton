@@ -3,6 +3,7 @@
 namespace Projek\Slim;
 
 /**
+ * @property-read \League\Flysystem\Filesystem filesystem
  * @property-read \Slim\PDO\Database db
  * @property-read \Slim\Collection settings
  * @property-read \Valitron\Validator validator

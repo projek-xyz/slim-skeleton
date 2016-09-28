@@ -18,7 +18,6 @@
     },
     "scripts": {
         "test": "php vendor/bin/phpunit -c tests/phpunit.xml",
-        "lint": "php vendor/bin/phpcs --standard=PSR2 --ignore=src/routes/*,src/bootstrap.php,src/settings.php -n -p src/",
         "post-root-package-install": "php -r \"copy('.env.txt', '.env');\""
     },
     "autoload": {
@@ -44,8 +43,7 @@
         "league/plates": "^3.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0",
-        "squizlabs/php_codesniffer": "^2.6"
+        "phpunit/phpunit": "~4.0"
     },
     "config": {
         "preferred-dist": true

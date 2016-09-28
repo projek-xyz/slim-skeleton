@@ -2,20 +2,31 @@ language: php
 
 sudo: false
 
+env:
+ - MODE=php
+ - MODE=asset
+
+matrix:
+  fast_finish: true
+
 php:
   - 5.5
   - 5.6
   - 7.0
   - hhvm
 
+before_install:
+  - if [[ "$MODE" == 'asset ]]; then nvm use 6; fi
+
 install:
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then composer require satooshi/php-coveralls:dev-master -n -q; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != '5.6' ]]; then composer install -n -q; fi
+  - if [[ "$MODE" == 'asset ]]; npm -g update && npm i -q; fi
+  - if [[ "$MODE" == 'php' && "$TRAVIS_PHP_VERSION" == '5.6' ]]; then composer require satooshi/php-coveralls:dev-master squizlabs/php_codesniffer:^2.6 -n -q; fi
+  - if [[ "$MODE" == 'php' && "$TRAVIS_PHP_VERSION" != '5.6' ]]; then composer install -n -q; fi
 
 script:
-  - if [[ "$TRAVIS_PHP_VERSION" != '5.6' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-text; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover tests/clover.xml; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then composer lint; fi
+  - if [[ "$MODE" == 'php' && "$TRAVIS_PHP_VERSION" != '5.6' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-text; fi
+  - if [[ "$MODE" == 'php' && "$TRAVIS_PHP_VERSION" == '5.6' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover tests/clover.xml; fi
+  - if [[ "$MODE" == 'php' && "$TRAVIS_PHP_VERSION" == '5.6' ]]; then php vendor/bin/phpcs --standard=PSR2 --ignore=src/routes/*,src/bootstrap.php,src/settings.php -n -p src/; fi
 
 after_script:
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then php vendor/bin/coveralls -v; fi
+  - if [[ "$MODE" == 'php' && "$TRAVIS_PHP_VERSION" == '5.6' ]]; then php vendor/bin/coveralls -v; fi

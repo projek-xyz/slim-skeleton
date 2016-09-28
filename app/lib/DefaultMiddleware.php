@@ -1,7 +1,6 @@
 <?php
 namespace Projek\Slim;
 
-use Slim\Http\Response;
 use Slim\Http\Request;
 use Psr\Http\Message\UriInterface;
 

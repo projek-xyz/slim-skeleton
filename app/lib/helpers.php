@@ -8,6 +8,8 @@ if (!function_exists('dd')) {
         array_map(function ($params) {
             var_dump($params);
         }, func_get_args());
+
+        exit;
     }
 }
 
@@ -37,9 +39,7 @@ if (!function_exists('setting')) {
      */
     function setting($name, $default = null)
     {
-        $settings = app('settings');
-
-        return array_get($settings, $name, $default);
+        return array_get(app('settings')->all(), $name, $default);
     }
 }
 
@@ -52,9 +52,7 @@ if (!function_exists('logger')) {
      */
     function logger($level, $message, array $context = [])
     {
-        $log = app('logger');
-
-        return $log->log($level, $message, $context);
+        return app('logger')->log($level, $message, $context);
     }
 }
 

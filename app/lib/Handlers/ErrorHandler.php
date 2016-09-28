@@ -7,6 +7,9 @@ use Exception;
 
 class ErrorHandler extends Error
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function renderHtmlErrorMessage(Exception $exception)
     {
         if ($this->displayErrorDetails) {
@@ -31,9 +34,7 @@ class ErrorHandler extends Error
     }
 
     /**
-     * Wraps the error_log function so that this can be easily tested
-     *
-     * @param $message
+     * {@inheritdoc}
      */
     protected function logError($message)
     {

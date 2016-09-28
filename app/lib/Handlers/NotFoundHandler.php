@@ -8,15 +8,21 @@ use Slim\Handlers\NotFound;
 
 class NotFoundHandler extends NotFound
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
         logger(LogLevel::WARNING, 'Page Not Found', [
-            $request->getMethod() => (string) $request->getUri()->withPath('')->withQuery('')->withFragment('')
+            $request->getMethod() => (string) $request->getUri()
         ]);
 
         return parent::__invoke($request, $response);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function renderHtmlNotFoundOutput(ServerRequestInterface $request)
     {
         $homeUrl = (string) $request->getUri()->withPath('')->withQuery('')->withFragment('');

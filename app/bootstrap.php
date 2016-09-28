@@ -2,9 +2,9 @@
 
 define('APP_DIR',     __DIR__.'/');
 define('ROOT_DIR',    dirname(APP_DIR).'/');
-define('RES_DIR',     ROOT_DIR.'res/');
+define('RES_DIR',     ROOT_DIR.'resources/');
 define('STORAGE_DIR', ROOT_DIR.'storage/');
-define('WWW_DIR',     ROOT_DIR.'www/');
+define('WWW_DIR',     ROOT_DIR.'public/');
 
 use Projek\Slim\Container;
 

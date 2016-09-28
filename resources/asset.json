@@ -23,8 +23,8 @@
         "progressive": true
     },
     "paths": {
-        "src"  : "asset/",
-        "dest" : "www/"
+        "src"  : "resources/",
+        "dest" : "public/"
     },
     "patterns": {
         "server"  : "app/**/*.php",

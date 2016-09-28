@@ -22,8 +22,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/api/",
-            "Projek\\Slim\\": "src/lib/"
+            "App\\": "app/api/",
+            "Projek\\Slim\\": "app/lib/"
         }
     },
     "autoload-dev": {

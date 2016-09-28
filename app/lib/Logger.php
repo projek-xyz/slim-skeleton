@@ -140,6 +140,19 @@ class Logger
     }
 
     /**
+     * Alias for $this->log()
+     *
+     * @param  int $level
+     * @param  string $message
+     * @param  array $context
+     * @return bool
+     */
+    public function __invoke($level, $message, array $context = [])
+    {
+        return $this->monolog->log($level, $message, $context);
+    }
+
+    /**
      * Register a Syslog handler.
      *
      * @param  string $level

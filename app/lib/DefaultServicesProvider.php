@@ -22,8 +22,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
         $settings = $container->get('settings');
 
         /**
-         * This service MUST return a SHARED instance
-         * of \Slim\Interfaces\InvocationStrategyInterface.
+         * Override default Slim foundHandler container.
          *
          * @return \Slim\Interfaces\InvocationStrategyInterface
          */
@@ -32,19 +31,51 @@ class DefaultServicesProvider implements ServiceProviderInterface
         };
 
         if ($settings['mode'] === 'production') {
+            /**
+             * Override default Slim errorHandler container.
+             *
+             * @return callable
+             */
             $container['errorHandler'] = function () use ($settings) {
                 return new Handlers\ErrorHandler($settings['displayErrorDetails']);
             };
         }
 
+        /**
+         * Override default Slim notFoundHandler container.
+         *
+         * @return callable
+         */
         $container['notFoundHandler'] = function () {
             return new Handlers\NotFoundHandler;
         };
 
+        /**
+         * Override default Slim Response
+         *
+         * @return \Psr\Http\Message\ResponseInterface
+         */
+        $container['response'] = function () use ($settings) {
+            $headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
+            $response = new Response(200, $headers);
+
+            return $response->withProtocolVersion($settings['httpVersion']);
+        };
+
+        /**
+         * Setup Logger
+         *
+         * @return Logger
+         */
         $container['logger'] = function () use ($settings) {
             return new Logger($settings['basename'], $settings['logger']);
         };
 
+        /**
+         * Setup Database
+         *
+         * @return Database
+         */
         $container['db'] = function () use ($settings) {
             $db = $this->initializeDatabase($settings['db']);
             $config = [
@@ -54,10 +85,13 @@ class DefaultServicesProvider implements ServiceProviderInterface
             return new Database($db['dsn'], $db['user'], $db['pass'], $config);
         };
 
+        /**
+         * Setup data model
+         *
+         * @return callable
+         */
         $container['data'] = function ($container) {
-            $db = $container['db'];
-
-            return function ($class) use ($db) {
+            return function ($class) use ($container) {
                 if (!class_exists($class)) {
                     throw new \LogicException("Data model class {$class} not exists ");
                 }
@@ -70,10 +104,15 @@ class DefaultServicesProvider implements ServiceProviderInterface
                     );
                 }
 
-                return $model->newInstance($db);
+                return $model->newInstance($container['db']);
             };
         };
 
+        /**
+         * Setup View
+         *
+         * @return View
+         */
         $container['view'] = function () use ($settings) {
             $view = new View($settings['view']);
 
@@ -93,17 +132,10 @@ class DefaultServicesProvider implements ServiceProviderInterface
         };
 
         /**
-         * PSR-7 Response object
+         * Setup Mailer
          *
-         * @return \Psr\Http\Message\ResponseInterface
+         * @return Mailer
          */
-        $container['response'] = function () use ($settings) {
-            $headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
-            $response = new Response(200, $headers);
-
-            return $response->withProtocolVersion($settings['httpVersion']);
-        };
-
         $container['mailer'] = function () use ($settings) {
             $mailer = new Mailer($settings['mailer']);
 
@@ -124,12 +156,22 @@ class DefaultServicesProvider implements ServiceProviderInterface
             return new Validator($container['request']->getParams(), [], $settings['lang']['default']);
         };
 
+        /**
+         * Setup File System
+         *
+         * @return Filesystem
+         */
         $container['filesystem'] = function () use ($settings) {
             return new Filesystem(
                 new Local(STORAGE_DIR, LOCK_EX, Local::DISALLOW_LINKS)
             );
         };
 
+        /**
+         * Setup Uploader
+         *
+         * @return callable
+         */
         $container['upload'] = function () use ($settings) {
             return function (UploadedFileInterface $file) use ($settings) {
                 if ($file->getError() !== UPLOAD_ERR_OK) {
@@ -144,9 +186,16 @@ class DefaultServicesProvider implements ServiceProviderInterface
             };
         };
 
-        $container['httpClient'] = function () {
-            return new Client();
-        };
+        if (class_exists(Client::class)) {
+            /**
+             * Setup HTTP Client
+             *
+             * @return Client
+             */
+            $container['httpClient'] = function () {
+                return new Client();
+            };
+        }
 
         require_once __DIR__.'/helpers.php';
     }

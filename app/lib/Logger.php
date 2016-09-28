@@ -63,7 +63,7 @@ class Logger
             if ($path === 'syslog') {
                 $this->useSyslog($this->settings['level'], $this->name);
             } elseif (is_dir($path)) {
-                $path .= $this->name.'.log';
+                $path .= '/'.$this->name.'.log';
 
                 if ($this->settings['rotate']) {
                     $this->useRotatingFiles($this->settings['level'], $path);

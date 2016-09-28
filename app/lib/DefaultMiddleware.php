@@ -8,7 +8,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * Middleware to create basic http authentication.
  */
-class CommonMiddleware
+class DefaultMiddleware
 {
     /**
      * @var string[]

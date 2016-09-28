@@ -1,6 +1,7 @@
 <?php
 namespace Projek\Slim;
 
+use GuzzleHttp\Client;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Pimple\Container as PimpleContainer;
@@ -141,6 +142,10 @@ class DefaultServicesProvider implements ServiceProviderInterface
 
                 $file->moveTo($settings['upload']['directory'].'/'.$file->getClientFilename());
             };
+        };
+
+        $container['httpClient'] = function () {
+            return new Client();
         };
 
         require_once __DIR__.'/helpers.php';

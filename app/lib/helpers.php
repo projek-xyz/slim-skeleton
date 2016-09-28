@@ -39,7 +39,7 @@ if (!function_exists('setting')) {
     {
         $settings = app('settings');
 
-        return isset($settings[$name]) ? $settings[$name] : $default;
+        return array_get($settings, $name, $default);
     }
 }
 
@@ -86,5 +86,50 @@ if (!function_exists('path_for')) {
     function path_for($name, array $data = [], array $queryParams = [])
     {
         return app('router')->pathFor($name, $data, $queryParams);
+    }
+}
+
+if (!function_exists('array_get')) {
+    /**
+     * Get an item from array using 'dot' notation
+     *
+     * @aee https://github.com/laravel/framework/blob/5.3/src/Illuminate/Support/Arr.php#L238-L269
+     * @param  array $array
+     * @param  string $key
+     * @param  mixed $default
+     *
+     * @return mixed
+     */
+    function array_get(array $array, $key, $default = null)
+    {
+        if (null === $key) {
+            return $default;
+        }
+
+        if (array_key_exists($key, $array)) {
+            return $array[$key];
+        }
+
+        foreach (explode('.', $key) as $segment) {
+            if (array_key_exists($segment, $array)) {
+                $array = $array[$segment];
+            }
+        }
+
+        return $array;
+    }
+}
+
+if (!function_exists('array_devide')) {
+    /**
+     * Divide an array into two arrays. One with keys and the other with values.
+     *
+     * @see https://github.com/laravel/framework/blob/5.3/src/Illuminate/Support/Arr.php#L63-L72
+     * @param  array  $array
+     * @return array
+     */
+    function array_devide(array $array)
+    {
+        return [array_keys($array), array_values($array)];
     }
 }

@@ -4,6 +4,12 @@ namespace Projek\Slim;
 use Slim\PDO\Database;
 use Slim\PDO\Statement\StatementContainer;
 
+/**
+ * @method static \PDOStatement|false get(mixed $terms = null, array $columns = [])
+ * @method static int|false add(array $pairs)
+ * @method static int|false put(array $pairs, $terms = null)
+ * @method static int|false del(mixed $terms)
+ */
 abstract class Models implements Contracts\ModelInterface
 {
     /**
@@ -108,7 +114,7 @@ abstract class Models implements Contracts\ModelInterface
     public function remove($terms)
     {
         if (false === $this->destructive) {
-            return $this->update([self::DELETED => $this->freshDate()], $terms);
+            return $this->edit([self::DELETED => $this->freshDate()], $terms);
         }
 
         if (!$this->table) {
@@ -249,7 +255,8 @@ abstract class Models implements Contracts\ModelInterface
 
     public static function __callStatic($method, $params)
     {
-        $model = app()->data(static::class);
+        $data = app('data');
+        $model = $data(static::class);
         $aliases = [
             'get' => 'show',
             'add' => 'create',

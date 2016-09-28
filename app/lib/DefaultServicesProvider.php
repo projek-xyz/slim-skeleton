@@ -199,7 +199,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
      */
     private function initializeDatabase(array $settings)
     {
-        if (!$settings['dsn']) {
+        if (!isset($settings['dsn']) || !$settings['dsn']) {
             $settings['charset'] = isset($settings['charset']) ? $settings['charset'] : 'utf8';
             $settings['dsn'] = sprintf(
                 '%s:host=%s;dbname=%s;charset=%s',

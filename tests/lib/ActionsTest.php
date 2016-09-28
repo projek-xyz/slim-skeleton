@@ -1,12 +1,10 @@
 <?php
-
 namespace Projek\Slim\Tests;
 
 use Projek\Slim\Action;
-use Projek\Slim\Container;
 use Slim\Collection;
 
-class ActionsTest extends \PHPUnit_Framework_TestCase
+class ActionsTest extends TestCase
 {
     /**
      * @var  Action
@@ -15,8 +13,9 @@ class ActionsTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $container = new Container([]);
-        $this->action = new SampleAction($container);
+        parent::setUp();
+
+        $this->action = new SampleAction($this->container);
     }
 
     public function test_should_access_container()

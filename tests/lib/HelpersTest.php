@@ -1,16 +1,8 @@
 <?php
-
 namespace Projek\Slim\Tests;
 
-use Projek\Slim\Container;
-
-class HelperTest extends \PHPUnit_Framework_TestCase
+class HelperTest extends TestCase
 {
-    public function setUp()
-    {
-        new Container([]);
-    }
-
     public function test_array_get()
     {
         $data = [

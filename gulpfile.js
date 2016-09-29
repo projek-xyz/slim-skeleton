@@ -77,11 +77,9 @@ gulp.task('build:fonts', (done) => {
 /* Task: Vendor
  --------------------------------------------------------------------------------- */
 
-gulp.task('vendor:copy', ['modernizr'], function (done) {
-    gulp.src(_.vendors)
+gulp.task('vendor:copy', ['modernizr'], function () {
+    return gulp.src(_.vendors)
         .pipe(gulp.dest(_.paths.vendor));
-
-    return done()
 });
 
 

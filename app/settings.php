@@ -57,8 +57,9 @@ return [
         'fileExtension' => 'tpl',
     ],
 
+    // Uploader settings
     'upload' => [
-        'directory' => STORAGE_DIR.'uploads',
+        'directory'  => STORAGE_DIR.'uploads',
         'extensions' => ['image/jpeg', 'image/png']
     ],
 ];

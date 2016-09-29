@@ -112,13 +112,17 @@ if (!function_exists('array_get')) {
             return $array[$key];
         }
 
-        foreach (explode('.', $key) as $segment) {
-            if (array_key_exists($segment, $array)) {
-                $array = $array[$segment];
+        if (strpos($key, '.') !== false) {
+            foreach (explode('.', $key) as $segment) {
+                if (array_key_exists($segment, $array)) {
+                    $array = $array[$segment];
+                }
             }
+
+            return $array;
         }
 
-        return $array;
+        return $default;
     }
 }
 

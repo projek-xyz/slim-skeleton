@@ -12,10 +12,10 @@ class DefaultMiddleware
      /**
      * Execute the middleware.
      *
-     * @param  \Slim\Http\Request  $req
-     * @param  \Slim\Http\Response $res
-     * @param  callable            $next
-     * @return \Slim\Http\Response
+     * @param  Request $req
+     * @param  Response $res
+     * @param  callable $next
+     * @return Response
      */
     public function __invoke(Request $req, Response $res, callable $next)
     {

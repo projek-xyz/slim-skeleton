@@ -1,8 +1,6 @@
 <?php
 namespace Projek\Slim\Tests;
 
-use Projek\Slim\Mailer\MailDriverInterface;
-
 class MailerTest extends TestCase
 {
     public function setUp()

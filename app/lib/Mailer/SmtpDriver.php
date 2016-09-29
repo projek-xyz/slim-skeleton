@@ -69,8 +69,7 @@ class SmtpDriver implements MailDriverInterface
 
         $this->mail->SMTPDebug = $this->debugMode[$mode];
         $this->mail->Debugoutput = function ($str, $mode) {
-//            dump($str);
-            logger(LogLevel::INFO, $str, ['debugMode' => $mode]);
+            logger(LogLevel::DEBUG, $str, ['debugMode' => $mode]);
         };
 
         return $this;

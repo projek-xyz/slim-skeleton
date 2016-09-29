@@ -163,13 +163,23 @@ class DefaultServicesProvider implements ServiceProviderInterface
             /**
              * Setup Validator callable
              *
-             * @param  ServerRequestInterface $request
+             * @param  array|ServerRequestInterface $data
              * @param  array $rules
              *
              * @return Validator
              */
-            return function (ServerRequestInterface $request, array $rules) use ($container) {
-                $validator = new Validator($request->getParsedBody(), [], $container->get('settings')['lang']['default']);
+            return function ($data, array $rules) use ($container) {
+                if ($data instanceof ServerRequestInterface) {
+                    $data = $data->getParsedBody();
+                }
+
+                if (!is_array($data)) {
+                    throw new \InvalidArgumentException(
+                        sprintf('First parameter should be an array %s given', gettype($data))
+                    );
+                }
+
+                $validator = new Validator($data, [], $container->get('settings')['lang']['default']);
 
                 $validator->rules($rules);
 

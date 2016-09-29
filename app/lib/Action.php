@@ -14,7 +14,7 @@ namespace Projek\Slim;
  * @method Models data(string $modelClass)
  * @method void upload(\Psr\Http\Message\UploadedFileInterface $file)
  * @method bool logger(integer $level, string $message, array $context = [])
- * @method \Valitron\Validator validator(\Psr\Http\Message\ServerRequestInterface $request, array $rules)
+ * @method \Valitron\Validator validator(array|\Psr\Http\Message\ServerRequestInterface $data, array $rules)
  */
 abstract class Action
 {

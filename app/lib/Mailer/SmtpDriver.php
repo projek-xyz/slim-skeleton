@@ -93,6 +93,26 @@ class SmtpDriver implements MailDriverInterface
     /**
      * {@inheritdoc}
      */
+    public function cc($address, $name = '')
+    {
+        $this->mail->addCC($address, $name);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function bcc($address, $name = '')
+    {
+        $this->mail->addBCC($address, $name);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function subject($subject)
     {
         $this->mail->Subject = $subject;

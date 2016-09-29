@@ -26,9 +26,22 @@ class Mailer
      *
      * @return Mailer\MailDriverInterface
      */
-    public function from($email, $name)
+    public function from($email, $name = '')
     {
         return $this->driver->from($email, $name);
+    }
+
+    /**
+     * Setup Reciepant
+     *
+     * @param  string  $email
+     * @param  string  $name
+     *
+     * @return Mailer\MailDriverInterface
+     */
+    public function to($email, $name = '')
+    {
+        return $this->driver->to($email, $name);
     }
 
     /**

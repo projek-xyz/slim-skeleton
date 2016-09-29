@@ -9,7 +9,7 @@ interface MailDriverInterface
      * @param  string  $email
      * @param  string  $name
      *
-     * @return $this
+     * @return static
      */
     public function from($email, $name);
 
@@ -19,16 +19,36 @@ interface MailDriverInterface
      * @param  string  $address
      * @param  string  $name
      *
-     * @return $this
+     * @return static
      */
     public function to($address, $name = '');
+
+    /**
+     * Add CC.
+     *
+     * @param  string  $address
+     * @param  string  $name
+     *
+     * @return static
+     */
+    public function cc($address, $name = '');
+
+    /**
+     * Add BCC.
+     *
+     * @param  string  $address
+     * @param  string  $name
+     *
+     * @return static
+     */
+    public function bcc($address, $name = '');
 
     /**
      * Add email subject.
      *
      * @param  string  $subject
      *
-     * @return $this
+     * @return static
      */
     public function subject($subject);
 
@@ -38,7 +58,7 @@ interface MailDriverInterface
      * @param  string  $body
      * @param  array  $data
      *
-     * @return $this
+     * @return static
      */
     public function content($body, array $data = []);
 
@@ -51,7 +71,7 @@ interface MailDriverInterface
      * @param  string $type
      * @param  string $disposition
      *
-     * @return $this
+     * @return static
      */
     public function attaches($filepath, $name = '', $encoding = 'base64', $type = '', $disposition = 'attachment');
 

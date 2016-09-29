@@ -2,14 +2,10 @@
 <?php
 
 /** @define "APP_DIR" "app/" */
-$app = require __DIR__.'/app/bootstrap.php';
-
-// Setup dependencies
-require_once APP_DIR.'dependencies.php';
+$app = require __DIR__ . '/app/bootstrap.php';
 
 // Setup routers
 require_once APP_DIR.'routes/cli.php';
-
 
 // Go!
 $app->run();

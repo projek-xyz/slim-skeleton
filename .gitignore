@@ -12,15 +12,16 @@ Icon?
 # Development files
 # --------------------------
 .env
+tests/base
 
 # Dependency folders
 # --------------------------
 vendor/
 node_modules/
+composer.lock
 
 # IDE Project Configurations
 # --------------------------
-nbproject
 .idea
 .settings
 .project

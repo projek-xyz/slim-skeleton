@@ -1,0 +1,37 @@
+{
+    "serve": {
+        "port": 8088,
+        "host": "localhost",
+        "proxy": "localhost:8000",
+        "open": false
+    },
+    "sass": {
+        "outputStyle"  : "compact"
+    },
+    "modernizr": {
+        "filename": "modernizr-custom.js",
+        "options": {}
+    },
+    "autoprefixer": {
+        "browser" : ["> 1%", "last 10 versions", "Firefox ESR", "Opera 12.1"]
+    },
+    "uglify": {
+        "compress": {},
+        "preserveComments": "license"
+    },
+    "imagemin": {
+        "progressive": true
+    },
+    "paths": {
+        "src"  : "resources/assets/",
+        "dest" : "public/assets/"
+    },
+    "patterns": {
+        "server"  : "app/**/*.php",
+        "assets"  : "{styles,scripts,images,fonts}/**/*",
+        "fonts"   : "fonts/*.{eot,svg,ttf,woff,woff2}",
+        "styles"  : "{styles,admin/styles}/**/*.scss",
+        "scripts" : "{scripts,admin/scripts}/**/*.js",
+        "images"  : "{images,admin/images}/**/*.{png,jpg,gif,svg}"
+    }
+}

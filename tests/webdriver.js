@@ -59,9 +59,9 @@ exports.config = {
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
     //
-    // Set a base URL in order to shorten url command calls. If your url parameter starts
-    // with "/", the base url gets prepended.
-    baseUrl: 'http://slim-app.projek.xyz',
+    // Set a src URL in order to shorten url command calls. If your url parameter starts
+    // with "/", the src url gets prepended.
+    baseUrl: 'http://localhost:8000',
     //
     // Default timeout in milliseconds for request
     // if Selenium Grid doesn't send response
@@ -92,7 +92,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    // services: ['sauce'],
+    services: ['browserstack'],
     //
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -169,4 +169,4 @@ exports.config = {
     // possible to defer the end of the process using a promise.
     // onComplete: function(exitCode) {
     // }
-}
+};

@@ -6,11 +6,10 @@ var gulp = require('gulp');
 // load all plugins with prefix 'gulp'
 const $ = require('gulp-load-plugins')();
 
-const connect     = require('gulp-connect-php');
-const sequence    = require('run-sequence');
-const browserSync = require('browser-sync');
+const connect  = require('gulp-connect-php');
+const sequence = require('run-sequence');
 
-const _ = require('./asset/helpers')(gulp, browserSync);
+const _ = require('./resources/build')(gulp);
 
 /* Task: Compile SCSS
  --------------------------------------------------------------------------------- */
@@ -33,13 +32,13 @@ gulp.task('build:styles', () => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('build:scripts', () => {
-    const asset = gulp.src(_.paths.scripts, { base: _.paths.src })
+    const scripts = gulp.src(_.paths.scripts, { base: _.paths.src })
         .pipe($.babel({ presets: ['es2015'] }))
         .on('error', _.errorHandler)
         .pipe($.uglify(_.conf.uglify))
         .on('error', _.errorHandler);
 
-    return _.build(asset);
+    return _.build(scripts);
 });
 
 
@@ -48,12 +47,12 @@ gulp.task('build:scripts', () => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('build:images', () => {
-    const asset = gulp.src(_.paths.images, { base: _.paths.src })
+    const images = gulp.src(_.paths.images, { base: _.paths.src })
         .pipe($.changed(_.paths.dest))
         .pipe($.imagemin(_.conf.imagemin))
         .on('error', _.errorHandler);
 
-    return _.build(asset);
+    return _.build(images);
 });
 
 
@@ -87,7 +86,7 @@ gulp.task('modernizr', function () {
         .pipe($.modernizr(conf.filename, conf.options))
         .pipe($.uglify(_.conf.uglify))
         .on('error', _.errorHandler)
-        .pipe(gulp.dest(_.paths.dest + 'vendor/'));
+        .pipe(gulp.dest(_.paths.dest + 'scripts/'));
 });
 
 
@@ -96,22 +95,11 @@ gulp.task('modernizr', function () {
  --------------------------------------------------------------------------------- */
 
 gulp.task('serve', () => {
-    const sync = () => {
-        browserSync({
-            port: _.conf.port,
-            host: _.conf.host,
-            proxy: _.conf.url,
-            open: 'open' in _.conf.serve ? _.conf.serve.open : false,
-            logConnections: false
-        });
-    };
-
-    // Let's assume that you already setup your app server vhost
     if (_.isLocal) {
-        return connect.server(_.server, sync);
+        connect.server(_.server, _.sync);
+    } else {
+        _.sync();
     }
-
-    sync();
 });
 
 
@@ -128,7 +116,7 @@ gulp.task('watch', ['serve'], (done) => {
     gulp.watch(_.paths.images,  ['build:images']);
     // Reload
     gulp.watch(_.conf.patterns.server)
-        .on('change', browserSync.reload);
+        .on('change', _._bSync.reload);
 
     // Done
     return done();
@@ -136,30 +124,12 @@ gulp.task('watch', ['serve'], (done) => {
 
 
 
-/* Task: Serve
+/* Task: Test Behaviour
  --------------------------------------------------------------------------------- */
 
-gulp.task('wdio', (done) => {
-    const exec = require('child_process').exec;
-    const conf = {
-        project: 'Creasi CMS',
-        build: '',
-        user: process.env.BROWSERSTACK_USER,
-        key: process.env.BROWSERSTACK_KEY,
-        baseUrl: _.conf.url,
-        host: 'hub.browserstack.com',
-        debug: true,
-        forcelocal: process.env.APP_ENV == 'local',
-        'browserstack.debug': true,
-        'browserstack.local': process.env.APP_ENV == 'local'
-    };
-
-    exec('git rev-parse --short HEAD', { cwd: '.' }, (err, out) => {
-        conf.build = out;
-    });
-
-    gulp.src('./asset/webdriver.js')
-        .pipe($.webdriver(conf));
+gulp.task('test:bdd', (done) => {
+    gulp.src('./tests/webdriver.js')
+        .pipe($.webdriver(_.wdio));
 
     return done();
 });
@@ -185,7 +155,7 @@ gulp.task('clean', (done) => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('build', (done) => {
-    return sequence('build:styles', 'build:fonts', 'build:scripts', 'build:images', done);
+    return sequence('modernizr', 'build:styles', 'build:fonts', 'build:scripts', 'build:images', done);
 });
 
 

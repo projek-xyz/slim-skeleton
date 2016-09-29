@@ -23,37 +23,10 @@ then enter `my-app` directory you just create and start the server.
 
 ```bash
 $ cd my-app
-$ php -S localhost:8888 -t public
+$ php -S localhost:8888 -t www
 ```
 
 Now, you should open [http://localhost:8888](http://localhost:8888) in your favorite web browser.
-
-## Directories and Files structure
-
-```
-├── app/                  // Root for application codes
-│   ├── data/             // Database directory
-│   ├── src/              // Application directory, all classes under 'App' namespace
-│   ├── views/            // View templates directory for Plates
-│   ├── .env.sample       // Sample .env file for phpdotenv
-│   ├── bootstrap.php     // Application bootstraper file
-│   ├── dependencies.php  // Services for Pimple
-│   ├── middlewares.php   // Middlewares declaration
-│   ├── routers.php       // Application routes
-│   └── settings.php      // Application settings
-├── asset/                // Assets source directory
-├── public/               // Webroot directory
-│   ├── images/           // Static images directory
-│   ├── styles/           // Stylesheets directory
-│   └── index.php         // Entry point to application
-├── storage/              // Assets directory
-│   ├── cache/            // cache directory
-│   └── logs/             // Log directory for Monolog
-└── tests/                // Testing directory
-    ├── specs/            // Integration test directory
-    ├── units/            // Functional unit test directory
-    └── phpunit.xml       // Sample phpunit configuration file
-```
 
 ## Contributing
 

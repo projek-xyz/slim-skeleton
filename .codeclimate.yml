@@ -8,10 +8,10 @@ engines:
 
 ratings:
   paths:
-    - app/src/**.php
+    - app/api/**.php
 
 exclude_paths:
-  - asset/*
+  - res/*
   - tests/*
   - public/*
   - vendor/*

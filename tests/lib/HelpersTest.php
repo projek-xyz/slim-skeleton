@@ -16,6 +16,7 @@ class HelperTest extends TestCase
             ]
         ];
 
+        $this->assertEquals(['bar' => 'baz'], array_get($data, 'foo'));
         $this->assertEquals('baz', array_get($data, 'foo.bar'));
         $this->assertEquals('buzz', array_get($data, 'bar.foo.baz'));
     }

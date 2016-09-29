@@ -41,18 +41,19 @@ class Logger
      * @param string $name     Logger name
      * @param array  $settings Logger settings
      */
-    public function __construct($name = 'slim-config', $settings = [])
+    public function __construct($name = 'slim-config', array $settings = [])
     {
         $this->name = $name;
         $this->monolog = new Monolog($this->name);
         $this->settings = array_merge($this->settings, $settings);
 
-        if ($timezone = setting('timezone')) {
-            if (is_string($timezone)) {
-                $timezone = new \DateTimeZone($timezone);
-            }
-            Monolog::setTimezone($timezone);
-        }
+//        if ($timezone = setting('timezone')) {
+//            dump($timezone);
+//            if (is_string($timezone)) {
+//                $timezone = new \DateTimeZone($timezone);
+//            }
+//            Monolog::setTimezone($timezone);
+//        }
 
         $levels = array_keys(Monolog::getLevels());
         if (!in_array(strtoupper($this->settings['level']), $levels)) {
@@ -71,6 +72,10 @@ class Logger
                     $this->useFiles($this->settings['level'], $path);
                 }
             }
+        } else {
+            $this->monolog->pushHandler(
+                new Handler\NullHandler($this->settings['level'])
+            );
         }
     }
 

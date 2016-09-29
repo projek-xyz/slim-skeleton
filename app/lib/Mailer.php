@@ -24,11 +24,13 @@ class Mailer
      * @param  string  $email
      * @param  string  $name
      *
-     * @return Mailer\MailDriverInterface
+     * @return static
      */
     public function from($email, $name = '')
     {
-        return $this->driver->from($email, $name);
+        $this->driver->from($email, $name);
+
+        return $this;
     }
 
     /**
@@ -37,27 +39,32 @@ class Mailer
      * @param  string  $email
      * @param  string  $name
      *
-     * @return Mailer\MailDriverInterface
+     * @return static
      */
     public function to($email, $name = '')
     {
-        return $this->driver->to($email, $name);
+        $this->driver->to($email, $name);
+
+        return $this;
     }
 
     /**
      * Send the thing.
      *
-     * @param  string $content
      * @param  string $subject
-     * @param  callable $callback
+     * @param  string $content
+     * @param  array $data
+     * @param  callable|null $callback
      *
      * @return mixed
      */
-    public function send($content, $subject, callable $callback)
+    public function send($subject, $content, $data = [], callable $callback = null)
     {
-        $this->driver->content($content)->subject($subject);
+        $this->driver->subject($subject)->content($content, $data);
 
-        $callback($this->driver);
+        if (null !== $callback) {
+            $callback($this->driver);
+        }
 
         return $this->driver->send();
     }

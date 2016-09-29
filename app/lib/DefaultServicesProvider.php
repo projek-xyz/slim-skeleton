@@ -70,7 +70,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
          * @return Logger
          */
         $container['logger'] = function () use ($settings) {
-            return new Logger($settings['basename'], $settings['logger']);
+            return new Logger($settings['basename'], $settings['logger'] ?: []);
         };
 
         /**

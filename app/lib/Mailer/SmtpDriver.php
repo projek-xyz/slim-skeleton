@@ -1,6 +1,8 @@
 <?php
 namespace Projek\Slim\Mailer;
 
+use Psr\Log\LogLevel;
+
 class SmtpDriver implements MailDriverInterface
 {
     /**
@@ -66,6 +68,10 @@ class SmtpDriver implements MailDriverInterface
         }
 
         $this->mail->SMTPDebug = $this->debugMode[$mode];
+        $this->mail->Debugoutput = function ($str, $mode) {
+//            dump($str);
+            logger(LogLevel::INFO, $str, ['debugMode' => $mode]);
+        };
 
         return $this;
     }

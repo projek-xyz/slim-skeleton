@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 const gutil = require('gulp-util');
 
 const browserSync = require('browser-sync');
@@ -114,10 +115,15 @@ class Helpers {
 
         for (let key in this.conf.patterns) {
             paths[key] = [
-                this.conf.paths.src + this.conf.patterns[key],
-                'node_modules/' + deps + '**/*.{js,css,scss}'
+                this.conf.paths.src + this.conf.patterns[key]
             ];
+
+            // if (['server', 'assets'].indexOf(key) == -1) {
+            //     paths[key].push('node_modules/{' + deps + '}/**/*.' + this.conf.patterns[key].split('.').pop())
+            // }
         }
+
+        paths.vendor = path.dirname(paths.dest) + '/vendor';
 
         return paths;
     }
@@ -131,17 +137,38 @@ class Helpers {
         return Object.keys(this.package.dependencies)
     }
 
+    get vendors () {
+        let vendors = [];
+
+        for (let i in this.depsDir) {
+            let name = this.depsDir[i].split('/').pop();
+
+            if (['bootstrap', 'jquery'].indexOf(name) > -1) {
+                vendors.push(this.depsDir[i] + '/dist/**/*.{js,css}');
+            } else if (name == 'js-cookie') {
+                vendors.push(this.depsDir[i] + '/src/*.js');
+            } else if (name == 'font-awesome') {
+                vendors.push(this.depsDir[i] + '/{fonts,css}/*.{css,eot,svg,ttf,woff,woff2}');
+            } else {
+                vendors.push(this.depsDir[i] + '/**/*.js');
+            }
+
+            vendors.push('!' + this.depsDir[i] + '/**/*min.{js,css}');
+        }
+
+        return vendors;
+    }
+
     /**
      * Get concated dependencies from 'package.json' file
      *
      * @return {Array}
      */
     get depsDir () {
-        let deps = this.dependencies,
-            dirs = [];
+        let dirs = [];
 
-        for (let dep in deps) {
-            dirs.push('node_modules/' + deps[dep]);
+        for (let dep in this.dependencies) {
+            dirs.push('node_modules/' + this.dependencies[dep]);
         }
 
         return dirs;
@@ -213,7 +240,7 @@ class Helpers {
      * @param  {Object} err Error instance
      */
     errorHandler (err) {
-        this.e(`[Error] ${err.stack}`, 'red');
+        gutil.log(gutil.colors.red(`[Error] ${err.stack}`));
     }
 
     e (message, color) {

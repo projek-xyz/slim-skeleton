@@ -12,11 +12,10 @@ Icon?
 # Development files
 # --------------------------
 .env
-tests/base
 
 # Dependency folders
 # --------------------------
-vendor/
+/vendor/
 node_modules/
 composer.lock
 

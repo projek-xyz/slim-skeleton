@@ -64,14 +64,48 @@ gulp.task('build:fonts', (done) => {
     const path = require('path');
 
     gulp.src(_.paths.fonts, { base: _.paths.src })
-        .pipe($.changed(_.paths.dest))
         .pipe(gulp.dest((file) => {
             file.path = file.base + path.basename(file.path);
             return _.paths.dest + 'fonts/';
-        }
-    ));
+        }));
 
     return done();
+});
+
+
+
+/* Task: Vendor
+ --------------------------------------------------------------------------------- */
+
+gulp.task('vendor:copy', ['modernizr'], function (done) {
+    gulp.src(_.vendors)
+        .pipe(gulp.dest(_.paths.vendor));
+
+    return done()
+});
+
+
+
+/* Task: Minify Vendor scripts
+ --------------------------------------------------------------------------------- */
+
+gulp.task('vendor:scripts', function () {
+    return gulp.src(_.paths.vendor + '/**/*.js')
+        .pipe($.uglify(_.conf.uglify))
+        .on('error', _.errorHandler)
+        .pipe(gulp.dest(_.paths.vendor));
+});
+
+
+
+/* Task: Minify Vendor scripts
+ --------------------------------------------------------------------------------- */
+
+gulp.task('vendor:styles', function () {
+    return gulp.src(_.paths.vendor + '/**/*.css')
+        .pipe($.cleanCss())
+        .on('error', _.errorHandler)
+        .pipe(gulp.dest(_.paths.vendor));
 });
 
 
@@ -84,9 +118,7 @@ gulp.task('modernizr', function () {
 
     return gulp.src(_.paths.src + '**/*.{js,scss}')
         .pipe($.modernizr(conf.filename, conf.settings))
-        .pipe($.uglify(_.conf.uglify))
-        .on('error', _.errorHandler)
-        .pipe(gulp.dest(_.paths.dest + 'scripts/'));
+        .pipe(gulp.dest(_.paths.vendor));
 });
 
 
@@ -139,14 +171,21 @@ gulp.task('test:bdd', (done) => {
 /* Task: Clean
  --------------------------------------------------------------------------------- */
 
-gulp.task('clean', (done) => {
+gulp.task('clean', () => {
     const del = require('del');
 
-    del(_.paths.dest + _.conf.patterns.assets).then(() => {
+    return del([_.paths.dest, _.paths.vendor]).then(() => {
         _.e('Assets directory cleaned', 'green');
     });
+});
 
-    return done();
+
+
+/* Task: Vendor
+ --------------------------------------------------------------------------------- */
+
+gulp.task('vendor', (done) => {
+    sequence('vendor:copy', 'vendor:scripts', 'vendor:styles', done);
 });
 
 
@@ -155,7 +194,7 @@ gulp.task('clean', (done) => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('build', (done) => {
-    return sequence('modernizr', 'build:styles', 'build:fonts', 'build:scripts', 'build:images', done);
+    sequence('build:styles', 'build:scripts', 'build:images', 'build:fonts', done);
 });
 
 
@@ -163,4 +202,6 @@ gulp.task('build', (done) => {
 /* Task: Default
  --------------------------------------------------------------------------------- */
 
-gulp.task('default', ['clean', 'build']);
+gulp.task('default', (done) => {
+    sequence('clean', 'build', 'vendor', done);
+});

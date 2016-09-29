@@ -17,13 +17,13 @@ const _ = require('./resources/build')(gulp);
 gulp.task('build:styles', () => {
     _.conf.sass.includePaths = _.depsDir;
 
-    const asset = gulp.src(_.paths.styles, { base: _.paths.src })
+    const styles = gulp.src(_.paths.styles, { base: _.paths.src })
         .pipe($.sass(_.conf.sass).on('error', $.sass.logError))
         .pipe($.autoprefixer(_.conf.autoprefixer))
         .pipe($.cleanCss())
         .on('error', _.errorHandler);
 
-    return _.build(asset);
+    return _.build(styles);
 });
 
 

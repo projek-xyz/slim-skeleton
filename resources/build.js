@@ -213,7 +213,15 @@ class Helpers {
      * @param  {Object} err Error instance
      */
     errorHandler (err) {
-        helper.e(`[Error] ${err.stack}`, 'red');
+        this.e(`[Error] ${err.stack}`, 'red');
+    }
+
+    e (message, color) {
+        color = color && color in gutil.colors ? color : 'green';
+
+        const cb = gutil.colors[color];
+
+        return gutil.log(cb(message));
     }
 
 }
@@ -222,16 +230,6 @@ class Helpers {
  * @param  {Gulp} gulp
  * @return {Helpers}
  */
-var helper = (gulp) => {
+module.exports = (gulp) => {
     return new Helpers(gulp);
 };
-
-helper.e = (message, color) => {
-    color = color && color in gutil.colors ? color : 'green';
-
-    const cb = gutil.colors[color];
-
-    return gutil.log(cb(message));
-};
-
-module.exports = helper;

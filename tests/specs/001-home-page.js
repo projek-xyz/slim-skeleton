@@ -3,6 +3,6 @@
 describe('Just for fun', () => {
     it('shoud do something', () => {
         browser.url('/');
-        browser.getTitle().should.be.equal('Welcome to nginx!');
+        browser.getTitle().should.be.equal('Slim Skeleton');
     });
 });

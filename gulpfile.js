@@ -126,10 +126,10 @@ gulp.task('modernizr', function () {
 
 gulp.task('serve', () => {
     if (_.isLocal) {
-        connect.server(_.server, _.sync);
-    } else {
-        _.sync();
+        return connect.server(_.server, _.sync);
     }
+
+    return _.sync();
 });
 
 

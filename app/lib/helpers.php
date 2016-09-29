@@ -131,3 +131,19 @@ if (!function_exists('array_devide')) {
         return [array_keys($array), array_values($array)];
     }
 }
+
+if (!function_exists('sizes_to_bites')) {
+    function sizes_to_bites($size)
+    {
+        $size = trim($size);
+        $last = strtolower($size[strlen($size)-1]);
+
+        switch ($last) {
+            case 'g': $size *= 1024;
+            case 'm': $size *= 1024;
+            case 'k': $size *= 1024;
+        }
+
+        return $size;
+    }
+}

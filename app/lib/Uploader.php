@@ -17,6 +17,10 @@ class Uploader
     public function __construct(array $settings = [])
     {
         $this->settings = array_merge($this->settings, $settings);
+
+        if (null === $this->settings['directory']) {
+            $this->settings['directory'] = STORAGE_DIR.'uploads';
+        }
     }
 
     /**
@@ -32,7 +36,24 @@ class Uploader
             throw new \InvalidArgumentException('Filetype not allowed');
         }
 
+        if ($file->getSize() > sizes_to_bites(ini_get('upload_max_filesize'))) {
+            throw new \InvalidArgumentException('Filesize is too big');
+        }
+
+        $this->validateDirectory();
+
         $this->upload($file);
+    }
+
+    protected function validateDirectory()
+    {
+        /** @var \League\Flysystem\Filesystem $fs */
+        $fs = app('filesystem');
+        $path = str_replace(STORAGE_DIR, '', $this->settings['directory']);
+
+        if (!$fs->has($path)) {
+            $fs->createDir($path);
+        }
     }
 
     /**

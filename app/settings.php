@@ -1,8 +1,5 @@
 <?php
 
-use App\Providers;
-use Projek\Slim\Providers as ProjekProviders;
-
 return [
     // Application title, email and description
     'app' => [

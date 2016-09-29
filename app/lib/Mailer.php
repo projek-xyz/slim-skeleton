@@ -2,7 +2,6 @@
 namespace Projek\Slim;
 
 use PHPMailer;
-use League\Plates\Engine;
 
 class Mailer
 {

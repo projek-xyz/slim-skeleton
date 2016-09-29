@@ -7,7 +7,6 @@ use League\Flysystem\Filesystem;
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
 use Projek\Slim\Handlers\FoundHandler;
-use Psr\Http\Message\UploadedFileInterface;
 use Slim\Http\Headers;
 use Slim\PDO\Database;
 use Valitron\Validator;
@@ -161,7 +160,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
          *
          * @return Filesystem
          */
-        $container['filesystem'] = function () use ($settings) {
+        $container['filesystem'] = function () {
             return new Filesystem(
                 new Local(STORAGE_DIR, LOCK_EX, Local::DISALLOW_LINKS)
             );

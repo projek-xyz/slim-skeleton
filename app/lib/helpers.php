@@ -2,17 +2,6 @@
 
 use Projek\Slim\Container;
 
-if (!function_exists('dd')) {
-    function dd()
-    {
-        array_map(function ($params) {
-            var_dump($params);
-        }, func_get_args());
-
-        exit;
-    }
-}
-
 if (!function_exists('app')) {
     /**
      * @param  string|null  $name  Container key name
@@ -40,6 +29,17 @@ if (!function_exists('setting')) {
     function setting($name, $default = null)
     {
         return array_get(app('settings')->all(), $name, $default);
+    }
+}
+
+if (!function_exists('dump')) {
+    function dump()
+    {
+        array_map(function ($params) {
+            var_dump($params);
+        }, func_get_args());
+
+        exit;
     }
 }
 

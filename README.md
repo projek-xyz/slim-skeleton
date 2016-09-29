@@ -23,7 +23,7 @@ then enter `my-app` directory you just create and start the server.
 
 ```bash
 $ cd my-app
-$ php -S localhost:8888 -t www
+$ php -S localhost:8888 -t public
 ```
 
 Now, you should open [http://localhost:8888](http://localhost:8888) in your favorite web browser.

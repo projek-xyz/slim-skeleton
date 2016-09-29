@@ -47,13 +47,12 @@ class Logger
         $this->monolog = new Monolog($this->name);
         $this->settings = array_merge($this->settings, $settings);
 
-//        if ($timezone = setting('timezone')) {
-//            dump($timezone);
-//            if (is_string($timezone)) {
-//                $timezone = new \DateTimeZone($timezone);
-//            }
-//            Monolog::setTimezone($timezone);
-//        }
+        if ($timezone = setting('timezone')) {
+            if (is_string($timezone)) {
+                $timezone = new \DateTimeZone($timezone);
+            }
+            Monolog::setTimezone($timezone);
+        }
 
         $levels = array_keys(Monolog::getLevels());
         if (!in_array(strtoupper($this->settings['level']), $levels)) {

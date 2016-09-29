@@ -2,18 +2,19 @@
 namespace Projek\Slim;
 
 /**
- * @property-read \League\Flysystem\Filesystem filesystem
- * @property-read \Slim\PDO\Database db
- * @property-read \Slim\Collection settings
- * @property-read \Valitron\Validator validator
- * @property-read Mailer mailer
- * @property-read Logger logger
- * @property-read View view
  * @property-read callable data
+ * @property-read \Slim\PDO\Database db
+ * @property-read \League\Flysystem\Filesystem filesystem
+ * @property-read Logger logger
+ * @property-read Mailer mailer
+ * @property-read \Slim\Collection settings
  * @property-read callable upload
+ * @property-read callable validator
+ * @property-read View view
  * @method Models data(string $modelClass)
- * @method void upoad(\Psr\Http\Message\UploadedFileInterface $file)
+ * @method void upload(\Psr\Http\Message\UploadedFileInterface $file)
  * @method bool logger(integer $level, string $message, array $context = [])
+ * @method \Valitron\Validator validator(\Psr\Http\Message\ServerRequestInterface $request, array $rules)
  */
 abstract class Action
 {

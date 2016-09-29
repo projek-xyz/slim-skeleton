@@ -6,6 +6,7 @@ use League\Flysystem\Filesystem;
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
 use Projek\Slim\Handlers\FoundHandler;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\Http\Headers;
 use Slim\PDO\Database;
 use Valitron\Validator;
@@ -76,19 +77,27 @@ class DefaultServicesProvider implements ServiceProviderInterface
          */
         $container['db'] = function () use ($settings) {
             $db = $this->initializeDatabase($settings['db']);
-            $config = [
-                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_CLASS
-            ];
 
-            return new Database($db['dsn'], $db['user'], $db['pass'], $config);
+            return new Database($db['dsn'], $db['user'], $db['pass'], [
+                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_CLASS
+            ]);
         };
 
         /**
          * Setup data model
          *
+         * @param  \Slim\Container $container
+         *
          * @return callable
          */
         $container['data'] = function ($container) {
+            /**
+             * Setup Validator callable
+             *
+             * @param  string $class
+             *
+             * @return Models|Object
+             */
             return function ($class) use ($container) {
                 if (!class_exists($class)) {
                     throw new \LogicException("Data model class {$class} not exists ");
@@ -102,7 +111,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
                     );
                 }
 
-                return $model->newInstance($container['db']);
+                return $model->newInstance($container->get('db'));
             };
         };
 
@@ -146,12 +155,26 @@ class DefaultServicesProvider implements ServiceProviderInterface
         /**
          * Setup Validator
          *
-         * @param  PimpleContainer $container
+         * @param  \Slim\Container $container
          *
-         * @return Validator
+         * @return callable
          */
-        $container['validator'] = function ($container) use ($settings) {
-            return new Validator($container['request']->getParams(), [], $settings['lang']['default']);
+        $container['validator'] = function ($container) {
+            /**
+             * Setup Validator callable
+             *
+             * @param  ServerRequestInterface $request
+             * @param  array $rules
+             *
+             * @return Validator
+             */
+            return function (ServerRequestInterface $request, array $rules) use ($container) {
+                $validator = new Validator($request->getParsedBody(), [], $container->get('settings')['lang']['default']);
+
+                $validator->rules($rules);
+
+                return $validator;
+            };
         };
 
         /**

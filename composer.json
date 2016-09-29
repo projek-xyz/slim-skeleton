@@ -22,13 +22,13 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/api/",
+            "App\\": "app/src/",
             "Projek\\Slim\\": "app/lib/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/api/",
+            "App\\Tests\\": "tests/src/",
             "Projek\\Slim\\Tests\\": "tests/lib/"
         }
     },

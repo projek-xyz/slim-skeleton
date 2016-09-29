@@ -1,3 +1,4 @@
+/** jslint node: true */
 'use strict';
 
 const fs = require('fs');
@@ -39,7 +40,7 @@ class Helpers {
      * @return {boolean}
      */
     get isLocal () {
-        return this.conf.url.includes('localhost') && !('CI' in process.env);
+        return this.conf.url.includes('localhost') || this.mode == 'local';
     }
 
     /**
@@ -91,11 +92,16 @@ class Helpers {
      */
     get mode () {
         // Determine build mode, default is 'dev'
-        let mode = 'dev';
+        let mode = 'development',
+            modes = ['development', 'production', 'testing', 'local'];
 
         // If mode is invalid, back to 'dev' mode
-        if (['dev', 'prod'].indexOf(process.env.MODE) !== -1) {
-            mode = process.env.MODE;
+        if (modes.indexOf(process.env.APP_ENV) > -1) {
+            mode = process.env.APP_ENV;
+        }
+
+        if ('CI' in process.env) {
+            mode = 'testing';
         }
 
         return mode;

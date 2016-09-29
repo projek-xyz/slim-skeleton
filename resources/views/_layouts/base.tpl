@@ -7,9 +7,9 @@
     <title><?= $this->e($title) ?></title>
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300">
-    <link rel="stylesheet" href="<?= base_url('styles/main.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/styles/main.css') ?>">
 
-    <script src="<?= base_url('scripts/modernizr-custom.js') ?>"></script>
+    <script src="<?= base_url('assets/scripts/modernizr-custom.js') ?>"></script>
 </head>
 <body>
 

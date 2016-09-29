@@ -5,7 +5,7 @@ const gutil = require('gulp-util');
 
 const browserSync = require('browser-sync');
 
-const config = require(__dirname + '/asset');
+const config = require(__dirname + '/assets/config');
 
 class Helpers {
 

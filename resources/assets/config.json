@@ -10,7 +10,26 @@
     },
     "modernizr": {
         "filename": "modernizr-custom.js",
-        "options": {}
+        "settings": {
+            "options": [
+                "addTest",
+                "atRule",
+                "domPrefixes",
+                "hasEvent",
+                "html5shiv",
+                "html5printshiv",
+                "load",
+                "mq",
+                "prefixed",
+                "prefixes",
+                "prefixedCSS",
+                "setClasses",
+                "testAllProps",
+                "testProp",
+                "testStyles"
+            ],
+            "feature-detects": []
+        }
     },
     "autoprefixer": {
         "browser" : ["> 1%", "last 10 versions", "Firefox ESR", "Opera 12.1"]

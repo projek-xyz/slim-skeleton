@@ -83,7 +83,7 @@ gulp.task('modernizr', function () {
     const conf = _.conf.modernizr;
 
     return gulp.src(_.paths.src + '**/*.{js,scss}')
-        .pipe($.modernizr(conf.filename, conf.options))
+        .pipe($.modernizr(conf.filename, conf.settings))
         .pipe($.uglify(_.conf.uglify))
         .on('error', _.errorHandler)
         .pipe(gulp.dest(_.paths.dest + 'scripts/'));

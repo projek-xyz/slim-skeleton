@@ -1,1 +1,1 @@
-"use strict";!function(){console.log("Hallo")}();
+"use strict";!function(){"Modernizr"in window&&console.log("Modernizr is loaded")}();

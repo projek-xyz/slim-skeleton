@@ -1,5 +1,7 @@
 (function () {
-  "use strict";
+    "use strict";
 
-  console.log('Hallo');
+    if ('Modernizr' in window) {
+        console.log('Modernizr is loaded');
+    }
 })();

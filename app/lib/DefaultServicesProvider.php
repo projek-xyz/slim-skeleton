@@ -6,6 +6,8 @@ use League\Flysystem\Filesystem;
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
 use Projek\Slim\Handlers\FoundHandler;
+use Projek\Slim\Mailer\MailDriverInterface;
+use Projek\Slim\Mailer\SmtpDriver;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Collection;
 use Slim\Http\Headers;
@@ -140,17 +142,30 @@ class DefaultServicesProvider implements ServiceProviderInterface
         };
 
         /**
+         * Setup Mail Driver
+         *
+         * @return MailDriverInterface
+         */
+        $container[MailDriverInterface::class] = function () use ($settings) {
+            $driver = new SmtpDriver($settings['mailer']);
+
+            $driver->debugMode($settings['mode']);
+            $driver->from($settings['app']['email'], $settings['app']['title']);
+
+            return $driver;
+        };
+
+        /**
          * Setup Mailer
+         *
+         * @param  Container $container
          *
          * @return Mailer
          */
-        $container['mailer'] = function () use ($settings) {
-            $mailer = new Mailer($settings['mailer']);
-
-            $mailer->debugMode($settings['mode']);
-            $mailer->setSender($settings['app']['email'], $settings['app']['title']);
-
-            return $mailer;
+        $container['mailer'] = function ($container) {
+            return new Mailer(
+                $container->get(MailDriverInterface::class)
+            );
         };
 
         /**

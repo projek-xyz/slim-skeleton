@@ -7,6 +7,7 @@ use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
 use Projek\Slim\Handlers\FoundHandler;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Collection;
 use Slim\Http\Headers;
 use Slim\PDO\Database;
 use Valitron\Validator;
@@ -163,7 +164,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
             /**
              * Setup Validator callable
              *
-             * @param  array|ServerRequestInterface $data
+             * @param  array|Collection|ServerRequestInterface $data
              * @param  array $rules
              *
              * @return Validator
@@ -171,6 +172,10 @@ class DefaultServicesProvider implements ServiceProviderInterface
             return function ($data, array $rules) use ($container) {
                 if ($data instanceof ServerRequestInterface) {
                     $data = $data->getParsedBody();
+                }
+
+                if ($data instanceof Collection) {
+                    $data = $data->all();
                 }
 
                 if (!is_array($data)) {

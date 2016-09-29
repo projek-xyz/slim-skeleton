@@ -28,7 +28,7 @@ if (!function_exists('setting')) {
      */
     function setting($name, $default = null)
     {
-        return array_get(app('settings')->all(), $name, $default);
+        return array_get(app('settings'), $name, $default);
     }
 }
 
@@ -92,14 +92,18 @@ if (!function_exists('array_get')) {
      * Get an item from array using 'dot' notation
      *
      * @aee https://github.com/laravel/framework/blob/5.3/src/Illuminate/Support/Arr.php#L238-L269
-     * @param  array $array
+     * @param  array|\Slim\Collection $array
      * @param  string $key
      * @param  mixed $default
      *
      * @return mixed
      */
-    function array_get(array $array, $key, $default = null)
+    function array_get($array, $key, $default = null)
     {
+        if ($array instanceof \Slim\Collection) {
+            $array = $array->all();
+        }
+
         if (null === $key) {
             return $default;
         }

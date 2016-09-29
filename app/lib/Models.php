@@ -10,8 +10,12 @@ use Slim\PDO\Statement\StatementContainer;
  * @method static int|false put(array $pairs, $terms = null)
  * @method static int|false del(mixed $terms)
  */
-abstract class Models implements Contracts\ModelInterface
+abstract class Models
 {
+    const UPDATED = 'updated_at';
+    const CREATED = 'created_at';
+    const DELETED = 'deleted_at';
+
     /**
      * @var Database
      */

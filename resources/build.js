@@ -107,7 +107,6 @@ class Helpers {
      * @return {Object}
      */
     get paths () {
-        const deps = this.dependencies.join(',')
         const paths = {
             src: this.conf.paths.src,
             dest: this.conf.paths.dest
@@ -115,12 +114,8 @@ class Helpers {
 
         for (let key in this.conf.patterns) {
             paths[key] = [
-                this.conf.paths.src + this.conf.patterns[key]
+                paths.src + this.conf.patterns[key]
             ];
-
-            // if (['server', 'assets'].indexOf(key) == -1) {
-            //     paths[key].push('node_modules/{' + deps + '}/**/*.' + this.conf.patterns[key].split('.').pop())
-            // }
         }
 
         paths.vendor = path.dirname(paths.dest) + '/vendor';
@@ -145,8 +140,6 @@ class Helpers {
 
             if (['bootstrap', 'jquery'].indexOf(name) > -1) {
                 vendors.push(this.depsDir[i] + '/dist/**/*.{js,css}');
-            } else if (name == 'js-cookie') {
-                vendors.push(this.depsDir[i] + '/src/*.js');
             } else if (name == 'font-awesome') {
                 vendors.push(this.depsDir[i] + '/{fonts,css}/*.{css,eot,svg,ttf,woff,woff2}');
             } else {

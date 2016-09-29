@@ -143,9 +143,12 @@ if (!function_exists('sizes_to_bites')) {
         $last = strtolower($size[strlen($size)-1]);
 
         switch ($last) {
-            case 'g': $size *= 1024;
-            case 'm': $size *= 1024;
-            case 'k': $size *= 1024;
+            case 'g':
+                $size *= 1024; // fall-through
+            case 'm':
+                $size *= 1024; // fall-through
+            case 'k':
+                $size *= 1024; // fall-through
         }
 
         return $size;

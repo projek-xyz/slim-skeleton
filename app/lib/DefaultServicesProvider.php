@@ -1,8 +1,6 @@
 <?php
 namespace Projek\Slim;
 
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
 use Projek\Slim\Handlers\FoundHandler;
@@ -212,10 +210,8 @@ class DefaultServicesProvider implements ServiceProviderInterface
          *
          * @return Filesystem
          */
-        $container['filesystem'] = function () {
-            return new Filesystem(
-                new Local(STORAGE_DIR, LOCK_EX, Local::DISALLOW_LINKS)
-            );
+        $container['filesystem'] = function () use ($settings) {
+            return new FileSystem($settings->get('filesystem', []));
         };
 
         /**

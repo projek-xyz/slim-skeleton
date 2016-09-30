@@ -24,7 +24,7 @@ before_install:
 install:
   - npm -g update -q && npm i -q
   - mysql -e "create database if not exists ${DB_NAME}"
-  - mysql -e ${DB_NAME} < tests/fixture.sql
+  - mysql ${DB_NAME} < tests/fixture.sql
   - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then composer require satooshi/php-coveralls:dev-master squizlabs/php_codesniffer:^2.6 -n -q; fi
   - if [[ "$TRAVIS_PHP_VERSION" != '5.6' ]]; then composer install -n -q; fi
 

@@ -158,6 +158,7 @@ abstract class Models
      * Count all data
      *
      * @param  callable|array|int  $terms
+     *
      * @return int
      */
     public function count($terms = null)
@@ -182,10 +183,149 @@ abstract class Models
     }
 
     /**
+     * @inheritdoc
+     */
+    public function table()
+    {
+        return $this->table;
+    }
+
+    /**
+     * Select data from table
+     *
+     * @param  array $columns
+     *
+     * @return \Slim\PDO\Statement\SelectStatement
+     */
+    protected function select(array $columns = [])
+    {
+        $columns = !is_array($columns) ? func_get_args() : $columns;
+
+        if (empty($columns)) {
+            $columns = ['*'];
+        }
+
+        return $this->db->select($columns)->from($this->table);
+    }
+
+    /**
+     * Select data from table
+     *
+     * @param  array $pairs
+     *
+     * @return \Slim\PDO\Statement\InsertStatement
+     */
+    protected function insert($pairs)
+    {
+        return $this->db->insert($pairs)->into($this->table);
+    }
+
+    /**
+     * Select data from table
+     *
+     * @param  array $pairs
+     *
+     * @return \Slim\PDO\Statement\UpdateStatement
+     */
+    protected function update($pairs)
+    {
+        return $this->db->update(array_filter($pairs))->table($this->table);
+    }
+
+    /**
+     * Select data from table
+     *
+     * @return \Slim\PDO\Statement\DeleteStatement
+     */
+    protected function delete()
+    {
+        return $this->db->delete($this->table);
+    }
+
+    /**
+     * @param  string|static $model
+     * @param  string|null $first
+     * @param  string $operator
+     * @param  string|null $second
+     * @param  string $joinType
+     *
+     * @return \Slim\PDO\Statement\SelectStatement
+     */
+    protected function join($model, $first = null, $operator = '=', $second = null, $joinType = 'INNER')
+    {
+        list($model, $first, $second) = $this->normalizeJoins($model, $first, $second);
+
+        return $this->select()->join($model->table(), $first, $operator, $second, $joinType);
+    }
+
+    /**
+     * @param  string|static $model
+     * @param  string|null $first
+     * @param  string $operator
+     * @param  string|null $second
+     *
+     * @return \Slim\PDO\Statement\SelectStatement
+     */
+    protected function leftJoin($model, $first = null, $operator = '=', $second = null)
+    {
+        list($model, $first, $second) = $this->normalizeJoins($model, $first, $second);
+
+        return $this->select()->leftJoin($model->table(), $first, $operator, $second);
+    }
+
+    /**
+     * @param  string|static $model
+     * @param  string|null $first
+     * @param  string $operator
+     * @param  string|null $second
+     *
+     * @return \Slim\PDO\Statement\SelectStatement
+     */
+    protected function rightJoin($model, $first = null, $operator = '=', $second = null)
+    {
+        list($model, $first, $second) = $this->normalizeJoins($model, $first, $second);
+
+        return $this->select()->rightJoin($model->table(), $first, $operator, $second);
+    }
+
+    /**
+     * @param  string|static $model
+     * @param  string|null $first
+     * @param  string $operator
+     * @param  string|null $second
+     *
+     * @return \Slim\PDO\Statement\SelectStatement
+     */
+    protected function fullJoin($model, $first = null, $operator = '=', $second = null)
+    {
+        list($model, $first, $second) = $this->normalizeJoins($model, $first, $second);
+
+        return $this->select()->fullJoin($model->table(), $first, $operator, $second);
+    }
+
+    protected function normalizeJoins($model, $first = null, $second = null)
+    {
+        if (is_string($model)) {
+            $model = new $model
+        }
+
+        if (null === $first) {
+            $first = $this->table().'.'.$this->primary();
+        }
+
+        if (null === $second) {
+            $second = $model->table().'.'.$this->table().'_'.$model->primary();
+        }
+
+        return [$model, $first, $second];
+    }
+
+    /**
      * Normalize query terms
      *
-     * @param  \Slim\PDO\Statement\StatementContainer  $query
-     * @param  callable|array|int  $terms
+     * @param  \Slim\PDO\Statement\StatementContainer $query
+     * @param  callable|array|int $terms
+     *
      * @return void
      */
     protected function normalizeTerms(StatementContainer $query, &$terms)
@@ -208,55 +348,6 @@ abstract class Models
                 }
             }
         }
-    }
-
-    /**
-     * Select data from table
-     *
-     * @param  array $columns
-     * @return \Slim\PDO\Statement\SelectStatement
-     */
-    protected function select(array $columns = [])
-    {
-        $columns = !is_array($columns) ? func_get_args() : $columns;
-
-        if (empty($columns)) {
-            $columns = ['*'];
-        }
-
-        return $this->db->select($columns)->from($this->table);
-    }
-
-    /**
-     * Select data from table
-     *
-     * @param  array $pairs
-     * @return \Slim\PDO\Statement\InsertStatement
-     */
-    protected function insert($pairs)
-    {
-        return $this->db->insert($pairs)->into($this->table);
-    }
-
-    /**
-     * Select data from table
-     *
-     * @param  array $pairs
-     * @return \Slim\PDO\Statement\UpdateStatement
-     */
-    protected function update($pairs)
-    {
-        return $this->db->update(array_filter($pairs))->table($this->table);
-    }
-
-    /**
-     * Select data from table
-     *
-     * @return \Slim\PDO\Statement\DeleteStatement
-     */
-    protected function delete()
-    {
-        return $this->db->delete($this->table);
     }
 
     /**

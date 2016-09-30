@@ -1,8 +1,6 @@
 <?php
 namespace Projek\Slim;
 
-use PHPMailer;
-
 class Mailer
 {
     /**

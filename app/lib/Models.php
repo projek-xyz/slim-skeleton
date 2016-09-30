@@ -71,16 +71,29 @@ abstract class Models
 
         $this->normalizeTerms($query, $terms);
 
-        return $query->execute();
+        $stmt = $query->execute();
+
+        $stmt->setFetchMode(\PDO::FETCH_INTO, $this);
+
+        return $stmt;
     }
 
     /**
      * @inheritdoc
      */
-    public function create(array $pairs)
+    public function create(array $pairs = null)
     {
         if (!$this->table) {
             return false;
+        }
+
+        if (null === $pairs) {
+            $pairs = $this->attributes;
+            $this->db = app('db');
+        }
+
+        if (empty($pairs)) {
+            throw new \LogicException('Could not create empty data');
         }
 
         if ($this->timestamps) {
@@ -95,10 +108,19 @@ abstract class Models
     /**
      * @inheritdoc
      */
-    public function edit(array $pairs, $terms = null)
+    public function edit($pairs = null, $terms = null)
     {
         if (!$this->table) {
             return false;
+        }
+
+        if (!empty($this->attributes) && null === $terms) {
+            $terms = $this->attributes;
+            $this->db = app('db');
+        }
+
+        if (empty($pairs)) {
+            throw new \LogicException('Could not update empty data');
         }
 
         if ($this->timestamps) {
@@ -109,7 +131,7 @@ abstract class Models
 
         $this->normalizeTerms($query, $terms);
 
-        return $query->execute();
+        return (bool) $query->execute();
     }
 
     /**
@@ -129,7 +151,7 @@ abstract class Models
 
         $this->normalizeTerms($query, $terms);
 
-        return $query->execute();
+        return (bool) $query->execute();
     }
 
     /**

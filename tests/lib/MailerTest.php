@@ -25,8 +25,8 @@ class MailerTest extends TestCase
     {
         $mailer = $this->container->get('mailer');
 
-        $mailer->to('ferywardiyanto@gmail.com', 'Fery W')->send('Test Mail', 'Test');
+        $mailer->to('ferywardiyanto@gmail.com', 'Fery W');
 
-        $this->assertTrue(true);
+        $this->assertTrue($mailer->send('Test Mail', 'Test'));
     }
 }

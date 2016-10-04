@@ -28,4 +28,17 @@ class MigratorTest extends TestCase
         $this->assertTrue($this->container->has('migrator'));
         $this->assertInstanceOf(Migrator::class, $this->container->get('migrator'));
     }
+
+    public function test_should_create_migration_table()
+    {
+        $migrator = $this->container->get('migrator');
+        $hasMigrationTable = $this->invokeMethod($migrator, 'hasMigrationTable');
+
+        if (!$hasMigrationTable) {
+            $this->assertFalse($hasMigrationTable);
+            $this->assertTrue(\PDOStatement::class, $this->invokeMethod($migrator, 'createMigrationTable'));
+        }
+
+        $this->assertTrue($this->invokeMethod($migrator, 'hasMigrationTable'));
+    }
 }

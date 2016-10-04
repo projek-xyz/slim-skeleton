@@ -5,18 +5,21 @@ use Slim\PDO\Database;
 
 class Migration
 {
+    const TIMESTAMPS = 1;
+    const SOFTDELETES = 2;
+
     /**
-     *  @var  Database
+     * @var  Database
      */
     protected $database;
 
     /**
-     *  @var  string
+     * @var  string
      */
     protected $table;
 
     /**
-     *  @param  Database $database
+     * @param  Database $database
      */
     public function __construct(Database $database)
     {
@@ -24,7 +27,9 @@ class Migration
     }
 
     /**
-     *  @param  string $query
+     * @param  string $query
+     *
+     * @return \PDOStatement
      */
     public function query($query)
     {
@@ -32,8 +37,8 @@ class Migration
     }
 
     /**
-     *  @param  string $table
-     *  @param  array $schema
+     * @param  string $table
+     * @param  array $schema
      *
      * @return bool
      */
@@ -43,8 +48,8 @@ class Migration
     }
 
     /**
-     *  @param  string $table
-     *  @param  array $schema
+     * @param  string $table
+     * @param  array $schema
      *
      * @return bool
      */
@@ -54,7 +59,7 @@ class Migration
     }
 
     /**
-     *  @param  string $table
+     * @param  string $table
      *
      * @return bool
      */
@@ -64,8 +69,8 @@ class Migration
     }
 
     /**
-     *  @param  string $old
-     *  @param  string $new
+     * @param  string $old
+     * @param  string $new
      *
      * @return bool
      */
@@ -74,12 +79,15 @@ class Migration
         return $this->execSchema(new Schema\RenameSchema($old, $new));
     }
 
+    /**
+     * @param  Schema $schema
+     *
+     * @return bool
+     */
     protected function execSchema(Schema $schema)
     {
         $query = $schema->build($this->database);
 
-        $stmt = $this->database->query($query);
-
-        return $stmt->execute($schema->params());
+        return $this->database->exec($query);
     }
 }

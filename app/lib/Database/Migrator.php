@@ -13,6 +13,9 @@ class Migrator
      */
     protected $migrations = [];
 
+    /**
+     * @var Migration
+     */
     protected $migration;
 
     /**
@@ -36,11 +39,12 @@ class Migrator
             throw new \InvalidArgumentException('Migration directory not exists '.$this->directory);
         }
 
-        foreach (glob($this->directory.'/*.{php,sql}', GLOB_BRACE ) as $migration) {
+        foreach (glob($this->directory.'*.{php,sql}', GLOB_BRACE ) as $migration) {
             $this->migrations[] = $migration;
         }
 
         $this->database = $database;
+        $this->migration = new Migration($this->database);
     }
 
     public function migrate($action = 'up')
@@ -63,16 +67,14 @@ class Migrator
                     continue;
                 }
 
-                $this->callMigration($filepath, $action);
-
-                $this->updateMigrationTable($filepath, $batch, $action);
+                $this->callMigration($filepath, $action, $batch);
 
                 ++$migrated;
             }
 
             $this->database->commit();
 
-            return $migrated === 0 ? false : true;
+            return $migrated === 0 ? null : true;
         } catch (\PDOException $e) {
             $this->database->rollBack();
 
@@ -97,28 +99,37 @@ class Migrator
 
     protected function migratePhp($filepath, $action = 'up')
     {
-        $callable = require $filepath;
+        $migration = require $filepath;
+        $callable = null;
 
-        if (is_array($callable) && array_key_exists($action, $callable)) {
-            $callable = $callable[$action];
+        if (is_array($migration)) {
+            if (array_key_exists($action, $migration)) {
+                $callable = $migration[$action];
+            }
+
+            if (is_array($callable) && array_key_exists('table', $migration)) {
+                $definition = $callable;
+                $callable = function (Migration $table) use ($migration, $definition) {
+                    $table->create($migration['table'], $definition);
+                };
+            }
         }
 
         if (is_callable($callable)) {
-            $migration = $this->newMigration();
-
             if ($callable instanceof \Closure) {
-                $callable = $callable->bindTo($migration);
+                $callable = $callable->bindTo($this->migration);
             }
-
-            $callable($migration);
+            $callable($this->migration);
         }
     }
 
-    protected function callMigration($filepath, $action)
+    protected function callMigration($filepath, $action, $batch)
     {
         $ext = pathinfo($filepath, PATHINFO_EXTENSION);
 
-        return call_user_func([$this, 'migrate'.ucfirst($ext)], $filepath, $action);
+        call_user_func([$this, 'migrate'.ucfirst($ext)], $filepath, $action);
+
+        $this->updateMigrationTable($filepath, $batch, $action);
     }
 
     protected function isMigrated($filepath)
@@ -133,7 +144,7 @@ class Migrator
 
     protected function createMigrationTable()
     {
-        return $this->newMigration()->create(self::TABLE, [
+        return $this->migration->create(self::TABLE, [
             'id' => ['int' => 11, 'primary', 'null' => false, 'auto_increment'],
             'migration' => ['varchar' => 255, 'unique' ,'null' => false],
             'batch' => ['int' => 11, 'null' => false]
@@ -174,7 +185,7 @@ class Migrator
             ->orderBy('batch', 'desc')
             ->execute();
 
-        return $batch->rowCount() > 0 ? $batch->fetch()['batch']: 1;
+        return $batch->rowCount() > 0 ? $batch->fetch()['batch'] : 0;
     }
 
     protected function getPriorMigrationFiles($batch)
@@ -194,10 +205,5 @@ class Migrator
         }
 
         return $files;
-    }
-
-    protected function newMigration()
-    {
-        return new Migration($this->database);
     }
 }

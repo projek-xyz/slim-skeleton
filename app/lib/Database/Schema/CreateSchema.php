@@ -1,6 +1,8 @@
 <?php
 namespace Projek\Slim\Database\Schema;
 
+use Projek\Slim\Database\Migration;
+use Projek\Slim\Database\Models;
 use Projek\Slim\Database\Schema;
 use Slim\PDO\Database;
 
@@ -28,12 +30,41 @@ class CreateSchema extends Schema
     {
         $columns = [];
 
+        $this->normalizeColumn();
+
         foreach ($this->schema as $column => $definitions) {
             $columns[] = $column.' '.$this->buildDefinition($definitions);
             $this->params[] = $column;
         }
 
-        return sprintf('CREATE TABLE %s (%s)', $this->table, implode(',', $columns));
+        return sprintf('CREATE TABLE `%s` (%s)', $this->table, implode(',', $columns));
+    }
+
+    protected function normalizeColumn()
+    {
+        $fields = [
+            Migration::TIMESTAMPS => [Models::CREATED, Models::UPDATED],
+            Migration::SOFTDELETES => [Models::DELETED]
+        ];
+
+        $definitions = [
+            Models::CREATED => ['datetime', 'default' => null],
+            Models::UPDATED => ['timestamp', 'default' => null],
+            Models::DELETED => ['datetime', 'default' => null],
+        ];
+
+        foreach ($this->schema as $field => $definition) {
+            if (is_array($definition) ||
+                (!is_numeric($field) && !array_key_exists($definition, $fields))) {
+                continue;
+            }
+
+            foreach ($fields[$definition] as $column) {
+                $this->schema[$column] = $definitions[$column];
+            }
+
+            unset($this->schema[$field]);
+        }
     }
 
     protected function buildDefinition($definitions)
@@ -54,8 +85,13 @@ class CreateSchema extends Schema
 
     private function normalizeDefinition($key, $value)
     {
+        if (is_numeric($key) && in_array($value, ['null', null])) {
+            $key = $value;
+            $value = true;
+        }
+
         if (is_bool($value)) {
-            if ($key === 'null') {
+            if (in_array($key, ['null', null])) {
                 return $value === false ? 'NOT NULL' : ' NULL';
             }
 

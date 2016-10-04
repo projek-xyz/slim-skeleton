@@ -3,6 +3,7 @@ namespace Projek\Slim;
 
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
+use Projek\Slim\Database\Models;
 use Projek\Slim\Handlers\FoundHandler;
 use Projek\Slim\Mailer\MailDriverInterface;
 use Projek\Slim\Mailer\SmtpDriver;
@@ -97,7 +98,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
              *
              * @param  string $class
              *
-             * @return Database\Models|Object
+             * @return Models|Object
              */
             return function ($class) use ($container) {
                 if (!class_exists($class)) {
@@ -106,9 +107,9 @@ class DefaultServicesProvider implements ServiceProviderInterface
 
                 $model = new \ReflectionClass($class);
 
-                if (!$model->isSubclassOf(Database\Models::class)) {
+                if (!$model->isSubclassOf(Models::class)) {
                     throw new \InvalidArgumentException(
-                        sprintf('Data model must be instance of %s, %s given', Database\Models::class, $model->getName())
+                        sprintf('Data model must be instance of %s, %s given', Models::class, $model->getName())
                     );
                 }
 

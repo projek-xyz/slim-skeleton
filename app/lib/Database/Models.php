@@ -306,7 +306,7 @@ abstract class Models
     protected function normalizeJoins($model, $first = null, $second = null)
     {
         if (is_string($model)) {
-            $model = new $model
+            $model = new $model;
         }
 
         if (null === $first) {

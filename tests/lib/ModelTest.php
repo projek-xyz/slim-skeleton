@@ -1,7 +1,7 @@
 <?php
 namespace Projek\Slim\Tests;
 
-use Projek\Slim\Models;
+use Projek\Slim\Database\Models;
 
 class ModelTest extends TestCase
 {

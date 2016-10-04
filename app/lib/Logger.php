@@ -128,7 +128,7 @@ class Logger
     public function useFiles($level = Monolog::DEBUG, $rotate = null)
     {
         $rotate = is_bool($rotate) ? $rotate : $this->settings['rotate'];
-        $filepath = $this->settings['directory'].'/'.$this->name.'.log'
+        $filepath = $this->settings['directory'].'/'.$this->name.'.log';
         $handler = $rotate
             ? new Handler\RotatingFileHandler($filepath, $level)
             : new Handler\StreamHandler($filepath, 5, $level);

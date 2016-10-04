@@ -26,10 +26,6 @@ abstract class Schema
      */
     public function __construct($table, $schema = null)
     {
-        if (method_exists($this, 'validate')) {
-            $schema = $this->validate($schema);
-        }
-
         $this->table = $table;
         $this->schema = $schema;
     }

@@ -11,6 +11,6 @@ class DeleteSchema extends Schema
      */
     public function build(Database $database = null)
     {
-        return 'DROP TABLE '.$this->table;
+        return sprintf('DROP TABLE %s', $this->table);
     }
 }

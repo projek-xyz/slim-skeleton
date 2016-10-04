@@ -1,25 +1,12 @@
 <?php
 namespace Projek\Slim\Database\Schema;
 
-use Projek\Slim\Database\Migration;
-use Projek\Slim\Database\Models;
 use Projek\Slim\Database\Schema;
 use Slim\PDO\Database;
 
 class CreateSchema extends Schema
 {
-    protected $constraints = [
-        'bit' => ['bit'],
-        'int' => ['tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint'],
-        'real' => ['real', 'double', 'float', 'decimal', 'numeric'],
-        'date' => ['date', 'year', 'time', 'timestamp', 'datetime'],
-        'char' => ['char', 'varchar', 'binary', 'varbinary'],
-        'blob' => ['tinyblob', 'blob', 'mediumblob', 'longblob'],
-        'text' => ['tinytext', 'text', 'mediumtext', 'longtext'],
-        'enum' => ['enum'],
-    ];
-
-    protected $noValues = ['primary', 'index', 'unique', 'unsigned', 'auto_increment'];
+    use DefinitionsTrait;
 
     protected $indexes = [];
 
@@ -29,10 +16,9 @@ class CreateSchema extends Schema
     public function build(Database $database = null)
     {
         $columns = [];
+        $schema = $this->normalizeColumns($this->schema);
 
-        $this->normalizeColumn();
-
-        foreach ($this->schema as $column => $definitions) {
+        foreach ($schema as $column => $definitions) {
             $columns[] = $column.' '.$this->buildDefinition($definitions);
             $this->params[] = $column;
         }
@@ -40,106 +26,20 @@ class CreateSchema extends Schema
         return sprintf('CREATE TABLE `%s` (%s)', $this->table, implode(',', $columns));
     }
 
-    protected function normalizeColumn()
+    protected function normalizeColumns($columns)
     {
-        $fields = [
-            Migration::TIMESTAMPS => [Models::CREATED, Models::UPDATED],
-            Migration::SOFTDELETES => [Models::DELETED]
-        ];
-
-        $definitions = [
-            Models::CREATED => ['datetime', 'null', 'default' => '0000-00-00 00:00:00'],
-            Models::UPDATED => ['timestamp', 'null', 'on update' => 'current_timestamp'],
-            Models::DELETED => ['datetime', 'null', 'default' => '0000-00-00 00:00:00'],
-        ];
-
-        foreach ($this->schema as $field => $definition) {
-            if (is_array($definition) ||
-                (!is_numeric($field) && !array_key_exists($definition, $fields))) {
+        foreach ($columns as $column => $definition) {
+            if (!is_numeric($column) && is_array($definition)) {
                 continue;
             }
 
-            foreach ($fields[$definition] as $column) {
-                $this->schema[$column] = $definitions[$column];
+            foreach ($this->fields[$definition] as $field) {
+                $columns[$field] = $this->definitions[$field];
             }
 
-            unset($this->schema[$field]);
-        }
-    }
-
-    protected function buildDefinition($definitions)
-    {
-        if (is_string($definitions)) {
-            return $definitions;
+            unset($columns[$column]);
         }
 
-        $first = array_slice($definitions, 0, 1);
-        $build = $this->getConstraint(key($first), reset($first));
-
-        foreach (array_slice($definitions, 1) as $key => $value) {
-            $build[] = $this->normalizeDefinition($key, $value);
-        }
-
-        return implode(' ', $build);
-    }
-
-    private function normalizeDefinition($key, $value)
-    {
-        if (is_numeric($key) && in_array($value, ['null', null])) {
-            $key = $value;
-            $value = true;
-        }
-
-        if (is_bool($value)) {
-            if (in_array($key, ['null', null])) {
-                return $value === false ? 'NOT NULL' : ' NULL';
-            }
-
-            return $key;
-        }
-
-        if (is_numeric($key) && array_search($value, $this->noValues) !== false) {
-            $key = $value == 'primary' ? 'primary key' : $value;
-            $value = '';
-        } else {
-            if ($value == 'current_timestamp') {
-                $value = ' '.$value;
-            } else {
-                $value = ' \''.(null === $value ? 'null' : $value).'\'';
-            }
-        }
-
-        return strtoupper($key.$value);
-    }
-
-    private function getConstraint($definition, $value)
-    {
-        $column = [];
-        $constraints = $this->flattenConstrains();
-
-        if (is_numeric($definition) && isset($constraints[strtolower($value)])) {
-            $column[] = strtoupper($value);
-        } elseif (is_string($definition) && isset($constraints[strtolower($definition)])) {
-            $column[] = strtoupper($definition);
-
-            if (in_array($constraints[$definition], ['int', 'real', 'char'])) {
-                $column[] = '('.$value.')';
-            }
-        }
-
-        return [implode('', $column)];
-    }
-
-    private function flattenConstrains()
-    {
-        $constraints = [];
-
-        foreach ($this->constraints as $type => $constrain) {
-            foreach ($constrain as $datetype) {
-                $constraints[$datetype] = $type;
-            }
-        }
-
-        return $constraints;
+        return $columns;
     }
 }

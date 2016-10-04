@@ -58,12 +58,13 @@ class Migrator
                 $this->createMigrationTable();
             }
 
+            $isDown = $action == 'down';
             $batch = $this->getPriorMigration();
-            $migrations = $action == 'down' ? $this->getPriorMigrationFiles($batch) : $this->migrations;
+            $migrations = $isDown ? $this->getPriorMigrationFiles($batch) : $this->migrations;
 
             foreach ($migrations as $filepath) {
-                if (($this->isMigrated($filepath) && $action == 'up') ||
-                    (!$this->isMigrated($filepath) && $action == 'down')) {
+                if (($this->isMigrated($filepath) && !$isDown) ||
+                    (!$this->isMigrated($filepath) && $isDown)) {
                     continue;
                 }
 
@@ -108,7 +109,8 @@ class Migrator
             }
 
             if (array_key_exists('table', $migration) &&
-                (is_array($migration['up']) || !isset($migration['down']))
+                is_array($migration['up']) &&
+                !array_key_exists('down', $migration)
             ) {
                 $callable = function (Migration $table) use ($migration, $action) {
                     if ($action == 'up') {
@@ -169,13 +171,16 @@ class Migrator
 
     protected function updateMigrationTable($filepath, $batch, $action)
     {
+        $filename = basename($filepath);
+
         if ($action == 'up') {
             $stmt = $this->database->insert([
-                'migration' => basename($filepath),
+                'migration' => $filename,
                 'batch' => $batch + 1
             ])->into(self::TABLE);
         } else {
             $stmt = $this->database->delete(self::TABLE)
+                ->where('migration', '=', $filename)
                 ->where('batch', '=', $batch);
         }
 
@@ -209,6 +214,6 @@ class Migrator
             $files[] = $this->directory.$row['migration'];
         }
 
-        return $files;
+        return array_reverse($files);
     }
 }

@@ -59,13 +59,15 @@ class Migration
 
     /**
      * @param  string $table
-     * @param  array $schema
+     * @param  \Closure $callback
      *
      * @return bool
      */
-    public function alter($table, array $schema)
+    public function alter($table, \Closure $callback)
     {
-        return $this->execSchema(new Schema\AlterSchema($table, $schema));
+        $schema = new Schema\AlterSchema($table);
+
+        return $this->execSchema($schema->alter($callback));
     }
 
     /**

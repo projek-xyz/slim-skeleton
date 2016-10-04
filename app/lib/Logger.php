@@ -61,15 +61,9 @@ class Logger
 
         if ($path = $this->settings['directory']) {
             if ($path === 'syslog') {
-                $this->useSyslog($this->settings['level'], $this->name);
+                $this->useSyslog($this->settings['level']);
             } elseif (is_dir($path)) {
-                $path .= '/'.$this->name.'.log';
-
-                if ($this->settings['rotate']) {
-                    $this->useRotatingFiles($this->settings['level'], $path);
-                } else {
-                    $this->useFiles($this->settings['level'], $path);
-                }
+                $this->useFiles($this->settings['level']);
             }
         } else {
             $this->monolog->pushHandler(
@@ -86,48 +80,6 @@ class Logger
     public function getMonolog()
     {
         return $this->monolog;
-    }
-
-    /**
-     * Pushes a handler on to the stack.
-     *
-     * @param  \Monolog\Handler\HandlerInterface $handler
-     * @return \Monolog\Logger
-     */
-    public function pushHandler(Handler\HandlerInterface $handler)
-    {
-        return $this->monolog->pushHandler($handler);
-    }
-
-    /**
-     * Pops a handler from the stack
-     *
-     * @return \Monolog\Handler\HandlerInterface
-     */
-    public function popHandler()
-    {
-        return $this->monolog->popHandler();
-    }
-
-    /**
-     * Adds a processor on to the stack.
-     *
-     * @param  callable $callback
-     * @return \Monolog\Logger
-     */
-    public function pushProcessor($callback)
-    {
-        return $this->monolog->pushProcessor($callback);
-    }
-
-    /**
-     * Removes the processor on top of the stack and returns it.
-     *
-     * @return callable
-     */
-    public function popProcessor()
-    {
-        return $this->monolog->popProcessor();
     }
 
     /**
@@ -160,12 +112,30 @@ class Logger
      * Register a Syslog handler.
      *
      * @param  string $level
-     * @param  string $name
      */
-    public function useSyslog($level = Monolog::DEBUG, $name = null)
+    public function useSyslog($level = Monolog::DEBUG)
     {
-        $name || $name = $this->name;
-        $this->monolog->pushHandler(new Handler\SyslogHandler($name, LOG_USER, $level));
+        $this->monolog->pushHandler(new Handler\SyslogHandler($this->name, LOG_USER, $level));
+    }
+
+    /**
+     * Register a file log handler.
+     *
+     * @param  string $level
+     * @param  bool $rotate
+     * @return void
+     */
+    public function useFiles($level = Monolog::DEBUG, $rotate = null)
+    {
+        $rotate = is_bool($rotate) ? $rotate : $this->settings['rotate'];
+        $filepath = $this->settings['directory'].'/'.$this->name.'.log'
+        $handler = $rotate
+            ? new Handler\RotatingFileHandler($filepath, $level)
+            : new Handler\StreamHandler($filepath, 5, $level);
+
+        $this->monolog->pushHandler($handler);
+
+        $handler->setFormatter($this->getDefaultFormatter());
     }
 
     /**
@@ -179,35 +149,7 @@ class Logger
         $this->monolog->pushHandler(
             $handler = new Handler\ErrorLogHandler($messageType, $level)
         );
-        $handler->setFormatter($this->getDefaultFormatter());
-    }
 
-    /**
-     * Register a file log handler.
-     *
-     * @param  string $level
-     * @param  string $filename
-     * @return void
-     */
-    public function useFiles($level = Monolog::DEBUG, $filename = null)
-    {
-        $this->monolog->pushHandler(
-            $handler = new Handler\StreamHandler($filename, $level)
-        );
-        $handler->setFormatter($this->getDefaultFormatter());
-    }
-
-    /**
-     * Register a rotating file log handler.
-     *
-     * @param  string $level
-     * @param  string $filename
-     */
-    public function useRotatingFiles($level = Monolog::DEBUG, $filename = null)
-    {
-        $this->monolog->pushHandler(
-            $handler = new Handler\RotatingFileHandler($filename, 5, $level)
-        );
         $handler->setFormatter($this->getDefaultFormatter());
     }
 

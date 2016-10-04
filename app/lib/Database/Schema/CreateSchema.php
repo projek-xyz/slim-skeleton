@@ -48,9 +48,9 @@ class CreateSchema extends Schema
         ];
 
         $definitions = [
-            Models::CREATED => ['datetime', 'default' => null],
-            Models::UPDATED => ['timestamp', 'default' => null],
-            Models::DELETED => ['datetime', 'default' => null],
+            Models::CREATED => ['datetime', 'default' => '0000-00-00 00:00:00'],
+            Models::UPDATED => ['timestamp', 'default' => '0000-00-00 00:00:00'],
+            Models::DELETED => ['datetime', 'default' => '0000-00-00 00:00:00'],
         ];
 
         foreach ($this->schema as $field => $definition) {

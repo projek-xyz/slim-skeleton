@@ -1,6 +1,5 @@
 <?php
 namespace Projek\Slim;
-use Slim\PDO\Database;
 
 /**
  * @property-read callable data

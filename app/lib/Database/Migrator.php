@@ -39,7 +39,7 @@ class Migrator
             throw new \InvalidArgumentException('Migration directory not exists '.$this->directory);
         }
 
-        foreach (glob($this->directory.'*.{php,sql}', GLOB_BRACE ) as $migration) {
+        foreach (glob($this->directory.'*.{php,sql}', GLOB_BRACE) as $migration) {
             $this->migrations[] = $migration;
         }
 

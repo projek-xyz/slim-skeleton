@@ -29,6 +29,7 @@
 
     <php>
         <env name="APP_ENV" value="testing"/>
+        <const name="ROOT_DIR" value="../"/>
     </php>
 
 </phpunit>

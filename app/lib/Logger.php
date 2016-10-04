@@ -59,7 +59,9 @@ class Logger
             $this->settings['level'] = Monolog::DEBUG;
         }
 
-        if ($path = $this->settings['directory']) {
+        $directory = $this->settings['directory'] ?: setting('directories.storage').'logs';
+
+        if ($directory) {
             if ($path === 'syslog') {
                 $this->useSyslog($this->settings['level']);
             } elseif (is_dir($path)) {

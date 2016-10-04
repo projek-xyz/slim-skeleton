@@ -19,7 +19,7 @@ class Uploader
         $this->settings = array_merge($this->settings, $settings);
 
         if (null === $this->settings['directory']) {
-            $this->settings['directory'] = STORAGE_DIR.'uploads';
+            $this->settings['directory'] = setting('directories.storage').'uploads';
         }
     }
 

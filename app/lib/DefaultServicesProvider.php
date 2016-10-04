@@ -122,8 +122,12 @@ class DefaultServicesProvider implements ServiceProviderInterface
          *
          * @return Database\Migrator
          */
-        $container[Database\Migrator::class] = function ($container) {
-            return new Database\Migrator($container->get('db'), RES_DIR.'data');
+        $container[Database\Migrator::class] = function ($container) use ($settings) {
+            $directory = isset($settings['migration']['directory'])
+                ? $settings['migration']['directory']
+                : RES_DIR.'data';
+
+            return new Database\Migrator($container->get('db'), $directory);
         };
 
         /**

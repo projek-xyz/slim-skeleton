@@ -12,6 +12,15 @@ class Container extends SlimContainer
      */
     public function __construct(array $value = [])
     {
+        if (defined('ROOT_DIR')) {
+            $value['settings']['directories'] = [
+                'app' => ROOT_DIR.'app';
+                'resources' => ROOT_DIR.'resources';
+                'storage' => ROOT_DIR.'storage';
+                'public' => ROOT_DIR.'public';
+            ];
+        }
+
         parent::__construct($value);
 
         $settings = $this->get('settings');

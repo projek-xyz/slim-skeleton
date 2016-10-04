@@ -46,20 +46,17 @@ return [
 
     // Loggin settings
     'logger' => [
-        'directory' => STORAGE_DIR.'logs',
         'rotate'    => true,
         'level'     => 'DEBUG'
     ],
 
     // View settings
     'view' => [
-        'directory'     => RES_DIR.'views',
         'fileExtension' => 'tpl',
     ],
 
     // Uploader settings
     'upload' => [
-        'directory'  => STORAGE_DIR.'uploads',
         'extensions' => ['image/jpeg', 'image/png']
     ],
 ];

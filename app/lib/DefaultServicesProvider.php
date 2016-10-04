@@ -97,7 +97,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
              *
              * @param  string $class
              *
-             * @return Models|Object
+             * @return Database\Models|Object
              */
             return function ($class) use ($container) {
                 if (!class_exists($class)) {
@@ -106,9 +106,9 @@ class DefaultServicesProvider implements ServiceProviderInterface
 
                 $model = new \ReflectionClass($class);
 
-                if (!$model->isSubclassOf(Models::class)) {
+                if (!$model->isSubclassOf(Database\Models::class)) {
                     throw new \InvalidArgumentException(
-                        sprintf('Data model must be instance of %s, %s given', Models::class, $model->getName())
+                        sprintf('Data model must be instance of %s, %s given', Database\Models::class, $model->getName())
                     );
                 }
 

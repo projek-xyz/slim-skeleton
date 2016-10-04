@@ -1,5 +1,5 @@
 <?php
-namespace Projek\Slim;
+namespace Projek\Slim\Database;
 
 use Slim\PDO\Database;
 use Slim\PDO\Statement\StatementContainer;

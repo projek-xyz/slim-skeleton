@@ -11,7 +11,7 @@ namespace Projek\Slim;
  * @property-read callable upload
  * @property-read callable validator
  * @property-read View view
- * @method Models data(string $modelClass)
+ * @method Database\Models data(string $modelClass)
  * @method void upload(\Psr\Http\Message\UploadedFileInterface $file)
  * @method bool logger(integer $level, string $message, array $context = [])
  * @method \Valitron\Validator validator(array|\Psr\Http\Message\ServerRequestInterface $data, array $rules)

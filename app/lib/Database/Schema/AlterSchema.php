@@ -113,7 +113,7 @@ class AlterSchema extends Schema
         return $this;
     }
 
-    public function addForeign($reference, $field, $column = null, $foreign = null )
+    public function addForeign($reference, $field, $column = null, $foreign = null)
     {
         $column = $column ?: $reference.'_'.$field;
         $foreign = $foreign ?: $this->table.'_'.$column;

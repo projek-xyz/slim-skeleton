@@ -1,6 +1,6 @@
 <?php
 
-use Projek\Slim\Database\Migration;
+use Projek\Slim\Database\Blueprint;
 
 return [
     'up' => function () {
@@ -8,8 +8,8 @@ return [
             'id' => ['int' => 11, 'primary', 'null' => false, 'auto_increment'],
             'name' => ['varchar' => 100, 'null' => false],
             'address' => ['text', 'null' => false],
-            Migration::TIMESTAMPS,
-            Migration::SOFTDELETES,
+            Blueprint::TIMESTAMPS,
+            Blueprint::SOFTDELETES,
         ]);
     },
     'down' => function () {

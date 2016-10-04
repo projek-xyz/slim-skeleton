@@ -14,7 +14,7 @@ class Migrator
     protected $migrations = [];
 
     /**
-     * @var Migration
+     * @var Blueprint
      */
     protected $migration;
 
@@ -44,7 +44,6 @@ class Migrator
         }
 
         $this->database = $database;
-        $this->migration = new Migration($this->database);
     }
 
     public function migrate($action = 'up')
@@ -102,21 +101,23 @@ class Migrator
     {
         $migration = require $filepath;
         $callable = null;
+        $schema = $this->newMigration();
 
         if (is_array($migration)) {
             if (array_key_exists($action, $migration)) {
                 $callable = $migration[$action];
             }
 
-            if (array_key_exists('table', $migration) &&
-                is_array($migration['up']) &&
-                !array_key_exists('down', $migration)
-            ) {
-                $callable = function (Migration $table) use ($migration, $action) {
+            if (array_key_exists('table', $migration)) {
+                $schema->table($migration['table']);
+            }
+
+            if (is_array($migration['up']) || !array_key_exists('down', $migration)) {
+                $callable = function (Blueprint $schema) use ($migration, $action) {
                     if ($action == 'up') {
-                        $table->create($migration['table'], $migration[$action]);
+                        $schema->create($migration[$action]);
                     } else {
-                        $table->delete($migration['table']);
+                        $schema->delete();
                     }
                 };
             }
@@ -124,9 +125,9 @@ class Migrator
 
         if (is_callable($callable)) {
             if ($callable instanceof \Closure) {
-                $callable = $callable->bindTo($this->migration);
+                $callable = $callable->bindTo($this->database);
             }
-            $callable($this->migration);
+            $callable($schema);
         }
     }
 
@@ -151,7 +152,7 @@ class Migrator
 
     protected function createMigrationTable()
     {
-        return $this->migration->create(self::TABLE, [
+        return $this->newMigration(self::TABLE)->create([
             'id' => ['int' => 11, 'primary', 'null' => false, 'auto_increment'],
             'migration' => ['varchar' => 255, 'unique' ,'null' => false],
             'batch' => ['int' => 11, 'null' => false]
@@ -215,5 +216,10 @@ class Migrator
         }
 
         return array_reverse($files);
+    }
+
+    private function newMigration($table = null)
+    {
+        return new Blueprint($this->database, $table);
     }
 }

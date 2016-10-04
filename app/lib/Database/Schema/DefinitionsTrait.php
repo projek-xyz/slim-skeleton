@@ -1,7 +1,7 @@
 <?php
 namespace Projek\Slim\Database\Schema;
 
-use Projek\Slim\Database\Migration;
+use Projek\Slim\Database\Blueprint;
 use Projek\Slim\Database\Models;
 
 trait DefinitionsTrait
@@ -20,8 +20,8 @@ trait DefinitionsTrait
     protected $noValues = ['primary', 'index', 'unique', 'unsigned', 'auto_increment'];
 
     protected $fields = [
-        Migration::TIMESTAMPS => [Models::CREATED, Models::UPDATED],
-        Migration::SOFTDELETES => [Models::DELETED]
+        Blueprint::TIMESTAMPS  => [Models::CREATED, Models::UPDATED],
+        Blueprint::SOFTDELETES => [Models::DELETED]
     ];
 
     protected $definitions = [

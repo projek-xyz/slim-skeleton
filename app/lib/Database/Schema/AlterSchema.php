@@ -22,16 +22,9 @@ class AlterSchema extends Schema
         return sprintf('ALTER TABLE %s %s', $this->table, (string) $this);
     }
 
-    public function alter(\Closure $callback)
+    public function rename($newName)
     {
-        $this->callback = $callback->bindTo($this);
-
-        return $this;
-    }
-
-    public function rename($new)
-    {
-        $this->build[] = sprintf('RENAME TO %s', $new);
+        $this->build[] = sprintf('RENAME TO %s', $newName);
 
         return $this;
     }
@@ -78,9 +71,9 @@ class AlterSchema extends Schema
         return $this;
     }
 
-    public function renameIndex($old, $new)
+    public function renameIndex($indexName, $newname)
     {
-        $this->build[] = sprintf('RENAME INDEX %s TO %s', $old, $new);
+        $this->build[] = sprintf('RENAME INDEX %s TO %s', $indexName, $newname);
 
         return $this;
     }

@@ -8,14 +8,14 @@ if ($uri !== '/' && file_exists(__DIR__.'/'.$uri)) {
     return false;
 }
 
-/** @define "APP_DIR" "../app/" */
+/** @var "../app/" $app_dir */
 $app = require dirname(__DIR__) . '/app/bootstrap.php';
 
 // Setup middlewares
-require_once APP_DIR.'middlewares.php';
+require_once directory('app').'middlewares.php';
 
 // Setup routers
-require_once APP_DIR.'routes/web.php';
+require_once directory('app').'routes/web.php';
 
 // Go!
 $app->run();

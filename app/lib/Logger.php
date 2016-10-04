@@ -61,10 +61,10 @@ class Logger
 
         $directory = $this->settings['directory'] ?: setting('directories.storage').'logs';
 
-        if ($directory) {
-            if ($path === 'syslog') {
+        if ($directory && getenv('APP_ENV') !== 'testing') {
+            if ($directory === 'syslog') {
                 $this->useSyslog($this->settings['level']);
-            } elseif (is_dir($path)) {
+            } elseif (is_dir($directory)) {
                 $this->useFiles($this->settings['level']);
             }
         } else {

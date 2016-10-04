@@ -13,4 +13,9 @@ class MigratorTest extends TestCase
 
         parent::setUp();
     }
+
+    public function test_should_be_true()
+    {
+        $this->assertTrue(true);
+    }
 }

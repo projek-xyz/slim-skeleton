@@ -20,6 +20,25 @@ if (!function_exists('app')) {
     }
 }
 
+if (!function_exists('directory')) {
+    /**
+     * @param  string $path
+     *
+     * @return string
+     */
+    function directory($path)
+    {
+        if (empty($path)) {
+            return ROOT_DIR;
+        }
+
+        $paths = explode('.', $path);
+        $dir = array_shift($paths);
+
+        return setting('directories.'.$dir).($paths ? implode('/', $paths).'/' : '');
+    }
+}
+
 if (!function_exists('setting')) {
     /**
      * @param  string       $name    Setting key name

@@ -14,10 +14,10 @@ class Container extends SlimContainer
     {
         if (defined('ROOT_DIR')) {
             $value['settings']['directories'] = [
-                'app' => ROOT_DIR.'app';
-                'resources' => ROOT_DIR.'resources';
-                'storage' => ROOT_DIR.'storage';
-                'public' => ROOT_DIR.'public';
+                'app' => ROOT_DIR.'app/',
+                'resources' => ROOT_DIR.'resources/',
+                'storage' => ROOT_DIR.'storage/',
+                'public' => ROOT_DIR.'public/',
             ];
         }
 

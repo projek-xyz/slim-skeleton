@@ -46,8 +46,8 @@ return [
 
     // Loggin settings
     'logger' => [
-        'rotate'    => true,
-        'level'     => 'DEBUG'
+        'rotate' => true,
+        'level'  => 'DEBUG'
     ],
 
     // View settings

@@ -16,9 +16,10 @@ class Migrator
     protected $database
 
     /**
+     *  @param  Database $database
      *  @param  string $directory
      */
-    public function __construct($directory, Database $database)
+    public function __construct(Database $database, $directory)
     {
         if (!is_dir($directory)) {
             throw new \InvalidArgumentException('Migration directory not exists');

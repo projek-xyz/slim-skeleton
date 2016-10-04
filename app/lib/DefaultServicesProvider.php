@@ -3,6 +3,7 @@ namespace Projek\Slim;
 
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
+use Projek\Slim\Database\Migrator;
 use Projek\Slim\Database\Models;
 use Projek\Slim\Handlers\FoundHandler;
 use Projek\Slim\Mailer\MailDriverInterface;
@@ -120,14 +121,16 @@ class DefaultServicesProvider implements ServiceProviderInterface
         /**
          * Setup Migrator
          *
-         * @return Database\Migrator
+         * @param  \Slim\Container $container
+         *
+         * @return Migrator
          */
-        $container[Database\Migrator::class] = function ($container) use ($settings) {
+        $container['migrator'] = function ($container) use ($settings) {
             $directory = isset($settings['migration']['directory'])
                 ? $settings['migration']['directory']
-                : RES_DIR.'data';
+                : directory('resources.data');
 
-            return new Database\Migrator($container->get('db'), $directory);
+            return new Migrator($container->get('db'), $directory);
         };
 
         /**

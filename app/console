@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+$app = require __DIR__ . '/bootstrap.php';
+
+// Setup routers
+require_once __DIR__.'/routes/cli.php';
+
+// Go!
+$app->run();

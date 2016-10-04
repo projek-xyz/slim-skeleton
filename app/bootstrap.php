@@ -1,11 +1,12 @@
 <?php
 
+/** @define "ROOT_DIR" "../" */
 define('ROOT_DIR', dirname(__DIR__).'/');
 
 use Projek\Slim\Container;
 
 // Loading vendors
-require __DIR__.'/../vendor/autoload.php';
+require ROOT_DIR.'vendor/autoload.php';
 
 if (file_exists(ROOT_DIR.'.env')) {
     (new Dotenv\Dotenv(ROOT_DIR))->load();

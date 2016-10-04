@@ -1,5 +1,6 @@
 <?php
 namespace Projek\Slim;
+use Slim\PDO\Database;
 
 /**
  * @property-read callable data
@@ -10,6 +11,7 @@ namespace Projek\Slim;
  * @property-read \Slim\Collection settings
  * @property-read callable upload
  * @property-read callable validator
+ * @property-read Database\Migrator migrator
  * @property-read View view
  * @method Database\Models data(string $modelClass)
  * @method void upload(\Psr\Http\Message\UploadedFileInterface $file)

@@ -8,34 +8,47 @@ abstract class Schema
     /**
      *  @var  string
      */
+    protected $table = '';
+
+    /**
+     *  @var  mixed
+     */
     protected $schema = '';
 
     /**
-     *  @param  array $schema
+     *  @var  array
      */
-    public function __construct(array $schema)
+    protected $params = '';
+
+    /**
+     *  @param  string $table
+     *  @param  array|string $schema
+     */
+    public function __construct($table, $schema = null)
     {
+        $this->table = $table;
+
         if (method_exists($this, 'validate')) {
             $schema = $this->validate($schema);
         }
 
-        $this->schema = $this->build($schema);
+        $this->params = [$this->table];
+        $this->schema = $schema;
     }
 
     /**
      *  Build schema
      *
-     *  @param  array $schema
      *  @param  SlimDatabase|null $database
      *  @return string
      */
-    abstract protected function build(array $schema, SlimDatabase $database = null);
+    abstract public function build(SlimDatabase $database = null);
 
     /**
-     *  @return string
+     * @return  array
      */
-    public function __toString()
+    public function params()
     {
-        return $this->schema;
+        return $this->params;
     }
 }

@@ -20,11 +20,11 @@ mysql:
 
 before_install:
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $NODEJS_VERSION
+  - mysql -e "create database if not exists ${DB_NAME}"
 
 install:
   - npm -g update -q && npm i -q
-  - mysql -e "create database if not exists ${DB_NAME}"
-  - mysql ${DB_NAME} < tests/fixture.sql
+  - php app/console migrate
   - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then composer require satooshi/php-coveralls:dev-master squizlabs/php_codesniffer:^2.6 -n -q; fi
   - if [[ "$TRAVIS_PHP_VERSION" != '5.6' ]]; then composer install -n -q; fi
 

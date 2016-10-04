@@ -6,7 +6,7 @@ use Slim\PDO\Database;
 
 class CreateSchema extends Schema
 {
-    protected $constrains = [
+    protected $constraints = [
         'bit' => ['bit'],
         'int' => ['tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint'],
         'real' => ['real', 'double', 'float', 'decimal', 'numeric'],
@@ -17,18 +17,23 @@ class CreateSchema extends Schema
         'enum' => ['enum'],
     ];
 
+    protected $noValues = ['primary', 'index', 'unique', 'unsigned', 'auto_increment'];
+
+    protected $indexes = [];
+
     /**
      *  {@inheritdoc}
      */
-    protected function build(array $schema, Database $database = null)
+    public function build(Database $database = null)
     {
         $columns = [];
 
-        foreach ($schema as $column => $def) {
-            $columns[] = $column.' '.$this->buildDefinition($def);
+        foreach ($this->schema as $column => $definitions) {
+            $columns[] = $column.' '.$this->buildDefinition($definitions);
+            $this->params[] = $column;
         }
 
-        return '('.implode(',', $columns).')';
+        return sprintf('CREATE TABLE %s (%s)', $this->table, implode(',', $columns));
     }
 
     protected function buildDefinition($definitions)
@@ -37,64 +42,64 @@ class CreateSchema extends Schema
             return $definitions;
         }
 
-        $build = [];
+        $first = array_slice($definitions, 0, 1);
+        $build = $this->getConstraint(key($first), reset($first));
 
-        foreach ($definitions as $definition => $value) {
-            $column = $this->getColumnConstrain($definition, $value);
-
-            if (is_bool($value)) {
-                if ($definition === 'null') {
-                    $column .= $value === false ? ' NOT NULL' : ' NULL';
-                } else {
-                    $column .= ' '.$definition;
-                }
-            } else {
-                $column .= $definition.' '.$value;
-            }
-
-            $build[] = $column;
+        foreach (array_slice($definitions, 1) as $key => $value) {
+            $build[] = $this->normalizeDefinition($key, $value);
         }
 
         return implode(' ', $build);
     }
 
-    private function getColumnConstrain($definition, $value)
+    private function normalizeDefinition($key, $value)
     {
-        $column = '';
-        $constrains = $this->flattenConstrains();
+        if (is_bool($value)) {
+            if ($key === 'null') {
+                return $value === false ? 'NOT NULL' : ' NULL';
+            }
 
-        foreach ($constrains as $constrain) {
-            if (!isset($definition[$constrain])) {
-                throw new \InvalidArgumentException('No column constraint defined');
-            } else {
-                $column = $constrain;
-                if (in_array($constrains[$constrain], ['int', 'real', 'char'])) {
-                    $column .= '('.$value.')';
-                }
+            return $key;
+        }
+
+        if (is_numeric($key) && array_search($value, $this->noValues) !== false) {
+            $key = $value == 'primary' ? 'primary key' : $value;
+            $value = '';
+        } else {
+            $value = ' '.(null === $value ? 'null' : $value);
+        }
+
+        return strtoupper($key.$value);
+    }
+
+    private function getConstraint($definition, $value)
+    {
+        $column = [];
+        $constraints = $this->flattenConstrains();
+
+        if (is_numeric($definition) && isset($constraints[strtolower($value)])) {
+            $column[] = strtoupper($value);
+        } elseif (is_string($definition) && isset($constraints[strtolower($definition)])) {
+            $column[] = strtoupper($definition);
+
+            if (in_array($constraints[$definition], ['int', 'real', 'char'])) {
+                $column[] = '('.$value.')';
             }
         }
 
-        return $column;
+        return [implode('', $column)];
     }
 
     private function flattenConstrains()
     {
-        $constrains = [];
+        $constraints = [];
 
-        foreach ($this->constrains as $type => $constrain) {
+        foreach ($this->constraints as $type => $constrain) {
             foreach ($constrain as $datetype) {
-                $constrains[$datetype] = $type;
+                $constraints[$datetype] = $type;
             }
         }
 
-        return $constrain;
-    }
-
-    /**
-     *  {@inheritdoc}
-     */
-    public function __toString()
-    {
-        return 'CREATE TABLE ? '.parent::__toString();
+        return $constraints;
     }
 }

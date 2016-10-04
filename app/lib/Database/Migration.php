@@ -33,47 +33,53 @@ class Migration
 
     /**
      *  @param  string $table
+     *  @param  array $schema
+     *
+     * @return bool
      */
     public function create($table, array $schema)
     {
-        $schema = new Schema\CreateSchema($schema);
-        $stmt = $this->database->prepare((string) $schema);
-
-        return $stmt->execute([$table]);
+        return $this->execSchema(new Schema\CreateSchema($table, $schema));
     }
 
     /**
-     *  NOT IMPLEMENTED
-     *
      *  @param  string $table
+     *  @param  array $schema
+     *
+     * @return bool
      */
     public function table($table, array $schema)
     {
-        // $schema = new Schema\AlterSchema($schema);
-        // $stmt = $this->database->prepare((string) $schema);
-
-        // return $stmt->execute([$table]);
-        return false;
+        return $this->execSchema(new Schema\AlterSchema($table, $schema));
     }
 
     /**
      *  @param  string $table
+     *
+     * @return bool
      */
     public function delete($table)
     {
-        $stmt = $this->database->prepare('DROP TABLE ?');
-
-        return $stmt->execute([$table]);
+        return $this->execSchema(new Schema\DeleteSchema($table));
     }
 
     /**
      *  @param  string $old
      *  @param  string $new
+     *
+     * @return bool
      */
     public function rename($old, $new)
     {
-        $stmt = $this->database->prepare('RENAME TABLE ? TO ?');
+        return $this->execSchema(new Schema\RenameSchema($old, $new));
+    }
 
-        return $stmt->execute([$old, $new]);
+    protected function execSchema(Schema $schema)
+    {
+        $query = $schema->build($this->database);
+
+        $stmt = $this->database->query($query);
+
+        return $stmt->execute($schema->params());
     }
 }

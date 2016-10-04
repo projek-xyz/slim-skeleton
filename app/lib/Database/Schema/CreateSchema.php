@@ -2,6 +2,7 @@
 namespace Projek\Slim\Database\Schema;
 
 use Projek\Slim\Database\Schema;
+use Slim\PDO\Database;
 
 class CreateSchema extends Schema
 {
@@ -19,7 +20,7 @@ class CreateSchema extends Schema
     /**
      *  {@inheritdoc}
      */
-    protected function build(array $schema)
+    protected function build(array $schema, Database $database = null)
     {
         $columns = [];
 
@@ -36,31 +37,17 @@ class CreateSchema extends Schema
             return $definitions;
         }
 
-        $constrains = [];
         $build = [];
 
-        foreach ($this->constrains as $type => $constrain) {
-            foreach ($constrain as $datetype) {
-                $constrains[$datetype] = $type;
-            }
-        }
-
         foreach ($definitions as $definition => $value) {
-            $column = '';
+            $column = $this->getColumnConstrain($definition, $value);
 
-            foreach ($constrains as $constrain) {
-                if (!isset($definition[$constrain])) {
-                    throw new \InvalidArgumentException('No column constraint defined');
+            if (is_bool($value)) {
+                if ($definition === 'null') {
+                    $column .= $value === false ? ' NOT NULL' : ' NULL';
                 } else {
-                    $column = $constrain;
-                    if (in_array($constrains[$constrain], ['int', 'real', 'char'])) {
-                        $column .= '('.$value.')';
-                    }
+                    $column .= ' '.$definition;
                 }
-            }
-
-            if (true === $value) {
-                $column .= ' '.$definition;
             } else {
                 $column .= $definition.' '.$value;
             }
@@ -69,6 +56,38 @@ class CreateSchema extends Schema
         }
 
         return implode(' ', $build);
+    }
+
+    private function getColumnConstrain($definition, $value)
+    {
+        $column = '';
+        $constrains = $this->flattenConstrains();
+
+        foreach ($constrains as $constrain) {
+            if (!isset($definition[$constrain])) {
+                throw new \InvalidArgumentException('No column constraint defined');
+            } else {
+                $column = $constrain;
+                if (in_array($constrains[$constrain], ['int', 'real', 'char'])) {
+                    $column .= '('.$value.')';
+                }
+            }
+        }
+
+        return $column;
+    }
+
+    private function flattenConstrains()
+    {
+        $constrains = [];
+
+        foreach ($this->constrains as $type => $constrain) {
+            foreach ($constrain as $datetype) {
+                $constrains[$datetype] = $type;
+            }
+        }
+
+        return $constrain;
     }
 
     /**

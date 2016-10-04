@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'up' => function ($migrator) {
-        $migrator->create('dummy', [
+    'up' => function () {
+        $this->create('dummy', [
             'id' => ['int' => 11, 'primary', 'null' => false, 'auto_increment'],
             'name' => ['varchar' => 100, 'null' => false],
             'address' => ['text' => true, 'null' => false],
@@ -11,7 +11,7 @@ return [
             'updated_at' => ['timestamp' => true, 'default' => null],
         ]);
     },
-    'down' => function ($migrator) {
-        $migrator->delete('dummy');
+    'down' => function () {
+        $this->delete('dummy');
     }
 ];

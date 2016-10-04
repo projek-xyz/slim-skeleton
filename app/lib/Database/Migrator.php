@@ -106,10 +106,10 @@ class Migrator
             $migration = $this->newMigration();
 
             if ($callable instanceof \Closure) {
-                $callable->bindTo($migration);
+                $callable = $callable->bindTo($migration);
             }
 
-            call_user_func($callable, $migration);
+            $callable($migration);
         }
     }
 

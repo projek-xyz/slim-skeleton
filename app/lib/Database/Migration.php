@@ -27,6 +27,16 @@ class Migration
     }
 
     /**
+     * @param  string $statement
+     *
+     * @return int|bool
+     */
+    public function exec($statement)
+    {
+        return $this->database->exec($statement);
+    }
+
+    /**
      * @param  string $query
      *
      * @return \PDOStatement
@@ -53,7 +63,7 @@ class Migration
      *
      * @return bool
      */
-    public function table($table, array $schema)
+    public function alter($table, array $schema)
     {
         return $this->execSchema(new Schema\AlterSchema($table, $schema));
     }

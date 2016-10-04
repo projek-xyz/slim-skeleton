@@ -49,7 +49,7 @@ class CreateSchema extends Schema
 
         $definitions = [
             Models::CREATED => ['datetime', 'null', 'default' => '0000-00-00 00:00:00'],
-            Models::UPDATED => ['datetime', 'null', 'on update' => 'current_timestamp'],
+            Models::UPDATED => ['timestamp', 'null', 'on update' => 'current_timestamp'],
             Models::DELETED => ['datetime', 'null', 'default' => '0000-00-00 00:00:00'],
         ];
 

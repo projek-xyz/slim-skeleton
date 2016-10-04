@@ -8,7 +8,7 @@
     "url": "https://github.com/projek-xyz/slim-skeleton/issues"
   },
   "engines": {
-    "node": ">=4.2"
+    "node": ">=6.0"
   },
   "scripts": {
     "gulp": "gulp",

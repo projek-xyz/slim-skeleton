@@ -49,7 +49,7 @@ class CreateSchema extends Schema
 
         $definitions = [
             Models::CREATED => ['datetime', 'null', 'default' => '0000-00-00 00:00:00'],
-            Models::UPDATED => ['timestamp', 'null', 'default' => 'current_timestamp'],
+            Models::UPDATED => ['datetime', 'null', 'on update' => 'current_timestamp'],
             Models::DELETED => ['datetime', 'null', 'default' => '0000-00-00 00:00:00'],
         ];
 
@@ -102,7 +102,11 @@ class CreateSchema extends Schema
             $key = $value == 'primary' ? 'primary key' : $value;
             $value = '';
         } else {
-            $value = ' '.(null === $value ? 'null' : $value);
+            if ($value == 'current_timestamp') {
+                $value = ' '.$value;
+            } else {
+                $value = ' \''.(null === $value ? 'null' : $value).'\'';
+            }
         }
 
         return strtoupper($key.$value);

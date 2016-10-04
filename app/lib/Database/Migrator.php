@@ -107,10 +107,15 @@ class Migrator
                 $callable = $migration[$action];
             }
 
-            if (is_array($callable) && array_key_exists('table', $migration)) {
-                $definition = $callable;
-                $callable = function (Migration $table) use ($migration, $definition) {
-                    $table->create($migration['table'], $definition);
+            if (array_key_exists('table', $migration) &&
+                (is_array($migration['up']) || !isset($migration['down']))
+            ) {
+                $callable = function (Migration $table) use ($migration, $action) {
+                    if ($action == 'up') {
+                        $table->create($migration['table'], $migration[$action]);
+                    } else {
+                        $table->delete($migration['table']);
+                    }
                 };
             }
         }

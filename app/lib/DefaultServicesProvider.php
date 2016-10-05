@@ -5,7 +5,6 @@ use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
 use Projek\Slim\Database\Migrator;
 use Projek\Slim\Database\Models;
-use Projek\Slim\Handlers\FoundHandler;
 use Projek\Slim\Mailer\MailDriverInterface;
 use Projek\Slim\Mailer\SmtpDriver;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,7 +20,13 @@ class DefaultServicesProvider implements ServiceProviderInterface
      */
     public function register(PimpleContainer $container)
     {
+        /** @var Collection $settings */
         $settings = $container->get('settings');
+
+        /**
+         * Change default 'displayErrorDetails' settings
+         */
+        $settings->set('displayErrorDetails', $settings['mode'] === 'production');
 
         /**
          * Override default Slim foundHandler container.
@@ -29,19 +34,17 @@ class DefaultServicesProvider implements ServiceProviderInterface
          * @return \Slim\Interfaces\InvocationStrategyInterface
          */
         $container['foundHandler'] = function () {
-            return new FoundHandler;
+            return new Handlers\FoundHandler;
         };
 
-        if ($settings['mode'] === 'production') {
-            /**
-             * Override default Slim errorHandler container.
-             *
-             * @return callable
-             */
-            $container['errorHandler'] = function () use ($settings) {
-                return new Handlers\ErrorHandler($settings['displayErrorDetails']);
-            };
-        }
+        /**
+         * Override default Slim errorHandler container.
+         *
+         * @return callable
+         */
+        $container['errorHandler'] = function () use ($settings) {
+            return new Handlers\ErrorHandler($settings['displayErrorDetails']);
+        };
 
         /**
          * Override default Slim notFoundHandler container.
@@ -70,6 +73,10 @@ class DefaultServicesProvider implements ServiceProviderInterface
          * @return Logger
          */
         $container['logger'] = function () use ($settings) {
+            if ($timezone = $settings['timezone']) {
+                Monolog::setTimezone(new \DateTimeZone($timezone));
+            }
+
             return new Logger($settings['basename'], $settings['logger'] ?: []);
         };
 

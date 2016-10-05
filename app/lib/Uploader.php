@@ -8,7 +8,8 @@ class Uploader
 {
     protected $settings = [
         'directory' => null,
-        'extensions' => []
+        'extensions' => [],
+        'maxSize' => null
     ];
 
     /**
@@ -18,9 +19,8 @@ class Uploader
     {
         $this->settings = array_merge($this->settings, $settings);
 
-        if (null === $this->settings['directory']) {
-            $this->settings['directory'] = setting('directories.storage').'uploads';
-        }
+        $this->settings['directory'] || $this->settings['directory'] = directory('storage.uploads');
+        $this->settings['maxSize'] || $this->settings['maxSize'] = ini_get('upload_max_filesize');
     }
 
     /**
@@ -36,7 +36,7 @@ class Uploader
             throw new \InvalidArgumentException('Filetype not allowed');
         }
 
-        if ($file->getSize() > sizes_to_bites(ini_get('upload_max_filesize'))) {
+        if ($file->getSize() > sizes_to_bites($this->settings['maxSize'])) {
             throw new \InvalidArgumentException('Filesize is too big');
         }
 
@@ -49,7 +49,7 @@ class Uploader
     {
         /** @var \League\Flysystem\Filesystem $fs */
         $fs = app('filesystem');
-        $path = str_replace(STORAGE_DIR, '', $this->settings['directory']);
+        $path = str_replace(directory('storage'), '', $this->settings['directory']);
 
         if (!$fs->has($path)) {
             $fs->createDir($path);

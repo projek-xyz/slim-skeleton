@@ -44,7 +44,7 @@ class FileSystem
         $this->manager = new MountManager;
 
         if ($default === 'local') {
-            $directory = $this->settings[$default]['directory'] ?: setting('directories.storage');
+            $directory = $this->settings[$default]['directory'] ?: directory('storage');
             $this->mountFilesystem($default, new Local($directory));
         }
     }

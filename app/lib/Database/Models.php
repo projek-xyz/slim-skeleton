@@ -1,6 +1,7 @@
 <?php
 namespace Projek\Slim\Database;
 
+use Projek\Slim\Container;
 use Slim\PDO\Database;
 use Slim\PDO\Statement\StatementContainer;
 
@@ -44,17 +45,15 @@ abstract class Models
     /**
      * @var bool
      */
-    protected $destructive = false;
+    protected $softDeletes = false;
 
     /**
-     * @param Database|array|null $props
+     * @param Database|array|null $attributes
      */
-    public function __construct($props = null)
+    public function __construct($attributes = null)
     {
-        if ($props instanceof Database) {
-            $this->db = $props;
-        } elseif (is_array($props)) {
-            $this->attributes = $props;
+        if (is_array($attributes)) {
+            $this->attributes = $attributes;
         }
     }
 
@@ -63,7 +62,7 @@ abstract class Models
      */
     public function show($terms = null, array $columns = [])
     {
-        if (!$this->table) {
+        if (!$this->table()) {
             return false;
         }
 
@@ -83,13 +82,12 @@ abstract class Models
      */
     public function create(array $pairs = null)
     {
-        if (!$this->table) {
+        if (!$this->table()) {
             return false;
         }
 
         if (null === $pairs) {
             $pairs = $this->attributes;
-            $this->db = app('db');
         }
 
         if (empty($pairs)) {
@@ -110,13 +108,12 @@ abstract class Models
      */
     public function edit($pairs = null, $terms = null)
     {
-        if (!$this->table) {
+        if (!$this->table()) {
             return false;
         }
 
         if (!empty($this->attributes) && null === $terms) {
             $terms = $this->attributes;
-            $this->db = app('db');
         }
 
         if (empty($pairs)) {
@@ -137,14 +134,18 @@ abstract class Models
     /**
      * @inheritdoc
      */
-    public function remove($terms)
+    public function remove($terms = null)
     {
-        if (false === $this->destructive) {
+        if (true === $this->softDeletes) {
             return $this->edit([self::DELETED => $this->freshDate()], $terms);
         }
 
-        if (!$this->table) {
+        if (!$this->table()) {
             return false;
+        }
+
+        if (!empty($this->attributes) && null === $terms) {
+            $terms = $this->attributes;
         }
 
         $query = $this->delete();
@@ -177,17 +178,17 @@ abstract class Models
     /**
      * @inheritdoc
      */
-    public function primary()
+    public function table()
     {
-        return $this->primary;
+        return $this->table;
     }
 
     /**
      * @inheritdoc
      */
-    public function table()
+    public function primary()
     {
-        return $this->table;
+        return $this->primary;
     }
 
     /**
@@ -205,7 +206,7 @@ abstract class Models
             $columns = ['*'];
         }
 
-        return $this->db->select($columns)->from($this->table);
+        return static::db()->select($columns)->from($this->table());
     }
 
     /**
@@ -217,7 +218,7 @@ abstract class Models
      */
     protected function insert($pairs)
     {
-        return $this->db->insert($pairs)->into($this->table);
+        return static::db()->insert($pairs)->into($this->table());
     }
 
     /**
@@ -229,7 +230,7 @@ abstract class Models
      */
     protected function update($pairs)
     {
-        return $this->db->update(array_filter($pairs))->table($this->table);
+        return static::db()->update(array_filter($pairs))->table($this->table());
     }
 
     /**
@@ -239,7 +240,7 @@ abstract class Models
      */
     protected function delete()
     {
-        return $this->db->delete($this->table);
+        return static::db()->delete($this->table);
     }
 
     /**
@@ -303,11 +304,24 @@ abstract class Models
         return $this->select()->fullJoin($model->table(), $first, $operator, $second);
     }
 
+    /**
+     * @param  Models|string $model
+     * @param  string $first
+     * @param  string $second
+     *
+     * @return array
+     */
     protected function normalizeJoins($model, $first = null, $second = null)
     {
         if (is_string($model)) {
             /** @var  Models $model */
             $model = new $model;
+        }
+
+        if (!$model instanceof Models) {
+            throw new \RuntimeException(
+                sprintf('Expected 1 parameter to be %s instance, %s given.', static::class, gettype($model))
+            );
         }
 
         if (null === $first) {
@@ -342,10 +356,12 @@ abstract class Models
                     list($key, $sign) = explode(' ', $key);
                 }
 
-                if (null !== $value) {
-                    $stmt->where($key, $sign, $value);
-                } else {
+                if (is_array($value)) {
+                    $stmt->whereIn($key, $value);
+                } elseif (null === $value) {
                     $stmt->whereNull($key);
+                } else {
+                    $stmt->where($key, $sign, $value);
                 }
             }
         }
@@ -361,6 +377,14 @@ abstract class Models
         return date('Y-m-d H:i:s');
     }
 
+    /**
+     * @return Database
+     */
+    final protected static function db()
+    {
+        return Container::instance()->get('db');
+    }
+
     public function __get($field)
     {
         return isset($this->attributes[$field]) ? $this->attributes[$field] : null;
@@ -373,8 +397,8 @@ abstract class Models
 
     public static function __callStatic($method, $params)
     {
-        $data = app('data');
-        $model = $data(static::class);
+        $model = new static();
+        $protected = ['freshDate', 'normalizeTerms'];
         $aliases = [
             'get' => 'show',
             'add' => 'create',
@@ -382,10 +406,16 @@ abstract class Models
             'del' => 'remove',
         ];
 
-        if (isset($aliases[$method])) {
+        if (array_key_exists($method, $aliases)) {
             $method = $aliases[$method];
         }
 
-        return call_user_func_array([$model, $method], $params);
+        if (!in_array($method, $protected) && method_exists($model, $method)) {
+            return call_user_func_array([$model, $method], $params);
+        }
+
+        throw new \BadMethodCallException(
+            sprintf('Undefined method %s in %s.', $method, static::class)
+        );
     }
 }

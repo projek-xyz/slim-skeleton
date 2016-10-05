@@ -65,6 +65,8 @@ abstract class Action
             }
         }
 
-        throw new \BadMethodCallException("Method $method is not a valid method");
+        throw new \BadMethodCallException(
+            sprintf('Undefined method %s in %s.', $method, static::class)
+        );
     }
 }

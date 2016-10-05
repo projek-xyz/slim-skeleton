@@ -54,6 +54,7 @@ class ModelTest extends TestCase
 
     public function test_should_create_with_certain_method()
     {
+        /** @var Dummy $model */
         $model = $this->data(Dummy::class);
         $data = [
             'name' => 'John Doe',
@@ -93,7 +94,7 @@ class ModelTest extends TestCase
 
         $this->assertTrue($model->remove(1));
         $this->assertTrue(Dummy::del(['address' => 'Out there']));
-        $this->assertTrue(DummyDestructive::del(['address' => 'Out there']));
+        $this->assertTrue(DummyDestructive::del(['address' => 'No clue']));
     }
 
     /**
@@ -134,5 +135,5 @@ class DummyNoTimestamp extends Models
 class DummyDestructive extends Models
 {
     protected $table = 'dummy';
-    protected $destructive = true;
+    protected $softDeletes = true;
 }

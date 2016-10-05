@@ -163,7 +163,7 @@ class Migrator
     {
         $migration = $this->database->select(['count(*) count'])
             ->from('information_schema.tables')
-            ->where('table_schema', '=', setting('db.name'))
+            ->where('table_schema', '=', config('db.name'))
             ->where('table_name', '=', self::TABLE)
             ->execute();
 

@@ -306,6 +306,7 @@ abstract class Models
     protected function normalizeJoins($model, $first = null, $second = null)
     {
         if (is_string($model)) {
+            /** @var  Models $model */
             $model = new $model;
         }
 
@@ -323,17 +324,17 @@ abstract class Models
     /**
      * Normalize query terms
      *
-     * @param  \Slim\PDO\Statement\StatementContainer $query
+     * @param  \Slim\PDO\Statement\StatementContainer $stmt
      * @param  callable|array|int $terms
      *
      * @return void
      */
-    protected function normalizeTerms(StatementContainer $query, &$terms)
+    protected function normalizeTerms(StatementContainer $stmt, &$terms)
     {
         if (is_callable($terms)) {
-            $terms($query);
+            $terms($stmt);
         } elseif (is_numeric($terms) && !is_float($terms)) {
-            $query->where($this->primary, '=', (int) $terms);
+            $stmt->where($this->primary, '=', (int) $terms);
         } elseif (is_array($terms)) {
             foreach ($terms as $key => $value) {
                 $sign = '=';
@@ -342,9 +343,9 @@ abstract class Models
                 }
 
                 if (null !== $value) {
-                    $query->where($key, $sign, $value);
+                    $stmt->where($key, $sign, $value);
                 } else {
-                    $query->whereNull($key);
+                    $stmt->whereNull($key);
                 }
             }
         }

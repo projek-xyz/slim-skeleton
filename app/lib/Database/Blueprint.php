@@ -3,6 +3,9 @@ namespace Projek\Slim\Database;
 
 use Slim\PDO\Database;
 
+/**
+ * @method bool rename($newName)
+ */
 class Blueprint
 {
     const TIMESTAMPS = 1;
@@ -50,6 +53,11 @@ class Blueprint
         return $this->execSchema(new Schema\CreateSchema($this->table, $schema));
     }
 
+    /**
+     * @param  \Closure $callable
+     *
+     * @return bool
+     */
     public function alter(\Closure $callable)
     {
         $schema = new Schema\AlterSchema($this->table);
@@ -68,6 +76,12 @@ class Blueprint
         return $this->execSchema(new Schema\DeleteSchema($this->table));
     }
 
+    /**
+     * @param  string $method
+     * @param  array $args
+     *
+     * @return bool
+     */
     public function __call($method, $args)
     {
         $schema = new Schema\AlterSchema($this->table);

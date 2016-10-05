@@ -7,7 +7,7 @@ const gutil = require('gulp-util');
 
 const browserSync = require('browser-sync');
 
-const config = require(__dirname + '/assets/config');
+const config = require(__dirname + '/config');
 
 class Helpers {
 
@@ -31,7 +31,7 @@ class Helpers {
         }
 
         // Require the package.json
-        this.package = require(__dirname + '/../package');
+        this.package = require(__dirname + '/../../package');
     }
 
     /**

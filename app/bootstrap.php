@@ -44,5 +44,5 @@ if (!isset($_SESSION)) {
 }
 
 return new Slim\App(
-    new Container($app)
+    new Container($app, ROOT_DIR)
 );

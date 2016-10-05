@@ -10,14 +10,14 @@ class Container extends SlimContainer
     /**
      * {@inheritdoc}
      */
-    public function __construct(array $value = [])
+    public function __construct(array $value = [], $root_dir = null)
     {
         if (defined('ROOT_DIR')) {
             $value['settings']['directories'] = [
-                'app' => ROOT_DIR.'app/',
-                'resources' => ROOT_DIR.'resources/',
-                'storage' => ROOT_DIR.'storage/',
-                'public' => ROOT_DIR.'public/',
+                'app' => $root_dir.'app/',
+                'resources' => $root_dir.'resources/',
+                'storage' => $root_dir.'storage/',
+                'public' => $root_dir.'public/',
             ];
         }
 

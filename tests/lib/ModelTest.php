@@ -40,16 +40,16 @@ class ModelTest extends TestCase
         $this->assertEquals(0, $model->count());
 
         $this->assertFalse($model->show());
-        $this->assertFalse(Sample::get());
+        $this->assertFalse(Sample::show());
 
         $this->assertFalse($model->create(['foo' => 'bar']));
-        $this->assertFalse(Sample::add(['foo' => 'bar']));
+        $this->assertFalse(Sample::create(['foo' => 'bar']));
 
-        $this->assertFalse($model->edit(['foo' => 'bar']));
-        $this->assertFalse(Sample::put(['foo' => 'bar']));
+        $this->assertFalse($model->patch(['foo' => 'bar']));
+        $this->assertFalse(Sample::patch(['foo' => 'bar']));
 
-        $this->assertFalse($model->remove(['foo' => 'bar']));
-        $this->assertFalse(Sample::del(['foo' => 'bar']));
+        $this->assertFalse($model->delete(['foo' => 'bar']));
+        $this->assertFalse(Sample::delete(['foo' => 'bar']));
     }
 
     public function test_should_create_with_certain_method()
@@ -61,12 +61,12 @@ class ModelTest extends TestCase
             'address' => 'Somewhere'
         ];
 
-        // Creation
+        // Creating
 
         $this->assertEquals(1, $model->create($data));
 
         $data['name'] = 'Selly Doe';
-        $this->assertEquals(2, Dummy::add($data));
+        $this->assertEquals(2, Dummy::create($data));
 
         $data['name'] = 'Don Joe';
         $dummy = new Dummy($data);
@@ -74,27 +74,36 @@ class ModelTest extends TestCase
 
         // Reading
 
-        $this->assertEquals(3, count($model->show()->fetchAll()));
-        $this->assertEquals(3, count(Dummy::get()->fetchAll()));
+        $this->assertEquals(3, $dummy->count());
         $this->assertEquals(3, $model->count());
+        $this->assertEquals(3, $model->show()->count());
+        $this->assertEquals(3, Dummy::show()->count());
 
-        $fetch = $model->show(['name' => 'John Doe'])->fetch();
+        // Countable
+
+        $this->assertEquals(3, count($dummy));
+        $this->assertEquals(3, count($model));
+        $this->assertEquals(3, count($model->show()));
+        $this->assertEquals(3, count(Dummy::show()));
+
+        // Return self instance n fetch
+
+        $fetch = $model->show(['name' => 'John Doe'])->get();
         $this->assertInstanceOf(Dummy::class, $fetch);
-        $this->assertEquals("Somewhere", $fetch->address);
+        $this->assertEquals('Somewhere', $fetch->address);
 
-        // Update
+        // Updating
 
-        $this->assertTrue($model->edit(['address' => 'Homeless'], 1));
-        $this->assertTrue(Dummy::put(['address' => 'Out there'], 2));
+        $this->assertEquals(1, $dummy->patch(['address' => 'No clue']));
+        $this->assertEquals(1, $model->patch(['address' => 'Homeless'], 1));
+        $this->assertEquals(1, Dummy::patch(['address' => 'Out there'], 2));
 
-        $dummy = new Dummy(['name' => 'Don Joe']);
-        $this->assertTrue($dummy->edit(['address' => 'No clue']));
+        // Deleting
 
-        // Deletion
-
-        $this->assertTrue($model->remove(1));
-        $this->assertTrue(Dummy::del(['address' => 'Out there']));
-        $this->assertTrue(DummyDestructive::del(['address' => 'No clue']));
+        $this->assertEquals(1, $dummy->delete());
+        $this->assertEquals(1, $model->delete(1));
+        $this->assertEquals(1, Dummy::delete(['address' => 'Out there']));
+        $this->assertEquals(1, DummyDestructive::delete(['address' => 'No clue']));
     }
 
     /**
@@ -112,7 +121,7 @@ class ModelTest extends TestCase
     public function test_should_throw_exception_when_updating_empty_data()
     {
         $dummy = new Dummy([]);
-        $this->assertEquals(3, $dummy->edit());
+        $this->assertEquals(3, $dummy->patch());
     }
 }
 
@@ -124,16 +133,17 @@ class Sample extends Models
 class Dummy extends Models
 {
     protected $table = 'dummy';
+    protected $softDeletes = true;
 }
 
 class DummyNoTimestamp extends Models
 {
     protected $table = 'dummy';
     protected $timestamps = false;
+    protected $softDeletes = true;
 }
 
 class DummyDestructive extends Models
 {
     protected $table = 'dummy';
-    protected $softDeletes = true;
 }

@@ -1,7 +1,10 @@
 <?php
 namespace Projek\Slim\Tests;
 
+use phpDocumentor\Reflection\Types\Null_;
 use Projek\Slim\Database\Models;
+use Slim\PDO\Database;
+use Slim\PDO\Statement\StatementContainer;
 
 class ModelTest extends TestCase
 {
@@ -40,16 +43,16 @@ class ModelTest extends TestCase
         $this->assertEquals(0, $model->count());
 
         $this->assertFalse($model->show());
-        $this->assertFalse(Sample::get());
+        $this->assertFalse(Sample::show());
 
         $this->assertFalse($model->create(['foo' => 'bar']));
-        $this->assertFalse(Sample::add(['foo' => 'bar']));
+        $this->assertFalse(Sample::create(['foo' => 'bar']));
 
-        $this->assertFalse($model->edit(['foo' => 'bar']));
-        $this->assertFalse(Sample::put(['foo' => 'bar']));
+        $this->assertFalse($model->patch(['foo' => 'bar']));
+        $this->assertFalse(Sample::patch(['foo' => 'bar']));
 
-        $this->assertFalse($model->remove(['foo' => 'bar']));
-        $this->assertFalse(Sample::del(['foo' => 'bar']));
+        $this->assertFalse($model->delete(['foo' => 'bar']));
+        $this->assertFalse(Sample::delete(['foo' => 'bar']));
     }
 
     public function test_should_create_with_certain_method()
@@ -61,12 +64,12 @@ class ModelTest extends TestCase
             'address' => 'Somewhere'
         ];
 
-        // Creation
+        // Creating
 
         $this->assertEquals(1, $model->create($data));
 
         $data['name'] = 'Selly Doe';
-        $this->assertEquals(2, Dummy::add($data));
+        $this->assertEquals(2, Dummy::create($data));
 
         $data['name'] = 'Don Joe';
         $dummy = new Dummy($data);
@@ -74,45 +77,144 @@ class ModelTest extends TestCase
 
         // Reading
 
-        $this->assertEquals(3, count($model->show()->fetchAll()));
-        $this->assertEquals(3, count(Dummy::get()->fetchAll()));
+        $this->assertEquals(3, $dummy->count());
         $this->assertEquals(3, $model->count());
+        $this->assertEquals(3, $model->show()->count());
+        $this->assertEquals(3, Dummy::show()->count());
 
-        $fetch = $model->show(['name' => 'John Doe'])->fetch();
+        // Countable
+
+        $this->assertEquals(3, count($dummy));
+        $this->assertEquals(3, count($model));
+        $this->assertEquals(3, count($model->show()));
+        $this->assertEquals(3, count(Dummy::show()));
+
+        // Return self instance n fetch
+
+        $fetch = $model->show(['name' => 'John Doe'])->get();
         $this->assertInstanceOf(Dummy::class, $fetch);
-        $this->assertEquals("Somewhere", $fetch->address);
+        $this->assertEquals('Somewhere', $fetch->address);
 
-        // Update
+        // Updating
 
-        $this->assertTrue($model->edit(['address' => 'Homeless'], 1));
-        $this->assertTrue(Dummy::put(['address' => 'Out there'], 2));
+        $this->assertEquals(1, $dummy->patch(['address' => 'No clue']));
+        $this->assertEquals(1, $model->patch(['address' => 'Homeless'], 1));
+        $this->assertEquals(1, Dummy::patch(['address' => 'Out there'], 2));
 
-        $dummy = new Dummy(['name' => 'Don Joe']);
-        $this->assertTrue($dummy->edit(['address' => 'No clue']));
+        // Deleting
 
-        // Deletion
-
-        $this->assertTrue($model->remove(1));
-        $this->assertTrue(Dummy::del(['address' => 'Out there']));
-        $this->assertTrue(DummyDestructive::del(['address' => 'No clue']));
+        // dump('');
+        // $this->assertEquals(1, $dummy->delete());
+        $this->assertEquals(1, $model->delete(1));
+        $this->assertEquals(1, Dummy::delete(['address' => 'Out there']));
+        $this->assertEquals(1, DummyDestructive::delete(['address' => 'Somewhere']));
     }
 
-    /**
-     * @expectedException \LogicException
-     */
+    public function test_normalize_terms()
+    {
+        /** @var  Database $db */
+        $db = $this->container->get('db');
+        $dummy = new Dummy(['name' => 'John Doe', 'address' => 'Somewhere']);
+        $method = $this->makeMethodInvokable(Models::class, 'normalizeTerms');
+
+        $dummy->create();
+
+        // Should pass an INT
+
+        $query = $db->select()->from($dummy->table());
+        $method->invoke($dummy, $query, 1);
+        $this->assertEquals('SELECT * FROM dummy WHERE id = ?', $query->compile());
+
+        // Should pass an Model instance
+
+        $query = $db->select()->from($dummy->table());
+        $method->invoke($dummy, $query, $dummy);
+        $this->assertEquals('SELECT * FROM dummy WHERE id = ?', $query->compile());
+
+        // Should find multiple column
+
+        $query = $db->select()->from($dummy->table());
+        $method->invoke($dummy, $query, ['id' => 1, 'name' => 'John Doe']);
+        $this->assertEquals('SELECT * FROM dummy WHERE id = ? AND name = ?', $query->compile());
+
+        // Should find multiple value in a column
+
+        $query = $db->select()->from($dummy->table());
+        $method->invoke($dummy, $query, ['name' => ['John Doe', 'Sally Doe']]);
+        $this->assertEquals('SELECT * FROM dummy WHERE name IN ( ? , ? )', $query->compile());
+
+        // Should find null column
+
+        $query = $db->select()->from($dummy->table());
+        $method->invoke($dummy, $query, ['name' => null]);
+        $this->assertEquals('SELECT * FROM dummy WHERE name IS NULL', $query->compile());
+
+        // Should find with another symbols
+
+        $query = $db->select()->from($dummy->table());
+        $method->invoke($dummy, $query, ['name <>' => 'Sally Doe', 'id >' => 1]);
+        $this->assertEquals('SELECT * FROM dummy WHERE name <> ? AND id > ?', $query->compile());
+
+        // Should find with callable
+
+        $query = $db->select()->from($dummy->table());
+        $method->invoke($dummy, $query, function (StatementContainer $query) {
+            $query->where('name', '=', 'John Dow')->where('id', '=', 1);
+        });
+        $this->assertEquals('SELECT * FROM dummy WHERE name = ? AND id = ?', $query->compile());
+    }
+
+    public function test_normalize_joins()
+    {
+        /** @var  Database $db */
+        $related = new DummyNoTimestamp();
+        $dummy = new Dummy(['name' => 'John Doe', 'address' => 'Somewhere']);
+        $method = $this->makeMethodInvokable(Models::class, 'normalizeJoins');
+
+        $dummy->create();
+
+        // Assert default fields
+
+        $this->assertEquals(
+            [$related, 'dummy.id', 'dummy.dummy_id'],
+            $method->invoke($dummy, DummyNoTimestamp::class)
+        );
+
+        // Assert custom $first field
+
+        $this->assertEquals(
+            [$related, 'dummy.name', 'dummy.dummy_id'],
+            $method->invoke($dummy, DummyNoTimestamp::class, 'name')
+        );
+
+        // Assert custom fields
+
+        $this->assertEquals(
+            [$related, 'dummy.name', 'dummy.dummy_name'],
+            $method->invoke($dummy, DummyNoTimestamp::class, 'name', 'dummy_name')
+        );
+
+        // Assert thrown exception
+
+        $this->setExpectedException(\InvalidArgumentException::class);
+
+        $method->invoke($dummy, static::class);
+    }
+
     public function test_should_throw_exception_when_creating_empty_data()
     {
+        $this->setExpectedException(\LogicException::class);
+
         $dummy = new Dummy([]);
         $this->assertEquals(3, $dummy->create());
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function test_should_throw_exception_when_updating_empty_data()
     {
+        $this->setExpectedException(\LogicException::class);
+
         $dummy = new Dummy([]);
-        $this->assertEquals(3, $dummy->edit());
+        $this->assertEquals(3, $dummy->patch());
     }
 }
 
@@ -124,16 +226,15 @@ class Sample extends Models
 class Dummy extends Models
 {
     protected $table = 'dummy';
+    protected $softDeletes = true;
 }
 
-class DummyNoTimestamp extends Models
+class DummyNoTimestamp extends Dummy
 {
-    protected $table = 'dummy';
     protected $timestamps = false;
 }
 
-class DummyDestructive extends Models
+class DummyDestructive extends Dummy
 {
-    protected $table = 'dummy';
-    protected $softDeletes = true;
+    protected $softDeletes = false;
 }

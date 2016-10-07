@@ -32,13 +32,14 @@ class MigratorTest extends TestCase
     public function test_should_create_migration_table()
     {
         $migrator = $this->container->get('migrator');
-        $hasMigrationTable = $this->invokeMethod($migrator, 'hasMigrationTable');
+        $hasTable = $this->makeMethodInvokable(Migrator::class, 'hasMigrationTable');
 
-        if (!$hasMigrationTable) {
+        if (!$hasMigrationTable = $hasTable->invoke($migrator)) {
             $this->assertFalse($hasMigrationTable);
-            $this->assertTrue(\PDOStatement::class, $this->invokeMethod($migrator, 'createMigrationTable'));
+            $createTable = $this->makeMethodInvokable(Migrator::class, 'createMigrationTable');
+            $this->assertTrue(\PDOStatement::class, $createTable->invoke($migrator));
         }
 
-        $this->assertTrue($this->invokeMethod($migrator, 'hasMigrationTable'));
+        $this->assertTrue($hasTable->invoke($migrator));
     }
 }

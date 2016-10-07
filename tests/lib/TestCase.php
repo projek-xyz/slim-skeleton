@@ -20,15 +20,25 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected function invokeMethod($obj, $name, $arg = [])
     {
         if (!is_object($obj)) {
-            throw new \PHPUnit_Framework_Exception('First argument should be an object');
+            $this->fail('First argument should be an object');
         }
 
-        $method = new \ReflectionMethod(get_class($obj), $name);
+        $class = get_class($obj);
+        $mock = $this->getMock($class);
+
+        $mock->expects($this->once())->method($name);
+
+        return $this->makeMethodInvokable($class, $name)->invokeArgs($obj, $arg);
+    }
+
+    protected function makeMethodInvokable($class, $name)
+    {
+        $method = new \ReflectionMethod($class, $name);
 
         if (!$method->isPublic()) {
             $method->setAccessible(true);
         }
 
-        return $method->invokeArgs($obj, $arg);
+        return $method;
     }
 }

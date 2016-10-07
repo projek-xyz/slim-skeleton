@@ -14,14 +14,14 @@ class MigratorTest extends DatabaseTestCase
 
     protected $db;
 
-    protected $settings = [
-        'migration' => [
-            'directory' => ROOT_DIR.'tests/stubs/',
-        ]
-    ];
-
     public function setUp()
     {
+        $this->settings = [
+            'migration' => [
+                'directory' => ROOT_DIR.'tests/stubs/',
+            ]
+        ];
+
         parent::setUp();
 
         $this->db = $this->newMockDatabase();

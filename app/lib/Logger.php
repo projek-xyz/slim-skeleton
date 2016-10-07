@@ -46,23 +46,19 @@ class Logger
         $this->name = $name;
         $this->monolog = new Monolog($this->name);
         $this->settings = array_merge($this->settings, $settings);
-
-        if ($timezone = setting('timezone')) {
-            if (is_string($timezone)) {
-                $timezone = new \DateTimeZone($timezone);
-            }
-            Monolog::setTimezone($timezone);
-        }
-
         $levels = array_keys(Monolog::getLevels());
         if (!in_array(strtoupper($this->settings['level']), $levels)) {
             $this->settings['level'] = Monolog::DEBUG;
         }
 
-        if ($path = $this->settings['directory']) {
-            if ($path === 'syslog') {
+        if (null === $this->settings['directory']) {
+            $this->settings['directory'] = directory('storage.logs');
+        }
+
+        if ($directory = $this->settings['directory'] && getenv('APP_ENV') !== 'testing') {
+            if ($directory === 'syslog') {
                 $this->useSyslog($this->settings['level']);
-            } elseif (is_dir($path)) {
+            } elseif (is_dir($directory)) {
                 $this->useFiles($this->settings['level']);
             }
         } else {
@@ -128,10 +124,10 @@ class Logger
     public function useFiles($level = Monolog::DEBUG, $rotate = null)
     {
         $rotate = is_bool($rotate) ? $rotate : $this->settings['rotate'];
-        $filepath = $this->settings['directory'].'/'.$this->name.'.log'
+        $filepath = $this->settings['directory'].$this->name.'.log';
         $handler = $rotate
-            ? new Handler\RotatingFileHandler($filepath, $level)
-            : new Handler\StreamHandler($filepath, 5, $level);
+            ? new Handler\RotatingFileHandler($filepath, 5, $level)
+            : new Handler\StreamHandler($filepath, $level);
 
         $this->monolog->pushHandler($handler);
 

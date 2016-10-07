@@ -10,8 +10,9 @@ namespace Projek\Slim;
  * @property-read \Slim\Collection settings
  * @property-read callable upload
  * @property-read callable validator
+ * @property-read Database\Migrator migrator
  * @property-read View view
- * @method Models data(string $modelClass)
+ * @method Database\Models data(string $modelClass)
  * @method void upload(\Psr\Http\Message\UploadedFileInterface $file)
  * @method bool logger(integer $level, string $message, array $context = [])
  * @method \Valitron\Validator validator(array|\Psr\Http\Message\ServerRequestInterface $data, array $rules)
@@ -64,6 +65,8 @@ abstract class Action
             }
         }
 
-        throw new \BadMethodCallException("Method $method is not a valid method");
+        throw new \BadMethodCallException(
+            sprintf('Undefined method %s in %s.', $method, static::class)
+        );
     }
 }

@@ -31,7 +31,7 @@ class DefaultMiddleware
         $res = $next($req, $res);
 
         // Only provide response calculation time in non-production env, tho.
-        if (setting('mode') !== 'production') {
+        if (config('mode') !== 'production') {
             $time = (microtime(true) - $server['REQUEST_TIME_FLOAT']) * 1000;
             $res = $res->withHeader('X-Response-Time', sprintf('%2.3fms', $time));
         }

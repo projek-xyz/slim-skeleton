@@ -33,4 +33,11 @@ class HelperTest extends TestCase
         $this->assertEquals([1, 2, 3], $keys);
         $this->assertEquals(['one', 'two', 'three'], $values);
     }
+
+    public function test_directory()
+    {
+        $this->assertEquals(ROOT_DIR, directory(''));
+        $this->assertEquals(ROOT_DIR.'resources/', directory('resources'));
+        $this->assertEquals(ROOT_DIR.'resources/data/', directory('resources.data'));
+    }
 }

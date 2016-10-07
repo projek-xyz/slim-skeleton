@@ -1,15 +1,12 @@
 <?php
 
-define('APP_DIR',     __DIR__.'/');
-define('ROOT_DIR',    dirname(APP_DIR).'/');
-define('RES_DIR',     ROOT_DIR.'resources/');
-define('STORAGE_DIR', ROOT_DIR.'storage/');
-define('WWW_DIR',     ROOT_DIR.'public/');
+/** @define "ROOT_DIR" "../" */
+define('ROOT_DIR', dirname(__DIR__).'/');
 
 use Projek\Slim\Container;
 
 // Loading vendors
-require __DIR__.'/../vendor/autoload.php';
+require ROOT_DIR.'vendor/autoload.php';
 
 if (file_exists(ROOT_DIR.'.env')) {
     (new Dotenv\Dotenv(ROOT_DIR))->load();
@@ -47,5 +44,5 @@ if (!isset($_SESSION)) {
 }
 
 return new Slim\App(
-    new Container($app)
+    new Container($app, ROOT_DIR)
 );

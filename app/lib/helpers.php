@@ -4,8 +4,9 @@ use Projek\Slim\Container;
 
 if (!function_exists('app')) {
     /**
-     * @param  string|null  $name  Container key name
-     * @return mixed        Containers instance
+     * @param  string|null $name
+     *
+     * @return mixed
      */
     function app($name = null)
     {
@@ -20,19 +21,10 @@ if (!function_exists('app')) {
     }
 }
 
-if (!function_exists('setting')) {
-    /**
-     * @param  string       $name    Setting key name
-     * @param  string|null  $default Default value
-     * @return mixed        Setting value
-     */
-    function setting($name, $default = null)
-    {
-        return array_get(app('settings'), $name, $default);
-    }
-}
-
 if (!function_exists('dump')) {
+    /**
+     *  Dump data
+     */
     function dump()
     {
         array_map(function ($params) {
@@ -43,12 +35,45 @@ if (!function_exists('dump')) {
     }
 }
 
+if (!function_exists('directory')) {
+    /**
+     * @param  string $path
+     *
+     * @return string
+     */
+    function directory($path)
+    {
+        if (empty($path)) {
+            return ROOT_DIR;
+        }
+
+        $paths = explode('.', $path);
+        $dir = array_shift($paths);
+
+        return config('directories.'.$dir).($paths ? implode('/', $paths).'/' : '');
+    }
+}
+
+if (!function_exists('config')) {
+    /**
+     * @param  string $name
+     * @param  string|null $default
+     *
+     * @return mixed Setting
+     */
+    function config($name, $default = null)
+    {
+        return array_get(app('settings'), $name, $default);
+    }
+}
+
 if (!function_exists('logger')) {
     /**
-     * @param  integer $level   The logging level
-     * @param  string  $message The log message
-     * @param  array   $context The log context
-     * @return bool    Whether the record has been processed
+     * @param  integer $level
+     * @param  string $message
+     * @param  array $context
+     *
+     * @return bool Whether
      */
     function logger($level, $message, array $context = [])
     {

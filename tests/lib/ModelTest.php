@@ -1,31 +1,18 @@
 <?php
 namespace Projek\Slim\Tests;
 
-use phpDocumentor\Reflection\Types\Null_;
 use Projek\Slim\Database\Models;
 use Slim\PDO\Database;
 use Slim\PDO\Statement\StatementContainer;
 
-class ModelTest extends TestCase
+class ModelTest extends DatabaseTestCase
 {
-    public function setUp()
-    {
-        $this->settings = [
-            'db' => [
-                'driver' => getenv('DB_DRIVER'),
-                'host'   => getenv('DB_HOST'),
-                'user'   => getenv('DB_USER'),
-                'pass'   => getenv('DB_PASS'),
-                'name'   => getenv('DB_NAME'),
-            ]
-        ];
-
-        parent::setUp();
-    }
-
     public function tearDown()
     {
-        $this->container->db->query('TRUNCATE TABLE dummy');
+        $dummy = new Dummy;
+        $this->container->db->query(
+            sprintf('TRUNCATE TABLE %s', $dummy->table())
+        );
     }
 
     private function data($class)

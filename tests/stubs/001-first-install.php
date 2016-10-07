@@ -3,8 +3,9 @@
 use Projek\Slim\Database\Blueprint;
 
 return [
-    'up' => function () {
-        $this->create('dummy', [
+    'table' => 'dummy',
+    'up' => function (Blueprint $schema) {
+        $schema->create([
             'id' => ['int' => 11, 'primary', 'null' => false, 'auto_increment'],
             'name' => ['varchar' => 100, 'null' => false],
             'address' => ['text', 'null' => false],
@@ -12,7 +13,7 @@ return [
             Blueprint::SOFTDELETES,
         ]);
     },
-    'down' => function () {
-        $this->delete('dummy');
+    'down' => function (Blueprint $schema) {
+        $schema->delete();
     }
 ];

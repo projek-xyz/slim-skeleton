@@ -101,7 +101,7 @@ class Migrator
     {
         $migration = require $filepath;
         $callable = null;
-        $schema = $this->newMigration();
+        $schema = $this->newBlueprint();
 
         if (is_array($migration)) {
             if (array_key_exists($action, $migration)) {
@@ -152,7 +152,7 @@ class Migrator
 
     protected function createMigrationTable()
     {
-        return $this->newMigration(self::TABLE)->create([
+        return $this->newBlueprint(self::TABLE)->create([
             'id' => ['int' => 11, 'primary', 'null' => false, 'auto_increment'],
             'migration' => ['varchar' => 255, 'unique' ,'null' => false],
             'batch' => ['int' => 11, 'null' => false]
@@ -218,7 +218,7 @@ class Migrator
         return array_reverse($files);
     }
 
-    private function newMigration($table = null)
+    private function newBlueprint($table = null)
     {
         return new Blueprint($this->database, $table);
     }

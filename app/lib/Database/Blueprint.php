@@ -102,6 +102,6 @@ class Blueprint
     {
         $query = $schema->build($this->database);
 
-        return $this->database->exec($query);
+        return $this->database->exec(trim($query));
     }
 }

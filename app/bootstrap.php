@@ -12,17 +12,17 @@ if (file_exists(ROOT_DIR.'.env')) {
     (new Dotenv\Dotenv(ROOT_DIR))->load();
 }
 
-$app = [
+$bootstrap = [
     'settings' => require_once __DIR__.'/settings.php'
 ];
 
-$settings =& $app['settings'];
+$settings =& $bootstrap['settings'];
 
 if (PHP_SAPI == 'cli') {
     $argv = $GLOBALS['argv'];
     array_shift($argv);
 
-    $app['environment'] = Slim\Http\Environment::mock([
+    $bootstrap['environment'] = Slim\Http\Environment::mock([
         'REQUEST_URI' => '/'.implode('/', $argv)
     ]);
 }
@@ -32,17 +32,10 @@ if (isset($settings['timezone'])) {
     date_default_timezone_set($settings['timezone'] ?: 'UTC');
 }
 
-// Get detailed information while not in production
-if ($settings['mode'] !== 'production') {
-    $settings['displayErrorDetails'] = true;
-}
-
 // Let's just use PHP Native sesion
 if (!isset($_SESSION)) {
     session_name($settings['basename']);
     session_start();
 }
 
-return new Slim\App(
-    new Container($app, ROOT_DIR)
-);
+return new Container($bootstrap, ROOT_DIR);

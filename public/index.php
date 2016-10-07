@@ -8,14 +8,16 @@ if ($uri !== '/' && file_exists(__DIR__.'/'.$uri)) {
     return false;
 }
 
-/** @var "../app/" $app_dir */
-$app = require dirname(__DIR__) . '/app/bootstrap.php';
+$appDir = dirname(__DIR__) . '/app/';
+$app = new Slim\App(
+    require $appDir.'bootstrap.php'
+);
 
 // Setup middlewares
-require_once directory('app').'middlewares.php';
+require_once $appDir.'middlewares.php';
 
 // Setup routers
-require_once directory('app').'routes/web.php';
+require_once $appDir.'routes/web.php';
 
 // Go!
 $app->run();

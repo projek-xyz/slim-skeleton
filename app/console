@@ -1,10 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-$app = require __DIR__ . '/bootstrap.php';
-
-// Setup routers
-require_once __DIR__.'/routes/cli.php';
+$argv = $GLOBALS['argv'];
+$container = require __DIR__.'/bootstrap.php';
+$app = new Projek\Slim\Console($container);
 
 // Go!
-$app->run();
+exit($app->listen($argv));

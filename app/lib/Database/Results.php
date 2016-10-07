@@ -28,18 +28,18 @@ class Results implements \Countable
     /**
      * @var  string
      */
-    protected $modelClass;
+    protected $model;
 
     /**
      * @param  SelectStatement $statement
-     * @param  string $modelClass
+     * @param  string $model
      */
-    public function __construct(SelectStatement $statement, $modelClass = '')
+    public function __construct(SelectStatement $statement, $model = '')
     {
         /** @var  SelectStatement $statement */
         $this->statement = $statement;
         $this->query = $statement->compile();
-        $this->modelClass = $modelClass;
+        $this->model = $model;
     }
 
     /**
@@ -56,7 +56,11 @@ class Results implements \Countable
 
         $statement = $this->statement->execute();
 
-        $statement->setFetchMode(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE, $this->modelClass);
+        if ($this->model instanceof Models) {
+            $statement->setFetchMode(\PDO::FETCH_INTO, $this->model);
+        } else {
+            $statement->setFetchMode(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE, $this->model);
+        }
 
         return $statement;
     }

@@ -78,7 +78,9 @@ abstract class Models implements \Countable
 
         $self->normalizeTerms($query, $terms);
 
-        return new Results($query, static::class);
+        $model = $self->attributes? static::class : $self;
+
+        return new Results($query, $model);
     }
 
     /**
@@ -179,7 +181,7 @@ abstract class Models implements \Countable
             throw new \LogicException('Could not delete empty data');
         }
 
-        if (true === $self->softDeletes) {
+        if ($self->softDeletes) {
             return $self->patch([self::DELETED => $self->freshDate()], $terms);
         }
 
@@ -205,7 +207,7 @@ abstract class Models implements \Countable
     {
         $self = self::newSelf();
 
-        if (true === $self->softDeletes) {
+        if ($self->softDeletes) {
             return $self->patch([self::DELETED => '0000-00-00 00:00:00'], $terms);
         }
 
@@ -356,19 +358,19 @@ abstract class Models implements \Countable
 
         if (!$model instanceof Models) {
             throw new \InvalidArgumentException(
-                sprintf('Expected 1 parameter to be string or %s instance, %s given.', static::class, gettype($model))
+                sprintf('Expected 1 parameter of %s to be string or %s instance, %s given.', __FUNCTION__, static::class, gettype($model))
             );
         }
 
         if (null === $first) {
-            $first = $this->table().'.'.$this->primary();
+            $first = $this->primary();
         }
 
         if (null === $second) {
-            $second = $model->table().'.'.$this->table().'_'.$model->primary();
+            $second = $this->table().'_'.$model->primary();
         }
 
-        return [$model, $first, $second];
+        return [$model, $this->table().'.'.$first, $model->table().'.'.$second];
     }
 
     /**
@@ -379,7 +381,7 @@ abstract class Models implements \Countable
      *
      * @return void
      */
-    protected function normalizeTerms(StatementContainer $stmt, &$terms)
+    protected function normalizeTerms(StatementContainer $stmt, $terms)
     {
         if ($terms instanceof Models) {
             $terms = $terms->key();
@@ -448,7 +450,7 @@ abstract class Models implements \Countable
     public static function __callStatic($method, $params)
     {
         $model = new static();
-        $protected = ['freshDate', 'normalizeTerms'];
+        $protected = ['freshDate'];
 
         if (!in_array($method, $protected) && method_exists($model, $method)) {
             return call_user_func_array([$model, $method], $params);

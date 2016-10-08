@@ -8,11 +8,11 @@ engines:
   eslint:
     enabled: true
     config:
-      config: tests/.eslintrc.yml
+      config: tests/.eslint.yml
   scss-lint:
     enabled: true
     config:
-      config: tests/.scss-lint.yml
+      config: tests/.scsslint.yml
 
 ratings:
   paths:

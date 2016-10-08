@@ -17,7 +17,7 @@ mysql:
 
 before_install:
   - mysql -e "create database if not exists ${DB_NAME}"
-  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then $(curl -fsSL https://git.io/vPsKk | sh -) && source ~/.nvm/nvm.sh && nvm install $NODEJS_VERSION; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then $(curl -fsSL https://git.io/vP4hZ | sh -) && source ~/.nvm/nvm.sh && nvm install $NODEJS_VERSION; fi
 
 install:
   - if [[ $TRAVIS_PHP_VERSION != '5.6' ]]; then composer install -n -q; fi

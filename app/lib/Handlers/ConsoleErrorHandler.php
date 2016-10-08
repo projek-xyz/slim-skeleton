@@ -28,20 +28,18 @@ class ConsoleErrorHandler
 
     public function __invoke(\Exception $exception)
     {
-        $this->renderExeption($exception);
+        do {
+            $this->output->br()->out(sprintf(
+                '<background_red><underline><bold>Error: %s</bold></underline></background_red>',
+                get_class($exception)
+            ));
 
-        while ($exception = $exception->getPrevious()) {
-            $this->output->br()->out('<bold>Previous exception</bold>');
             $this->renderExeption($exception);
-        }
+        } while ($exception = $exception->getPrevious());
     }
 
     protected function renderExeption(\Exception $exception)
     {
-        $this->output->out(
-            sprintf('<background_red><underline><bold>Error: %s</bold></underline></background_red>', $type = get_class($exception))
-        );
-
         $message = $exception->getMessage();
         if ($code = $exception->getCode()) {
             $message = sprintf('[%s] %s', $code, $message);
@@ -58,9 +56,13 @@ class ConsoleErrorHandler
             $this->output->tab()->out(sprintf('<bold>%s</bold>', $file));
         }
 
-        if ($this->displayErrorDetails && $traces = $exception->getTraceAsString()) {
+        $traces = [];
+        if ($this->displayErrorDetails && $traceStr = $exception->getTraceAsString()) {
+            foreach (explode(PHP_EOL, $traceStr) as $trace) {
+                $traces[] = str_replace(ROOT_DIR, DIRECTORY_SEPARATOR, $trace);
+            }
             $this->output->br()->out('<bold><underline>Trace:</underline></bold>');
-            $this->output->out(str_replace(ROOT_DIR, '/', $traces));
+            $this->output->out(implode(PHP_EOL, $traces));
         }
 
         logger(LogLevel::ERROR, $message.' on '.$file, ['trace' => $traces]);

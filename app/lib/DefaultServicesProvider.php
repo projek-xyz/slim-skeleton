@@ -146,7 +146,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
          *
          * @return Migrator
          */
-        $container['migrator'] = function ($container) use ($settings) {
+        $container[Migrator::class] = function ($container) use ($settings) {
             $directory = isset($settings['migration']['directory'])
                 ? $settings['migration']['directory']
                 : directory('resources.data');

@@ -5,6 +5,7 @@ use Projek\Slim\Console;
 use Projek\Slim\Console\Commands;
 use Projek\Slim\Console\Input;
 use Projek\Slim\Console\Output;
+use Projek\Slim\Database\Migrator;
 
 class MigrateCommand extends Commands
 {
@@ -42,8 +43,10 @@ class MigrateCommand extends Commands
     public function __invoke(Input $input, Output $output, $args)
     {
         $action = $args->has('down') ? 'down' : 'up';
+        /** @var  Migrator $migrator */
+        $migrator = app(Migrator::class);
 
-        if ($migrate = $this->migrator->migrate($action)) {
+        if ($migrate = $migrator->migrate($action)) {
             $output->out('<green>Migration success</green>');
 
             return Console::EXIT_SUCCESS;

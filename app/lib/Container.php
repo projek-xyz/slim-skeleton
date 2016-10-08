@@ -3,6 +3,17 @@ namespace Projek\Slim;
 
 use Slim\Container as SlimContainer;
 
+/**
+ * @property-read callable data
+ * @property-read \Slim\PDO\Database db
+ * @property-read \League\Flysystem\Filesystem filesystem
+ * @property-read Logger logger
+ * @property-read Mailer mailer
+ * @property-read \Slim\Collection settings
+ * @property-read callable upload
+ * @property-read callable validator
+ * @property-read View view
+ */
 class Container extends SlimContainer
 {
     private static $instance = null;

@@ -10,7 +10,6 @@ namespace Projek\Slim;
  * @property-read \Slim\Collection settings
  * @property-read callable upload
  * @property-read callable validator
- * @property-read Database\Migrator migrator
  * @property-read View view
  * @method Database\Models data(string $modelClass)
  * @method void upload(\Psr\Http\Message\UploadedFileInterface $file)
@@ -60,6 +59,7 @@ abstract class Action
     {
         if ($this->container->has($method)) {
             $obj = $this->container->get($method);
+
             if (is_callable($obj)) {
                 return call_user_func_array($obj, $params);
             }

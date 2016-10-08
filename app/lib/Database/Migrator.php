@@ -1,6 +1,7 @@
 <?php
 namespace Projek\Slim\Database;
 
+use Projek\Slim\Console\Output;
 use Psr\Log\LogLevel;
 use Slim\PDO\Database;
 
@@ -29,6 +30,11 @@ class Migrator
     protected $directory;
 
     /**
+     * @var  Output
+     */
+    protected $output;
+
+    /**
      *  @param  Database $database
      *  @param  string $directory
      */
@@ -46,6 +52,13 @@ class Migrator
         $this->database = $database;
     }
 
+    public function setOutput(Output $output)
+    {
+        $this->output = $output;
+
+        return $this;
+    }
+
     public function migrate($action = 'up')
     {
         $migrated = 0;
@@ -60,6 +73,11 @@ class Migrator
             $isDown = $action == 'down';
             $batch = $this->getPriorMigration();
             $migrations = $isDown ? $this->getPriorMigrationFiles($batch) : $this->migrations;
+            $files = count($migrations);
+
+            if ($migrations) {
+                $this->output->out('<green>Migration start:</green>');
+            }
 
             foreach ($migrations as $filepath) {
                 if (($this->isMigrated($filepath) && !$isDown) ||
@@ -69,19 +87,36 @@ class Migrator
 
                 $this->callMigration($filepath, $action, $batch);
 
+                $this->output->tab()->out(
+                    sprintf('<yellow>%s</yellow> %s', $isDown ? 'Reseted: ' : 'Migrated:', basename($filepath))
+                );
+
                 ++$migrated;
             }
 
             $this->database->commit();
 
-            return $migrated === 0 ? null : true;
+            $this->output->tab()->out(
+                $migrated > 0
+                    ? '<green>Done successfully migrated</green> '.$files.' <green>file(s)</green>'
+                    : sprintf('<yellow>No migration executed</yellow>%s', $files > 0 ? ' '.$files.' <yellow>file(s) already migrated</yellow>' : '')
+            );
+
+            return true;
         } catch (\PDOException $e) {
             $this->database->rollBack();
 
-            logger(LogLevel::ERROR, $e->getMessage());
-
-            return false;
+            throw $e;
         }
+    }
+
+    protected function callMigration($filepath, $action, $batch)
+    {
+        $ext = pathinfo($filepath, PATHINFO_EXTENSION);
+
+        call_user_func([$this, 'migrate'.ucfirst($ext)], $filepath, $action);
+
+        $this->updateMigrationTable($filepath, $batch, $action);
     }
 
     protected function migrateSql($filepath)
@@ -128,16 +163,9 @@ class Migrator
                 $callable = $callable->bindTo($this->database);
             }
             $callable($schema);
+        } else {
+            throw new \RuntimeException('No migration callable found in '.$filepath);
         }
-    }
-
-    protected function callMigration($filepath, $action, $batch)
-    {
-        $ext = pathinfo($filepath, PATHINFO_EXTENSION);
-
-        call_user_func([$this, 'migrate'.ucfirst($ext)], $filepath, $action);
-
-        $this->updateMigrationTable($filepath, $batch, $action);
     }
 
     protected function isMigrated($filepath)

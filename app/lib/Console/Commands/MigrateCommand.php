@@ -43,15 +43,9 @@ class MigrateCommand extends Commands
         /** @var  Migrator $migrator */
         $migrator = app(Migrator::class);
 
+        $migrator->setOutput($output);
+
         if ($migrate = $migrator->migrate($action)) {
-            $output->out('<green>Migration success</green>');
-
-            return Console::EXIT_SUCCESS;
-        }
-
-        if (null === $migrate) {
-            $output->out('<green>No Migration executed</green>');
-
             return Console::EXIT_SUCCESS;
         }
 

@@ -38,6 +38,6 @@ class ErrorHandler extends Error
      */
     protected function logError($message)
     {
-        logger(LogLevel::CRITICAL, $message);
+        logger(LogLevel::ERROR, $message);
     }
 }

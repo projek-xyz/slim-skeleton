@@ -34,7 +34,7 @@
     "configFile": "tests/.eslint.yml"
   },
   "sasslint": {
-    "configFile": "tests/.sasslint.yml"
+    "configFile": "tests/.scsslint.yml"
   },
   "modernizr": {
     "filename": "modernizr.js",

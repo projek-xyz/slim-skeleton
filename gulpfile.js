@@ -84,7 +84,8 @@ gulp.task('lint:styles', () => {
 
     return gulp.src(_.paths.styles, { base: _.paths.src })
         .pipe($.sassLint(_.conf.sasslint))
-        .on('error', _.errorHandler);
+        .pipe($.sassLint.format())
+        .pipe($.sassLint.failOnError());
 });
 
 
@@ -95,7 +96,8 @@ gulp.task('lint:styles', () => {
 gulp.task('lint:scripts', () => {
     return gulp.src(_.paths.scripts, { base: _.paths.src })
         .pipe($.eslint(_.conf.eslint))
-        .on('error', _.errorHandler);
+        .pipe($.eslint.format())
+        .pipe($.eslint.failOnError());
 });
 
 
@@ -226,9 +228,7 @@ gulp.task('build', (done) => {
 /* Task: Lint
  --------------------------------------------------------------------------------- */
 
-gulp.task('lint', (done) => {
-    sequence('lint:styles', 'lint:scripts', done);
-});
+gulp.task('lint', ['lint:styles', 'lint:scripts']);
 
 
 

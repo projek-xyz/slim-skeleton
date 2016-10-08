@@ -7,13 +7,12 @@ extends: 'eslint:recommended'
 parserOptions:
   sourceType: module
 rules:
-  no-console: 'off'
   accessor-pairs: error
   array-bracket-spacing:
     - error
     - never
   array-callback-return: error
-  arrow-body-style: 'off'
+  arrow-body-style: 0
   arrow-parens:
     - error
     - always
@@ -51,17 +50,17 @@ rules:
     - error
     - allowKeywords: true
   eol-last: error
-  eqeqeq: 'off'
+  eqeqeq: 0
   func-names:
     - error
     - never
   func-style: error
   generator-star-spacing: error
-  global-require: 'off'
-  guard-for-in: 'off'
+  global-require: 0
+  guard-for-in: 0
   handle-callback-err: error
   id-blacklist: error
-  id-length: 'off'
+  id-length: 0
   id-match: error
   indent: error
   init-declarations: error
@@ -76,16 +75,16 @@ rules:
     - unix
   lines-around-comment: error
   max-depth: error
-  max-len: 'off'
+  max-len: 0
   max-lines: error
   max-nested-callbacks: error
   max-params: error
   max-statements: error
   max-statements-per-line: error
-  multiline-ternary: 'off'
+  multiline-ternary: 0
   new-cap: error
   new-parens: error
-  newline-after-var: 'off'
+  newline-after-var: 0
   newline-before-return: error
   newline-per-chained-call: error
   no-alert: error
@@ -94,6 +93,7 @@ rules:
   no-caller: error
   no-catch-shadow: error
   no-confusing-arrow: error
+  no-console: 0
   no-continue: error
   no-div-regex: error
   no-duplicate-imports: error
@@ -109,7 +109,7 @@ rules:
   no-implicit-coercion: error
   no-implicit-globals: error
   no-implied-eval: error
-  no-inline-comments: 'off'
+  no-inline-comments: 0
   no-invalid-this: error
   no-iterator: error
   no-label-var: error
@@ -117,10 +117,10 @@ rules:
   no-lone-blocks: error
   no-lonely-if: error
   no-loop-func: error
-  no-magic-numbers: 'off'
+  no-magic-numbers: 0
   no-mixed-operators: error
   no-mixed-requires: error
-  no-multi-spaces: 'off'
+  no-multi-spaces: 0
   no-multi-str: error
   no-multiple-empty-lines: error
   no-negated-condition: error
@@ -131,10 +131,10 @@ rules:
   no-new-require: error
   no-new-wrappers: error
   no-octal-escape: error
-  no-param-reassign: 'off'
-  no-path-concat: 'off'
+  no-param-reassign: 0
+  no-path-concat: 0
   no-plusplus: error
-  no-process-env: 'off'
+  no-process-env: 0
   no-process-exit: error
   no-proto: error
   no-prototype-builtins: error
@@ -146,11 +146,11 @@ rules:
   no-script-url: error
   no-self-compare: error
   no-sequences: error
-  no-shadow: 'off'
+  no-shadow: 0
   no-shadow-restricted-names: error
   no-spaced-func: error
-  no-sync: 'off'
-  no-ternary: 'off'
+  no-sync: 0
+  no-ternary: 0
   no-throw-literal: error
   no-trailing-spaces: error
   no-undef-init: error
@@ -177,28 +177,28 @@ rules:
   object-curly-spacing: error
   object-property-newline: error
   object-shorthand: error
-  one-var: 'off'
+  one-var: 0
   one-var-declaration-per-line: error
   operator-assignment: error
   operator-linebreak: error
-  padded-blocks: 'off'
+  padded-blocks: 0
   prefer-arrow-callback: error
-  prefer-const: 'off'
+  prefer-const: 0
   prefer-reflect: error
   prefer-rest-params: error
   prefer-spread: error
-  prefer-template: 'off'
-  quote-props: 'off'
-  quotes: 'off'
+  prefer-template: 0
+  quote-props: 0
+  quotes: 0
   radix:
     - error
     - as-needed
   require-jsdoc: error
   rest-spread-spacing: error
-  semi: 'off'
+  semi: 0
   semi-spacing: error
   sort-imports: error
-  sort-vars: 'off'
+  sort-vars: 0
   space-before-blocks: error
   space-before-function-paren: error
   space-in-parens:
@@ -209,7 +209,7 @@ rules:
   spaced-comment:
     - error
     - always
-  strict: 'off'
+  strict: 0
   template-curly-spacing:
     - error
     - never

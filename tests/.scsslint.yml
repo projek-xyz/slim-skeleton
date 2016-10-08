@@ -1,22 +1,10 @@
-scss_files: 'resources/assets/**/*.scss'
-
-exclude:
-  - 'node_modules/**'
-  - 'vendor/**'
-
-linters:
-  BorderZero:
-    enabled: false
-
-  IdSelector:
-    enabled: false
-
-  ColorVariable:
-    enabled: false
-
-  Indentation:
-    exclude:
-      - 'path/to/file.scss'
-      - 'path/to/directory/**'
-    severity: warning
-    width: 2
+options:
+  merge-default-rules: true
+files:
+  includes: 'resources/assets/**/*.scss'
+  ignore:
+    - 'node_modules/**'
+    - 'vendor/**'
+rules:
+  no-color-literals: 0
+  no-ids: 0

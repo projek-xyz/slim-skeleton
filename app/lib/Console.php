@@ -160,6 +160,14 @@ class Console
             return $this->usage($args, $command->name());
         }
 
+        $env = $this->container->settings->get('mode');
+
+        if ($this->climate->arguments->defined('env') &&
+            $newEnv = $this->climate->arguments->get('env')) {
+            $this->container->settings->set('mode', $newEnv);
+            putenv('APP_ENV='.$newEnv);
+        }
+
         if ($this->climate->arguments->defined('ansi')) {
             $this->climate->forceAnsiOn();
         } elseif ($this->climate->arguments->defined('no-ansi')) {
@@ -167,11 +175,16 @@ class Console
         }
 
         try {
-            return $command(
+            $return = $command(
                 new Console\Input($this),
                 new Console\Output($this),
                 new Console\Arguments($this->climate->arguments)
             );
+
+            $this->container->settings->set('mode', $env);
+            putenv('APP_ENV='.$env);
+
+            return $return;
         } catch (\Exception $e) {
             $this->climate
                 ->out(sprintf('Error: [%s] <red>%s</red>', $e->getCode(), $e->getMessage()))
@@ -204,7 +217,7 @@ class Console
         }
 
         $this->climate->br()->out(
-            sprintf('<yellow>%s</yellow>:', 'Available commands')
+            sprintf('<yellow>%s</yellow>:', 'Available Commands')
         );
 
         $names = array_map(function ($item) {

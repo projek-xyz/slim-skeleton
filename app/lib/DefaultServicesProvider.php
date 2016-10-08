@@ -1,6 +1,7 @@
 <?php
 namespace Projek\Slim;
 
+use Monolog\Logger as Monolog;
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
 use Projek\Slim\Database\Migrator;
@@ -65,6 +66,19 @@ class DefaultServicesProvider implements ServiceProviderInterface
             $response = new Response(200, $headers);
 
             return $response->withProtocolVersion($settings['httpVersion']);
+        };
+
+        /**
+         * Setup default Console Commands
+         *
+         * @return array
+         */
+        $container[Console\Commands::class] = function () use ($settings) {
+            $commands = [
+                Console\Commands\MigrateCommand::class
+            ];
+
+            return array_merge($commands, $settings->get('commands', []));
         };
 
         /**

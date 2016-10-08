@@ -21,6 +21,11 @@ class Container extends SlimContainer
             ];
         }
 
+        // Get detailed information while not in production
+        if ($value['settings']['mode'] !== 'production') {
+            $value['settings']['displayErrorDetails'] = true;
+        }
+
         parent::__construct($value);
 
         $settings = $this->get('settings');

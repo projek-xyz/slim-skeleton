@@ -3,15 +3,25 @@ engines:
     enabled: true
   phpcodesniffer:
     enabled: true
-  phpmd:
+    config:
+      standard: "PSR2"
+  eslint:
     enabled: true
+    config:
+      config: tests/.eslintrc.yml
+  scss-lint:
+    enabled: true
+    config:
+      config: tests/.scss-lint.yml
 
 ratings:
   paths:
-    - app/api/**.php
+    - app/**/*.php
+    - resources/assets/**/*.js
+    - resources/assets/**/*.scss
 
 exclude_paths:
-  - res/*
-  - tests/*
+  - node_modules/*
   - public/*
+  - tests/*
   - vendor/*

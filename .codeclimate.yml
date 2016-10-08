@@ -4,9 +4,10 @@ engines:
   phpcodesniffer:
     enabled: true
     config:
-      standard: "PSR2"
+      standard: 'PSR2'
   eslint:
     enabled: true
+    channel: 'eslint-3'
     config:
       config: tests/.eslint.yml
   scss-lint:

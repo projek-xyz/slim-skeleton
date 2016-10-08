@@ -55,6 +55,7 @@ abstract class Commands extends Action
     {
         return $this->arguments;
     }
+
     /**
      * @param  Input $input
      * @param  Output $output

@@ -57,13 +57,13 @@ class MigratorTest extends DatabaseTestCase
     public static function tearDownAfterClass()
     {
         // Recreate migrations table after tests are done.
-        Container::instance()->get('migrator')->migrate();
+        Container::instance()->get(Migrator::class)->migrate();
     }
 
     public function test_should_be_on_container()
     {
-        $this->assertTrue($this->container->has('migrator'));
-        $this->assertInstanceOf(Migrator::class, $this->container->get('migrator'));
+        $this->assertTrue($this->container->has(Migrator::class));
+        $this->assertInstanceOf(Migrator::class, $this->container->get(Migrator::class));
     }
 
     public function test_should_create_migration_table()

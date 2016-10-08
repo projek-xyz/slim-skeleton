@@ -8,7 +8,7 @@ namespace Projek\Slim;
  * @property-read Logger logger
  * @property-read Mailer mailer
  * @property-read \Slim\Collection settings
- * @property-read callable upload
+ * @property-read Uploader upload
  * @property-read callable validator
  * @property-read View view
  * @method Database\Models data(string $modelClass)

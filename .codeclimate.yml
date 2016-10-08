@@ -10,10 +10,6 @@ engines:
     channel: 'eslint-3'
     config:
       config: tests/.eslint.yml
-  scss-lint:
-    enabled: true
-    config:
-      config: tests/.scsslint.yml
 
 ratings:
   paths:

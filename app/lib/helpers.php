@@ -38,7 +38,7 @@ if (!function_exists('dump')) {
 if (!function_exists('directory')) {
     /**
      * @param  string $path
-     * @param  string|bool $relative
+     * @param  string|null $relative
      *
      * @return string
      */
@@ -49,10 +49,11 @@ if (!function_exists('directory')) {
         }
 
         $paths = explode('.', $path);
-        $dir = config('directories.'.array_shift($paths));
+        $first = array_shift($paths);
+        $dir = config('directories.'.$first);
 
-        if ($relative && is_string($relative)) {
-            $dir = str_replace(directory($relative), '/', $dir);
+        if (is_string($relative) && !empty($relative)) {
+            $dir = str_replace(directory($relative), '', $dir);
         }
 
         return $dir.($paths ? implode('/', $paths).'/' : '');
@@ -68,7 +69,14 @@ if (!function_exists('config')) {
      */
     function config($name, $default = null)
     {
-        return array_get(app('settings'), $name, $default);
+        /** @var  \Slim\Collection $settings */
+        $settings = app('settings');
+
+        if (strpos($name, '.') === false) {
+            return $settings->get($name, $default);
+        }
+
+        return array_get($settings, $name, $default);
     }
 }
 

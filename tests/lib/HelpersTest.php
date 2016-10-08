@@ -44,7 +44,7 @@ class HelperTest extends TestCase
 
         // Relative Path
 
-        $this->assertEquals('/', directory('storage', 'storage'));
-        $this->assertEquals('/upload/', directory('storage.uploads', 'storage'));
+        $this->assertEquals('', directory('storage', 'storage'));
+        $this->assertEquals('uploads/', directory('storage.uploads', 'storage'));
     }
 }

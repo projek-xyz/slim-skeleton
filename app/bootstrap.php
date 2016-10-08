@@ -18,15 +18,6 @@ $bootstrap = [
 
 $settings =& $bootstrap['settings'];
 
-if (PHP_SAPI == 'cli') {
-    $argv = $GLOBALS['argv'];
-    array_shift($argv);
-
-    $bootstrap['environment'] = Slim\Http\Environment::mock([
-        'REQUEST_URI' => '/'.implode('/', $argv)
-    ]);
-}
-
 // Let's set default timezone
 if (isset($settings['timezone'])) {
     date_default_timezone_set($settings['timezone'] ?: 'UTC');

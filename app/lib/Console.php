@@ -186,9 +186,10 @@ class Console
 
             return $return;
         } catch (\Exception $e) {
+            $filepath = str_replace(ROOT_DIR, DIRECTORY_SEPARATOR, $e->getFile());
             $this->climate
                 ->out(sprintf('Error: [%s] <red>%s</red>', $e->getCode(), $e->getMessage()))
-                ->tab()->out(sprintf('%s (%d)', $e->getFile(), (int) $e->getLine()));
+                ->tab()->out(sprintf('%s (%d)', $filepath, (int) $e->getLine()));
         }
 
         return self::EXIT_ERROR;

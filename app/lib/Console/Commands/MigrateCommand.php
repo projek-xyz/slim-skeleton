@@ -37,9 +37,6 @@ class MigrateCommand extends Commands
         ]
     ];
 
-    /**
-     * {@inheritedoc}
-     */
     public function __invoke(Input $input, Output $output, $args)
     {
         $action = $args->has('down') ? 'down' : 'up';
@@ -58,7 +55,7 @@ class MigrateCommand extends Commands
             return Console::EXIT_SUCCESS;
         }
 
-        $output->out('<red>Migration Failed</red>');
+        $output->error('Migration Failed');
 
         return Console::EXIT_ERROR;
     }

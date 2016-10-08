@@ -9,15 +9,14 @@ if ($uri !== '/' && file_exists(__DIR__.'/'.$uri)) {
 }
 
 $appDir = dirname(__DIR__) . '/app/';
-$app = new Slim\App(
-    require $appDir.'bootstrap.php'
-);
+$container = require $appDir.'/bootstrap.php';
+$app = new Slim\App($container);
 
 // Setup middlewares
 require_once $appDir.'middlewares.php';
 
 // Setup routers
-require_once $appDir.'routes/web.php';
+require_once $appDir.'routes.php';
 
 // Go!
 $app->run();

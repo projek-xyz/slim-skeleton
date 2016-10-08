@@ -1,6 +1,7 @@
 <?php
 namespace Projek\Slim\Console\Arguments;
 
+use League\CLImate\Argument\Argument;
 use League\CLImate\Argument\Summary as BaseSummary;
 
 class Summary extends BaseSummary
@@ -16,12 +17,10 @@ class Summary extends BaseSummary
         }
 
         // Print the usage statement with the arguments without a prefix at the end.
-        $this->climate->out(sprintf(
-            '<yellow>%s</yellow>: %s %s',
-            'Usage',
-            $this->command,
-            $this->short($this->getOrderedArguments())
-        ));
+        $this->climate->out('<yellow>Usage</yellow>:');
+
+        // Print the usage statement with the arguments without a prefix at the end.
+        $this->climate->tab()->out(sprintf('%s [option]', $this->command));
 
         // Print argument details.
         foreach (['required', 'optional'] as $type) {
@@ -39,19 +38,20 @@ class Summary extends BaseSummary
         }
 
         $this->climate->br()->out(
-            sprintf('<yellow>%s arguments</yellow>:', ucfirst($type))
+            sprintf('<yellow>%s Arguments</yellow>:', ucwords($type))
         );
 
-        $len = [];
-        /** @var  \League\CLImate\Argument\Argument $argument */
-        foreach ($arguments as $argument) {
-            $len[] = strlen($this->argument($argument));
-        }
+        $names = array_map(function ($argument) {
+            return strlen($this->argument($argument));
+        }, $arguments);
 
+        /** @var  Argument $argument */
         foreach ($arguments as $argument) {
-            $arg = $this->argument($argument);
-            $spc = (max($len) + 2) - strlen($arg);
-            $str = sprintf('<green>%s</green>%s', $arg, str_repeat(' ', $spc));
+            $str = sprintf(
+                '<green>%s</green>%s',
+                $arg = $this->argument($argument),
+                str_repeat(' ', (max($names) + 2) - strlen($arg))
+            );
 
             if ($argument->description()) {
                 $str .= $argument->description();
@@ -59,5 +59,43 @@ class Summary extends BaseSummary
 
             $this->climate->tab()->out($str);
         }
+    }
+
+    public function argument(Argument $argument)
+    {
+        $summary = $this->prefixedArguments($argument);
+
+        // Print the argument name if it's not printed yet.
+        if ( !$argument->noValue()) {
+            $summary .= sprintf('[=%s]', strtoupper($argument->name()));
+        }
+
+        if ($argument->defaultValue()) {
+            $summary .= ' (default: '.$argument->defaultValue().')';
+        }
+
+        return $summary;
+    }
+
+    protected function prefixedArguments(Argument $argument)
+    {
+        $prefixes = [$argument->prefix(), $argument->longPrefix()];
+        $summary  = [];
+
+        foreach ($prefixes as $key => $prefix) {
+            if (!$prefix) {
+                continue;
+            }
+
+            $sub = str_repeat('-', $key + 1) . $prefix;
+
+            $summary[] = $sub;
+        }
+
+        if ($argument->prefix()) {
+            return implode(', ', $summary);
+        }
+
+        return '    '.implode('', $summary);
     }
 }

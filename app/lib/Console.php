@@ -107,19 +107,35 @@ class Console
      */
     public function listen(array $argv = [])
     {
-        $this->climate->arguments->description(config('app.description'));
+        $this->climate->description(config('app.description'));
         $this->climate->arguments->add([
             'help' => [
                 'prefix' => 'h',
                 'longPrefix' => 'help',
-                'description' => 'Show help',
+                'description' => 'Show help message',
                 'noValue' => true
+            ],
+            'ansi' => [
+                'longPrefix' => 'ansi',
+                'description' => 'Force ANSI output',
+                'noValue' => true
+            ],
+            'no-ansi' => [
+                'longPrefix' => 'no-ansi',
+                'description' => 'Disable ANSI output',
+                'noValue' => true
+            ],
+            'env' => [
+                'longPrefix' => 'env',
+                'description' => 'The environment the command should run under',
             ]
         ]);
 
         if (empty($argv)) {
-            return $this->usage();
+            return $this->usage($argv);
         }
+
+        $this->climate->arguments->parse($argv);
 
         $cmd = array_shift($argv);
         if (isset($this->commands[$cmd])) {
@@ -131,27 +147,29 @@ class Console
         return $this->usage($argv);
     }
 
-    protected function execute(Console\Commands $command, $argv)
+    protected function execute(Console\Commands $command, $args)
     {
-        $args = $this->getArgumentManager();
-
-        $args->parse($argv);
-
-        $args->description($command->description());
+        $this->climate->arguments->description($command->description());
 
         foreach ($command->arguments() as $name => $options) {
-            $args->add($name, $options);
+            $this->climate->arguments->add($name, $options);
         }
 
-        if ($args->defined('help')) {
-            return $this->usage($argv, $command->name());
+        if ($this->climate->arguments->defined('help')) {
+            return $this->usage($args, $command->name());
+        }
+
+        if ($this->climate->arguments->defined('ansi')) {
+            $this->climate->forceAnsiOn();
+        } elseif ($this->climate->arguments->defined('no-ansi')) {
+            $this->climate->forceAnsiOff();
         }
 
         try {
             return $command(
                 new Console\Input($this),
                 new Console\Output($this),
-                new Console\Arguments($args)
+                new Console\Arguments($this->climate->arguments)
             );
         } catch (\Exception $e) {
             $this->climate
@@ -160,24 +178,6 @@ class Console
         }
 
         return self::EXIT_ERROR;
-    }
-
-    /**
-     * Toggle ANSI support on or off
-     *
-     * @param  bool $enable
-     *
-     * @return static
-     */
-    public function forceAnsi($enable = true)
-    {
-        if ($enable) {
-            $this->climate->forceAnsiOn();
-        } else {
-            $this->climate->forceAnsiOff();
-        }
-
-        return $this;
     }
 
     /**
@@ -192,7 +192,7 @@ class Console
     {
         array_unshift($args, $command ?: '[command]');
 
-        $this->climate->arguments->usage($this->climate, $args);
+        $this->climate->usage($args);
 
         if (empty($this->commands) || $command) {
             if (!$command) {
@@ -206,13 +206,12 @@ class Console
             sprintf('<yellow>%s</yellow>:', 'Available commands')
         );
 
-        $len = [];
-        foreach ($this->commands as $name => $cmd) {
-            $len[] = strlen($name);
-        }
+        $names = array_map(function ($item) {
+            return strlen($item);
+        }, array_keys($this->commands));
 
         foreach ($this->commands as $name => $cmd) {
-            $spc = max($len) + 2 - strlen($name);
+            $spc = max($names) + 2 - strlen($name);
             $this->climate->tab()->out(
                 sprintf('<green>%s</green>%s%s', $cmd->name(), str_repeat(' ', $spc), $cmd->description())
             );

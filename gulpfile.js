@@ -11,10 +11,12 @@ const sequence = require('run-sequence');
 
 const _ = require('./resources/assets/build')(gulp);
 
+
+
 /* Task: Compile SCSS
  --------------------------------------------------------------------------------- */
 
-gulp.task('build:styles', () => {
+gulp.task('build:styles', ['lint:styles'], () => {
     _.conf.sass.includePaths = _.depsDir;
 
     const styles = gulp.src(_.paths.styles, { base: _.paths.src })
@@ -31,7 +33,7 @@ gulp.task('build:styles', () => {
 /* Task: Minify JS
  --------------------------------------------------------------------------------- */
 
-gulp.task('build:scripts', () => {
+gulp.task('build:scripts', ['lint:scripts'], () => {
     const scripts = gulp.src(_.paths.scripts, { base: _.paths.src })
         .pipe($.babel({ presets: ['es2015'] }))
         .on('error', _.errorHandler)
@@ -70,6 +72,30 @@ gulp.task('build:fonts', (done) => {
         }));
 
     return done();
+});
+
+
+
+/* Task: Lint SCSS
+ --------------------------------------------------------------------------------- */
+
+gulp.task('lint:styles', () => {
+    _.conf.sass.includePaths = _.depsDir;
+
+    return gulp.src(_.paths.styles, { base: _.paths.src })
+        .pipe($.sassLint(_.conf.sasslint))
+        .on('error', _.errorHandler);
+});
+
+
+
+/* Task: Lint JS
+ --------------------------------------------------------------------------------- */
+
+gulp.task('lint:scripts', () => {
+    return gulp.src(_.paths.scripts, { base: _.paths.src })
+        .pipe($.eslint(_.conf.eslint))
+        .on('error', _.errorHandler);
 });
 
 
@@ -193,6 +219,15 @@ gulp.task('vendor', (done) => {
 
 gulp.task('build', (done) => {
     sequence('build:styles', 'build:scripts', 'build:images', 'build:fonts', done);
+});
+
+
+
+/* Task: Lint
+ --------------------------------------------------------------------------------- */
+
+gulp.task('lint', (done) => {
+    sequence('lint:styles', 'lint:scripts', done);
 });
 
 

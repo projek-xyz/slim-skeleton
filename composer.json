@@ -18,6 +18,7 @@
   },
   "scripts": {
     "test": "php vendor/bin/phpunit -c tests/phpunit.xml",
+    "lint": "php vendor/bin/phpcs --standard=PSR2  -n -p app/",
     "post-root-package-install": "php -r \"copy('.env.txt', '.env');\""
   },
   "autoload": {
@@ -45,7 +46,8 @@
     "vlucas/phpdotenv": "~2.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "~4.0"
+    "phpunit/phpunit": "~4.0",
+    "squizlabs/php_codesniffer": "~2.7"
   },
   "config": {
     "preferred-dist": true

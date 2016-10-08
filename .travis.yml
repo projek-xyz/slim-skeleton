@@ -5,9 +5,6 @@ sudo: false
 env:
  - $NODEJS_VERSION=6
 
-matrix:
-  fast_finish: true
-
 php:
   - 5.5
   - 5.6
@@ -20,22 +17,25 @@ mysql:
 
 before_install:
   - mysql -e "create database if not exists ${DB_NAME}"
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then $(curl -fsSL https://git.io/vPsKk | sh -) && source ~/.nvm/nvm.sh && nvm install $NODEJS_VERSION; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then $(curl -fsSL https://git.io/vPsKk | sh -) && source ~/.nvm/nvm.sh && nvm install $NODEJS_VERSION; fi
 
 install:
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then npm -g update -q && npm i -q; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then composer require satooshi/php-coveralls:~1.0 squizlabs/php_codesniffer:~2.6 codeclimate/php-test-reporter:~0.3 -n -q; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != '5.6' ]]; then composer install -n -q; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then npm -g update -q && npm i -q; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then composer require satooshi/php-coveralls:~1.0 codeclimate/php-test-reporter:~0.3 -n -q; fi
+  - if [[ $TRAVIS_PHP_VERSION != '5.6' ]]; then composer install -n -q; fi
   - php app/console migrate
 
 script:
-  - if [[ "$TRAVIS_PHP_VERSION" != '5.6' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-text; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover tests/clover.xml; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then php vendor/bin/phpcs --standard=PSR2  -n -p app/; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then gulp build; fi
+  - composer lint
+  - if [[ $TRAVIS_PHP_VERSION != '5.6' ]]; then composer test; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover tests/clover.xml; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then gulp build; fi
 
 after_script:
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then php vendor/bin/coveralls && php vendor/bin/test-reporter -v; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then php vendor/bin/coveralls && php vendor/bin/test-reporter -v; fi
+
+matrix:
+  fast_finish: true
 
 notifications:
   email: false

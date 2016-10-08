@@ -32,6 +32,10 @@ class Container extends SlimContainer
             ];
         }
 
+        if (!array_key_exists('mode', $value['settings'])) {
+            $value['settings']['mode'] = getenv('APP_ENV') ?: 'production';
+        }
+
         // Get detailed information while not in production
         if ($value['settings']['mode'] !== 'production') {
             $value['settings']['displayErrorDetails'] = true;

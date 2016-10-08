@@ -36,8 +36,15 @@ class HelperTest extends TestCase
 
     public function test_directory()
     {
+        // Absolute Path
+
         $this->assertEquals(ROOT_DIR, directory(''));
         $this->assertEquals(ROOT_DIR.'resources/', directory('resources'));
         $this->assertEquals(ROOT_DIR.'resources/data/', directory('resources.data'));
+
+        // Relative Path
+
+        $this->assertEquals('/', directory('storage', 'storage'));
+        $this->assertEquals('/upload/', directory('storage.uploads', 'storage'));
     }
 }

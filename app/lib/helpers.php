@@ -38,19 +38,24 @@ if (!function_exists('dump')) {
 if (!function_exists('directory')) {
     /**
      * @param  string $path
+     * @param  string|bool $relative
      *
      * @return string
      */
-    function directory($path)
+    function directory($path, $relative = null)
     {
         if (empty($path)) {
             return ROOT_DIR;
         }
 
         $paths = explode('.', $path);
-        $dir = array_shift($paths);
+        $dir = config('directories.'.array_shift($paths));
 
-        return config('directories.'.$dir).($paths ? implode('/', $paths).'/' : '');
+        if ($relative && is_string($relative)) {
+            $dir = str_replace(directory($relative), '/', $dir);
+        }
+
+        return $dir.($paths ? implode('/', $paths).'/' : '');
     }
 }
 

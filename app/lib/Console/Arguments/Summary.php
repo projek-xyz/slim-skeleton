@@ -18,8 +18,6 @@ class Summary extends BaseSummary
 
         // Print the usage statement with the arguments without a prefix at the end.
         $this->climate->out('<yellow>Usage</yellow>:');
-
-        // Print the usage statement with the arguments without a prefix at the end.
         $this->climate->tab()->out(sprintf('%s [option]', $this->command));
 
         // Print argument details.
@@ -88,7 +86,6 @@ class Summary extends BaseSummary
             }
 
             $sub = str_repeat('-', $key + 1) . $prefix;
-
             $summary[] = $sub;
         }
 

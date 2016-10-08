@@ -76,7 +76,7 @@ class Migrator
             $files = count($migrations);
 
             if ($migrations) {
-                $this->output->out('<green>Migration start:</green>');
+                $this->out('<green>Migration start:</green>');
             }
 
             foreach ($migrations as $filepath) {
@@ -85,10 +85,13 @@ class Migrator
                     continue;
                 }
 
-                $this->callMigration($filepath, $action, $batch);
+                $this->callMigration($filepath, $action);
 
-                $this->output->tab()->out(
-                    sprintf('<yellow>%s</yellow> %s', $isDown ? 'Reseted: ' : 'Migrated:', basename($filepath))
+                $this->updateMigrationTable($filepath, $batch, $action);
+
+                $this->out(
+                    sprintf('<yellow>%s</yellow> %s', $isDown ? 'Reseted: ' : 'Migrated:', basename($filepath)),
+                    true
                 );
 
                 ++$migrated;
@@ -96,10 +99,11 @@ class Migrator
 
             $this->database->commit();
 
-            $this->output->tab()->out(
+            $this->out(
                 $migrated > 0
                     ? '<green>Done successfully migrated</green> '.$files.' <green>file(s)</green>'
-                    : sprintf('<yellow>No migration executed</yellow>%s', $files > 0 ? ' '.$files.' <yellow>file(s) already migrated</yellow>' : '')
+                    : sprintf('<yellow>No migration executed</yellow>%s', $files > 0 ? ' '.$files.' <yellow>file(s) already migrated</yellow>' : ''),
+                true
             );
 
             return true;
@@ -110,13 +114,22 @@ class Migrator
         }
     }
 
-    protected function callMigration($filepath, $action, $batch)
+    protected function out($message, $tab = false)
+    {
+        if ($this->output) {
+            if ($tab) {
+                $this->output->tab();
+            }
+
+            $this->output->out($message);
+        }
+    }
+
+    protected function callMigration($filepath, $action)
     {
         $ext = pathinfo($filepath, PATHINFO_EXTENSION);
 
         call_user_func([$this, 'migrate'.ucfirst($ext)], $filepath, $action);
-
-        $this->updateMigrationTable($filepath, $batch, $action);
     }
 
     protected function migrateSql($filepath)

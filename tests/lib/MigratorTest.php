@@ -1,7 +1,6 @@
 <?php
 namespace Projek\Slim\Tests;
 
-use Projek\Slim\Container;
 use Projek\Slim\Database\Migrator;
 use Slim\PDO\Database;
 
@@ -14,25 +13,39 @@ class MigratorTest extends DatabaseTestCase
 
     protected $db;
 
+    protected $migrationFile = '';
+
     public function setUp()
     {
         $this->settings = [
-            'migration' => [
-                'directory' => ROOT_DIR.'tests/stubs/',
-            ]
+            'migration' => ['directory' => ROOT_DIR.'tests/stubs/']
         ];
 
         parent::setUp();
 
         $this->db = $this->newMockDatabase();
         $this->migrator = $this->newMigrator();
+        $this->migrationFile = $this->settings['migration']['directory'].'001-first-install.php';
     }
 
     public function tearDown()
     {
-        $this->container->get('db')->exec(
-            sprintf('DROP TABLE %s', Migrator::TABLE)
-        );
+        $db = $this->container->get('db');
+        $dummy = require $this->migrationFile;
+
+        foreach ([$dummy['table'], Migrator::TABLE] as $table) {
+            $db->exec('DROP TABLE IF EXISTS '.$table);
+        }
+    }
+
+    public static function tearDownAfterClass()
+    {
+        try {
+            // Recreate migrations table after tests are done.
+            app(Migrator::class)->migrate();
+        } catch (\Exception $e) {
+            // Do nothing.
+        }
     }
 
     private function createMigrationTableIfNotExists()
@@ -54,16 +67,26 @@ class MigratorTest extends DatabaseTestCase
         return new Migrator($database, $this->settings['migration']['directory']);
     }
 
-    public static function tearDownAfterClass()
-    {
-        // Recreate migrations table after tests are done.
-        Container::instance()->get(Migrator::class)->migrate();
-    }
-
     public function test_should_be_on_container()
     {
         $this->assertTrue($this->container->has(Migrator::class));
         $this->assertInstanceOf(Migrator::class, $this->container->get(Migrator::class));
+    }
+
+    public function test_should_migrate_inside_transaction()
+    {
+        $migrator = $this->newMigrator(
+            $database = $this->newMockDatabase('beginTransaction', 'commit')
+        );
+
+        $database->expects($this->once())->method('beginTransaction');
+        $database->expects($this->once())->method('commit');
+
+        try {
+            $migrator->migrate();
+        } catch (\PDOException $e) {
+            $this->markTestSkipped($e->getMessage());
+        }
     }
 
     public function test_should_create_migration_table()
@@ -92,19 +115,17 @@ class MigratorTest extends DatabaseTestCase
         );
 
         $migration = $this->makeMethodInvokable(Migrator::class, 'updateMigrationTable');
-        $filename = $this->settings['migration']['directory'].'001-first-install.php';
 
         if ($action == 'up') {
-            $stmt = $db->insert(['migration' => $filename, 'batch' => 1]);
-            $method = $mockDb->expects($this->once())->method('insert');
+            $stmt = $db->insert(['migration' => $this->migrationFile, 'batch' => 1]);
+            $mock = $mockDb->expects($this->once())->method('insert');
         } else {
             $stmt = $db->delete(Migrator::TABLE);
-            $method = $mockDb->expects($this->once())->method('delete');
+            $mock = $mockDb->expects($this->once())->method('delete');
         }
 
-        $method->will($this->returnValue($stmt));
-
-        $migration->invoke($migrator, $filename, 0, $action);
+        $mock->will($this->returnValue($stmt));
+        $migration->invoke($migrator, $this->migrationFile, 0, $action);
     }
 
     public function test_should_check_is_migrated()
@@ -117,28 +138,11 @@ class MigratorTest extends DatabaseTestCase
         );
 
         $migration = $this->makeMethodInvokable(Migrator::class, 'isMigrated');
-        $filename = $this->settings['migration']['directory'].'001-first-install.php';
 
         $stmt = $db->select(['migration']);
         $mockDb->expects($this->once())->method('select')->will($this->returnValue($stmt));
 
-        $this->assertFalse($migration->invoke($migrator, $filename));
-    }
-
-    public function test_should_migrate_inside_transaction()
-    {
-        $migrator = $this->newMigrator(
-            $db = $this->newMockDatabase('beginTransaction', 'commit')
-        );
-
-        $db->expects($this->once())->method('beginTransaction');
-        $db->expects($this->once())->method('commit');
-
-        try {
-            $migrator->migrate();
-        } catch (\PDOException $e) {
-            $this->markTestSkipped($e->getMessage());
-        }
+        $this->assertFalse($migration->invoke($migrator, $this->migrationFile));
     }
 
     public function actionProvider()

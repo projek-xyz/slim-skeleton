@@ -48,25 +48,6 @@ class MigratorTest extends DatabaseTestCase
         }
     }
 
-    private function createMigrationTableIfNotExists()
-    {
-        $hasTable = $this->makeMethodInvokable(Migrator::class, 'hasMigrationTable');
-
-        if (!$hasTable->invoke($this->migrator)) {
-            $this->makeMethodInvokable(Migrator::class, 'createMigrationTable')
-                ->invoke($this->migrator);
-        }
-    }
-
-    private function newMigrator(Database $database = null)
-    {
-        if (null == $database) {
-            $database = $this->container->get('db');
-        }
-
-        return new Migrator($database, $this->settings['migration']['directory']);
-    }
-
     public function test_should_be_on_container()
     {
         $this->assertTrue($this->container->has(Migrator::class));
@@ -151,5 +132,24 @@ class MigratorTest extends DatabaseTestCase
             ['up'],
             ['down']
         ];
+    }
+
+    private function createMigrationTableIfNotExists()
+    {
+        $hasTable = $this->makeMethodInvokable(Migrator::class, 'hasMigrationTable');
+
+        if (!$hasTable->invoke($this->migrator)) {
+            $this->makeMethodInvokable(Migrator::class, 'createMigrationTable')
+                ->invoke($this->migrator);
+        }
+    }
+
+    private function newMigrator(Database $database = null)
+    {
+        if (null == $database) {
+            $database = $this->container->get('db');
+        }
+
+        return new Migrator($database, $this->settings['migration']['directory']);
     }
 }

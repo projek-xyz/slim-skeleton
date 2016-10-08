@@ -2,7 +2,7 @@
 namespace Projek\Slim;
 
 use League\CLImate\CLImate;
-use League\Flysystem\Exception;
+use Projek\Slim\Handlers\ConsoleErrorHandler;
 
 class Console
 {
@@ -156,40 +156,37 @@ class Console
             $this->climate->arguments->add($name, $options);
         }
 
-        if ($this->climate->arguments->defined('help')) {
+        /** @var \Slim\Collection $settings */
+        $settings = $this->container->get('settings');
+        $argument = new Console\Arguments($this->climate->arguments);
+        $output = new Console\Output($this);
+        $handle = new ConsoleErrorHandler($output, $settings->get('displayErrorDetails'));
+        $env = $settings->get('mode');
+
+        if ($argument->has('help')) {
             return $this->usage($args, $command->name());
         }
 
-        $env = $this->container->settings->get('mode');
-
-        if ($this->climate->arguments->defined('env') &&
-            $newEnv = $this->climate->arguments->get('env')) {
-            $this->container->settings->set('mode', $newEnv);
-            putenv('APP_ENV='.$newEnv);
-        }
-
-        if ($this->climate->arguments->defined('ansi')) {
+        if ($argument->has('ansi')) {
             $this->climate->forceAnsiOn();
-        } elseif ($this->climate->arguments->defined('no-ansi')) {
+        } elseif ($argument->has('no-ansi')) {
             $this->climate->forceAnsiOff();
         }
 
         try {
-            $return = $command(
-                new Console\Input($this),
-                new Console\Output($this),
-                new Console\Arguments($this->climate->arguments)
-            );
+            if ($argument->has('env') && $newEnv = $argument->get('env')) {
+                $settings->set('mode', $newEnv);
+                putenv('APP_ENV='.$newEnv);
+            }
 
-            $this->container->settings->set('mode', $env);
+            $return = $command(new Console\Input($this), $output, $argument);
+
+            $settings->set('mode', $env);
             putenv('APP_ENV='.$env);
 
             return $return;
-        } catch (\Exception $e) {
-            $filepath = str_replace(ROOT_DIR, DIRECTORY_SEPARATOR, $e->getFile());
-            $this->climate
-                ->out(sprintf('Error: [%s] <red>%s</red>', $e->getCode(), $e->getMessage()))
-                ->tab()->out(sprintf('%s (%d)', $filepath, (int) $e->getLine()));
+        } catch (\Exception $exception) {
+            $handle($exception);
         }
 
         return self::EXIT_ERROR;

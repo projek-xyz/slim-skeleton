@@ -43,6 +43,8 @@ class MigrateCommand extends Commands
         /** @var  Migrator $migrator */
         $migrator = app(Migrator::class);
 
+        throw new \InvalidArgumentException('Error Bro', 200);
+
         if ($migrate = $migrator->migrate($action)) {
             $output->out('<green>Migration success</green>');
 

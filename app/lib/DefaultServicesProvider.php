@@ -25,11 +25,6 @@ class DefaultServicesProvider implements ServiceProviderInterface
         $settings = $container->get('settings');
 
         /**
-         * Change default 'displayErrorDetails' settings
-         */
-        $settings->set('displayErrorDetails', $settings['mode'] === 'production');
-
-        /**
          * Override default Slim foundHandler container.
          *
          * @return \Slim\Interfaces\InvocationStrategyInterface

@@ -3,7 +3,12 @@ language: php
 sudo: false
 
 env:
- - $NODEJS_VERSION=6
+  - $NODEJS_VERSION=6
+
+cache:
+  directories:
+    - node_modules
+    - vendor
 
 php:
   - 5.5

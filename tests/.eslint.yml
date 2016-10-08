@@ -5,6 +5,7 @@ env:
   node: true
 extends: 'eslint:recommended'
 parserOptions:
+  ecmaVersion: 6
   sourceType: module
 rules:
   accessor-pairs: 2
@@ -51,9 +52,7 @@ rules:
     - allowKeywords: true
   eol-last: 2
   eqeqeq: 0
-  func-names:
-    - 2
-    - never
+  func-names: 0
   func-style: 2
   generator-star-spacing: 2
   global-require: 0
@@ -64,7 +63,6 @@ rules:
   id-match: 2
   indent: 2
   init-declarations: 2
-  jsx-quotes: 2
   key-spacing: 2
   keyword-spacing:
     - 2

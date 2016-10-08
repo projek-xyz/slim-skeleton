@@ -135,11 +135,12 @@ class Console
             return $this->usage($argv);
         }
 
-        $this->climate->arguments->parse($argv);
-
         $cmd = array_shift($argv);
-        if (isset($this->commands[$cmd])) {
+
+        if (array_key_exists($cmd, $this->commands)) {
             $command = $this->commands[$cmd];
+
+            $this->climate->arguments->parse($argv);
 
             return $this->execute($command, $argv);
         }

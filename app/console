@@ -2,6 +2,8 @@
 <?php
 
 $argv = $GLOBALS['argv'];
+array_shift($argv);
+
 $container = require __DIR__.'/bootstrap.php';
 $app = new Projek\Slim\Console($container);
 

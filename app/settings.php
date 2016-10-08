@@ -59,4 +59,8 @@ return [
     'upload' => [
         'extensions' => ['image/jpeg', 'image/png']
     ],
+
+    'commands' => [
+        App\Commands\GreetingCommand::class
+    ]
 ];

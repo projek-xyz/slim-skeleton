@@ -1,21 +1,27 @@
 <?php
 namespace App\Commands;
 
-use Projek\Slim\Action;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Projek\Slim\Console;
 
-class DefaultCommand extends Action
+class GreetingCommand extends Console\Commands
 {
     /**
-     * @api  GET  /
-     * @param  Request  $req
-     * @param  Response $res
-     * @param  array    $args
-     * @return mixed
+     * {@inheritedoc}
      */
-    public function __invoke(Request $req, Response $res, $args)
+    protected $name = 'greeting';
+
+    /**
+     * {@inheritedoc}
+     */
+    protected $description = 'Say hello to the world';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __invoke($input, $output, $args)
     {
-        return 'hallo'.PHP_EOL;
+        $output->out('Hallo, world!');
+
+        return Console::EXIT_SUCCESS;
     }
 }

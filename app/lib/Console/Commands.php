@@ -62,5 +62,5 @@ abstract class Commands extends Action
      *
      * @return int
      */
-    abstract public function __invoke(Input $input, Output $output, $args);
+    abstract public function __invoke($input, $output, $args);
 }

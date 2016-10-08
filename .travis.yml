@@ -20,20 +20,23 @@ before_install:
   - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then $(curl -fsSL https://git.io/vPsKk | sh -) && source ~/.nvm/nvm.sh && nvm install $NODEJS_VERSION; fi
 
 install:
-  - composer global require codeclimate/php-test-reporter:~0.3 -n -q
   - if [[ $TRAVIS_PHP_VERSION != '5.6' ]]; then composer install -n -q; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then composer require codeclimate/php-test-reporter:~0.3 -n -q; fi
   - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then npm -g update -s && npm i -s; fi
   - php app/console migrate
+
+before_script:
+  - export CLOVER_PATH=tests/clover.xml
 
 script:
   - composer lint
   - if [[ $TRAVIS_PHP_VERSION != '5.6' ]]; then composer test; fi
-  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover tests/clover.xml; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover $CLOVER_PATH; fi
   - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then gulp build; fi
 
 after_script:
-  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then coveralls -c .coveralls.yml; fi
-  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then test-reporter --coverage-report tests/clover.xml; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then coveralls --coverage_clover $CLOVER_PATH; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then test-reporter --coverage-report $CLOVER_PATH; fi
 
 matrix:
   fast_finish: true

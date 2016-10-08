@@ -1,10 +1,12 @@
 <?php
 namespace Projek\Slim\Console;
 
-use Projek\Slim\Action;
+use Projek\Slim\ContainerAwareTrait;
 
-abstract class Commands extends Action
+abstract class Commands
 {
+    use ContainerAwareTrait;
+
     /**
      * Command name
      *
@@ -63,5 +65,5 @@ abstract class Commands extends Action
      *
      * @return int
      */
-    abstract public function __invoke($input, $output, $args);
+    abstract public function __invoke(Input $input, Output $output, Arguments $args);
 }

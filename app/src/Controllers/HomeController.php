@@ -1,11 +1,11 @@
 <?php
 namespace App\Controllers;
 
-use Projek\Slim\Action;
-use Projek\Slim\Response;
+use Projek\Slim\Http\Controllers;
+use Projek\Slim\Http\Response;
 use Slim\Http\Request;
 
-class HomeController extends Action
+class HomeControllers extends Controllers
 {
     /**
      * @api  GET  /

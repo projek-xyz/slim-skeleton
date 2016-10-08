@@ -18,7 +18,7 @@ class GreetingCommand extends Console\Commands
     /**
      * {@inheritdoc}
      */
-    public function __invoke($input, $output, $args)
+    public function __invoke(Console\Input$input, Console\Output $output, Console\Arguments $args)
     {
         $output->out('Hallo, world!');
 

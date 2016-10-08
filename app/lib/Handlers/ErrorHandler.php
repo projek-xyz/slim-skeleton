@@ -1,6 +1,7 @@
 <?php
 namespace Projek\Slim\Handlers;
 
+use Projek\Slim\View;
 use Psr\Log\LogLevel;
 use Slim\Handlers\Error;
 use Exception;
@@ -27,7 +28,7 @@ class ErrorHandler extends Error
             $html = ['<p>A website error has occurred. Sorry for the temporary inconvenience.</p>'];
         }
 
-        return app('view')->render('error::500', [
+        return app(View::class)->render('error::500', [
             'title' => 'Application Error',
             'html' => implode(PHP_EOL, $html)
         ]);

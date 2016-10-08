@@ -37,7 +37,7 @@ class MigrateCommand extends Console\Commands
     /**
      * {@inheritdoc}
      */
-    public function __invoke($input, $output, $args)
+    public function __invoke(Console\Input$input, Console\Output $output, Console\Arguments $args)
     {
         $action = $args->has('down') ? 'down' : 'up';
         /** @var  Migrator $migrator */

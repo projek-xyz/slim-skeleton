@@ -10,13 +10,12 @@ namespace Projek\Slim;
  * @property-read \Slim\Collection settings
  * @property-read Uploader upload
  * @property-read callable validator
- * @property-read View view
  * @method Database\Models data(string $modelClass)
  * @method void upload(\Psr\Http\Message\UploadedFileInterface $file)
  * @method bool logger(integer $level, string $message, array $context = [])
  * @method \Valitron\Validator validator(array|\Psr\Http\Message\ServerRequestInterface $data, array $rules)
  */
-abstract class Action
+trait ContainerAwareTrait
 {
     /**
      * Slim\Container instance

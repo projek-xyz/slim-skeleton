@@ -1,6 +1,7 @@
 <?php
-namespace Projek\Slim;
+namespace Projek\Slim\Http;
 
+use Projek\Slim\View;
 use Slim\Http\Response as SlimResponse;
 
 class Response extends SlimResponse
@@ -15,6 +16,8 @@ class Response extends SlimResponse
      */
     public function withView($view, array $data = [])
     {
-        return $this->write(app('view')->render($view, $data));
+        $view = app(View::class)->render($view, $data);
+
+        return $this->write($view);
     }
 }

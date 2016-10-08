@@ -4,14 +4,10 @@ namespace Projek\Slim;
 use Monolog\Logger as Monolog;
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
-use Projek\Slim\Database\Migrator;
-use Projek\Slim\Database\Models;
-use Projek\Slim\Mailer\MailDriverInterface;
-use Projek\Slim\Mailer\SmtpDriver;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Collection;
 use Slim\Http\Headers;
-use Slim\PDO\Database;
+use Slim\PDO\Database as SlimDatabase;
 use Valitron\Validator;
 
 class DefaultServicesProvider implements ServiceProviderInterface
@@ -58,7 +54,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
          */
         $container['response'] = function () use ($settings) {
             $headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
-            $response = new Response(200, $headers);
+            $response = new Http\Response(200, $headers);
 
             return $response->withProtocolVersion($settings['httpVersion']);
         };
@@ -92,12 +88,12 @@ class DefaultServicesProvider implements ServiceProviderInterface
         /**
          * Setup Database
          *
-         * @return Database
+         * @return SlimDatabase
          */
         $container['db'] = function () use ($settings) {
             $db = $this->initializeDatabase($settings['db']);
 
-            return new Database($db['dsn'], $db['user'], $db['pass'], [
+            return new SlimDatabase($db['dsn'], $db['user'], $db['pass'], [
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_CLASS
             ]);
         };
@@ -124,10 +120,12 @@ class DefaultServicesProvider implements ServiceProviderInterface
 
                 $model = new \ReflectionClass($class);
 
-                if (!$model->isSubclassOf(Models::class)) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Data model must be instance of %s, %s given', Models::class, $model->getName())
-                    );
+                if (!$model->isSubclassOf(Database\Models::class)) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Data model must be instance of %s, %s given',
+                        Database\Models::class,
+                        $model->getName()
+                    ));
                 }
 
                 return $model->newInstance($container->get('db'));
@@ -139,14 +137,14 @@ class DefaultServicesProvider implements ServiceProviderInterface
          *
          * @param  \Slim\Container $container
          *
-         * @return Migrator
+         * @return Database\Migrator
          */
-        $container[Migrator::class] = function ($container) use ($settings) {
+        $container[Database\Migrator::class] = function ($container) use ($settings) {
             $directory = isset($settings['migration']['directory'])
                 ? $settings['migration']['directory']
                 : directory('resources.data');
 
-            return new Migrator($container->get('db'), $directory);
+            return new Database\Migrator($container->get('db'), $directory);
         };
 
         /**
@@ -154,7 +152,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
          *
          * @return View
          */
-        $container['view'] = function () use ($settings) {
+        $container[View::class] = function () use ($settings) {
             $view = new View($settings['view']);
 
             $this->initializeViewFolders([
@@ -175,10 +173,10 @@ class DefaultServicesProvider implements ServiceProviderInterface
         /**
          * Setup Mail Driver
          *
-         * @return MailDriverInterface
+         * @return Mailer\MailDriverInterface
          */
-        $container[MailDriverInterface::class] = function () use ($settings) {
-            $driver = new SmtpDriver($settings['mailer']);
+        $container[Mailer\MailDriverInterface::class] = function () use ($settings) {
+            $driver = new Mailer\SmtpDriver($settings['mailer']);
 
             $driver->debugMode($settings['mode']);
             $driver->from($settings['app']['email'], $settings['app']['title']);
@@ -195,7 +193,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
          */
         $container['mailer'] = function ($container) {
             return new Mailer(
-                $container->get(MailDriverInterface::class)
+                $container->get(Mailer\MailDriverInterface::class)
             );
         };
 

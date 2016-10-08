@@ -1,6 +1,7 @@
 <?php
 namespace Projek\Slim\Handlers;
 
+use Projek\Slim\View;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
@@ -32,6 +33,6 @@ class NotFoundHandler extends NotFound
             'If all else fails, you can visit our home page at the link below.'
         ]);
 
-        return app('view')->render('error::404', compact('title', 'desc', 'homeUrl'));
+        return app(View::class)->render('error::404', compact('title', 'desc', 'homeUrl'));
     }
 }

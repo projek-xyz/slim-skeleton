@@ -45,11 +45,9 @@ class MigrateCommand extends Commands
 
         $migrator->setOutput($output);
 
-        if ($migrate = $migrator->migrate($action)) {
+        if ($migrator->migrate($action)) {
             return Console::EXIT_SUCCESS;
         }
-
-        $output->error('Migration Failed');
 
         return Console::EXIT_ERROR;
     }

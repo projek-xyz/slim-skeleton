@@ -2,7 +2,6 @@
 namespace Projek\Slim\Database;
 
 use Projek\Slim\Console\Output;
-use Psr\Log\LogLevel;
 use Slim\PDO\Database;
 
 class Migrator

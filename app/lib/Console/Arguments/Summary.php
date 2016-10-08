@@ -66,7 +66,7 @@ class Summary extends BaseSummary
         $summary = $this->prefixedArguments($argument);
 
         // Print the argument name if it's not printed yet.
-        if ( !$argument->noValue()) {
+        if (!$argument->noValue()) {
             $summary .= sprintf('[=%s]', strtoupper($argument->name()));
         }
 

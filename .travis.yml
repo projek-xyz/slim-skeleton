@@ -48,10 +48,10 @@ install:
   - if [[ $setup != 'asset' ]]; then php app/console migrate; fi
 
 script:
-  - composer lint
   - if [[ $setup == 'basic' ]]; then composer test; fi
   - if [[ $setup == 'coverage' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover $clover_path; fi
   - if [[ $setup == 'asset' ]]; then gulp build; fi
+  - if [[ $setup != 'asset' ]]; then composer lint; fi
 
 after_script:
   - if [[ $setup == 'coverage' ]]; then php vendor/bin/coveralls --coverage_clover $clover_path; fi

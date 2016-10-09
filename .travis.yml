@@ -14,9 +14,8 @@ cache:
     - vendor
 
 env:
+  - setup=basic
   global:
-    - setup=basic
-    - node_version=6
     - clover_path=tests/clover.xml
     - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
     - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
@@ -26,7 +25,17 @@ matrix:
   fast_finish: true
   include:
     - php: 5.5
-      env: setup=asset
+      env:
+        - setup=resource
+        - node_version=4
+    - php: 5.5
+      env:
+        - setup=resource
+        - node_version=5
+    - php: 5.5
+      env:
+        - setup=resource
+        - node_version=6
     - php: 5.5
       env: setup=coverage
   allow_failures:
@@ -39,19 +48,19 @@ mysql:
 
 before_install:
   - mysql -e "create database if not exists ${DB_NAME}"
-  - if [[ $setup == 'asset' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install $node_version; fi
+  - if [[ $setup == 'resource' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install $node_version; fi
 
 install:
   - if [[ $setup == 'basic' ]]; then composer install -n -q; fi
   - if [[ $setup == 'coverage' ]]; then composer require codeclimate/php-test-reporter:~0.3 -n -q; fi
-  - if [[ $setup == 'asset' ]]; then npm -g update -s && npm i -s; fi
-  - if [[ $setup != 'asset' ]]; then php app/console migrate; fi
+  - if [[ $setup == 'resource' ]]; then npm -g update -s && npm i -s; fi
+  - if [[ $setup != 'resource' ]]; then php app/console migrate; fi
 
 script:
   - if [[ $setup == 'basic' ]]; then composer test; fi
   - if [[ $setup == 'coverage' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover $clover_path; fi
-  - if [[ $setup == 'asset' ]]; then gulp build; fi
-  - if [[ $setup != 'asset' ]]; then composer lint; fi
+  - if [[ $setup == 'resource' ]]; then gulp build; fi
+  - if [[ $setup != 'resource' ]]; then composer lint; fi
 
 after_script:
   - if [[ $setup == 'coverage' ]]; then php vendor/bin/coveralls --coverage_clover $clover_path; fi

@@ -42,7 +42,7 @@ before_install:
   - if [[ $setup == 'asset' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install $node_version; fi
 
 install:
-  - if [[ $setup == 'basic' ]]; then composer install -n -q; fi
+  - if [[ $setup != 'asset' ]]; then composer install -n -q; fi
   - if [[ $setup == 'coverage' ]]; then composer require codeclimate/php-test-reporter:~0.3 -n -q; fi
   - if [[ $setup == 'asset' ]]; then npm -g update -s && npm i -s; fi
   - php app/console migrate

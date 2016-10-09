@@ -13,7 +13,8 @@
   "scripts": {
     "gulp": "gulp",
     "test": "gulp test:bdd",
-    "start": "gulp watch"
+    "start": "gulp watch",
+    "deploy:wiki": "git subtree push -P docs/wiki git@github.com:projek-xyz/slim-skeleton.wiki.git master"
   },
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.4",

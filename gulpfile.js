@@ -167,6 +167,26 @@ gulp.task('test:bdd', (done) => {
     return done();
 });
 
+/* Task: Deploy Wiki Pages
+ --------------------------------------------------------------------------------- */
+
+gulp.task('deploy:wiki', (done) => {
+    const exec = require('child_process').exec;
+    const ghUser = _.mode != 'local' && 'GH_USER_TOKEN' in process.env ? process.env.GH_USER_TOKEN : 'git';
+    let command = [
+        'git subtree push -P docs/wiki',
+        ghUser + '@github.com:projek-xyz/slim-skeleton.wiki.git',
+        'master'
+    ];
+
+    exec(command.join(' '), (err, stdout, stderr) => {
+        _.e(stdout);
+        _.e(stderr, 'red');
+
+        done(err);
+    });
+});
+
 /* Task: Clean
  --------------------------------------------------------------------------------- */
 

@@ -18,9 +18,6 @@ env:
     - setup=basic
     - node_version=6
     - clover_path=tests/clover.xml
-    - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
-    - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
-    - CI_BRANCH="$TRAVIS_BRANCH"
 
 matrix:
   fast_finish: true
@@ -54,8 +51,8 @@ script:
   - if [[ $setup != 'resource' ]]; then composer lint; fi
 
 after_script:
-  - if [[ $setup == 'coverage' ]]; then php vendor/bin/coveralls --coverage_clover $clover_path; fi
   - if [[ $setup == 'coverage' ]]; then php vendor/bin/test-reporter --coverage-report $clover_path; fi
+  - if [[ $setup == 'coverage' ]]; then php vendor/bin/coveralls --coverage_clover $clover_path -v; fi
 
 notifications:
   email: false

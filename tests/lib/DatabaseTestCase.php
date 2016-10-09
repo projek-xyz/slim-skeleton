@@ -19,6 +19,7 @@ class DatabaseTestCase extends TestCase
 
         parent::setUp();
     }
+
     protected function newMockDatabase($methods = null)
     {
         $conf = $this->settings['db'];

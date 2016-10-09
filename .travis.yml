@@ -16,8 +16,6 @@ cache:
 env:
   global:
     - setup=basic
-    - node_version=6
-    - clover_path=tests/clover.xml
     - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
     - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
     - CI_BRANCH="$TRAVIS_BRANCH"
@@ -39,7 +37,7 @@ mysql:
 
 before_install:
   - mysql -e "create database if not exists ${DB_NAME}"
-  - if [[ $setup == 'resource' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install $node_version; fi
+  - if [[ $setup == 'resource' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install 6; fi
 
 install:
   - if [[ $setup == 'basic' ]]; then composer install -n -q; fi
@@ -48,14 +46,12 @@ install:
   - if [[ $setup != 'resource' ]]; then php app/console migrate; fi
 
 script:
-  - if [[ $setup == 'basic' ]]; then composer test; fi
-  - if [[ $setup == 'coverage' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover $clover_path; fi
+  - if [[ $setup == 'basic' ]]; then composer lint -q && composer test -q; fi
+  - if [[ $setup == 'coverage' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover build/logs/clover.xml; fi
   - if [[ $setup == 'resource' ]]; then gulp build; fi
-  - if [[ $setup != 'resource' ]]; then composer lint; fi
 
-after_script:
-  - if [[ $setup == 'coverage' ]]; then php vendor/bin/coveralls --coverage_clover $clover_path; fi
-  - if [[ $setup == 'coverage' ]]; then php vendor/bin/test-reporter --coverage-report $clover_path; fi
+after_success:
+  - if [[ $setup == 'coverage' ]]; then php vendor/bin/test-reporter &&  php vendor/bin/coveralls -v; fi
 
 notifications:
   email: false

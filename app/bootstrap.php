@@ -1,9 +1,9 @@
 <?php
 
+use Projek\Slim\Container;
+
 /** @define "ROOT_DIR" "../" */
 define('ROOT_DIR', dirname(__DIR__).'/');
-
-use Projek\Slim\Container;
 
 // Loading vendors
 require ROOT_DIR.'vendor/autoload.php';

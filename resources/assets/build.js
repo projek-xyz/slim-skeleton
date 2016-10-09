@@ -50,9 +50,9 @@ class Helpers {
      */
     get conf () {
         // Declaring 'serve' config
-        config.port  = process.env.APP_PORT || config.serve.port; // 8088;
-        config.host  = process.env.APP_HOST || config.serve.host; // 'localhost';
-        config.url   = process.env.APP_URL  || config.serve.url;  // 'localhost:8088';
+        config.port = process.env.APP_PORT || config.serve.port; // 8088;
+        config.host = process.env.APP_HOST || config.serve.host; // 'localhost';
+        config.url = process.env.APP_URL  || config.serve.url;  // 'localhost:8088';
         config.proxy = config.serve.proxy;  // 'localhost:8000';
 
         if (!config.url || config.url.includes('localhost')) {
@@ -71,9 +71,9 @@ class Helpers {
         let wdioConf = {
             project: this.package.name,
             baseUrl: 'http://' + this.conf.url,
-            host:    'hub.browserstack.com',
-            user:    process.env.BROWSERSTACK_USER,
-            key:     process.env.BROWSERSTACK_KEY,
+            host: 'hub.browserstack.com',
+            user: process.env.BROWSERSTACK_USER,
+            key: process.env.BROWSERSTACK_KEY,
             browserstackLocal: true,
             debug: true
         };
@@ -114,7 +114,7 @@ class Helpers {
      */
     get paths () {
         const paths = {
-            src:  this.conf.paths.src,
+            src: this.conf.paths.src,
             dest: this.conf.paths.dest
         };
 
@@ -209,10 +209,10 @@ class Helpers {
     get sync () {
         return () => {
             this.bSync({
-                port:           this.conf.port,
-                host:           this.conf.host,
-                proxy:          this.conf.proxy,
-                open:           'open' in this.conf.serve ? this.conf.serve.open : false,
+                port: this.conf.port,
+                host: this.conf.host,
+                proxy: this.conf.proxy,
+                open: 'open' in this.conf.serve ? this.conf.serve.open : false,
                 logConnections: false
             });
         }

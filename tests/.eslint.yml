@@ -65,8 +65,7 @@ rules:
   indent: 2
   init-declarations: 2
   key-spacing:
-    - 2
-    - align: 'value'
+    - 1
   keyword-spacing:
     - 2
     - after: true
@@ -159,7 +158,7 @@ rules:
   no-throw-literal: 2
   no-trailing-spaces: 2
   no-undef-init: 2
-  no-undefined: 2
+  no-undefined: 0
   no-underscore-dangle:
     - 2
     - allowAfterThis: true

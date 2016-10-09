@@ -17,7 +17,7 @@ const _ = require('./resources/assets/build')(gulp);
 gulp.task('build:styles', ['lint:styles'], () => {
     _.conf.sass.includePaths = _.depsDir;
 
-    const styles = gulp.src(_.paths.styles, { base: _.paths.src })
+    const styles = gulp.src(_.paths.styles, {base: _.paths.src})
         .pipe($.sass(_.conf.sass).on('error', $.sass.logError))
         .pipe($.autoprefixer(_.conf.autoprefixer))
         .pipe($.cleanCss())
@@ -30,8 +30,8 @@ gulp.task('build:styles', ['lint:styles'], () => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('build:scripts', ['lint:scripts'], () => {
-    const scripts = gulp.src(_.paths.scripts, { base: _.paths.src })
-        .pipe($.babel({ presets: ['es2015'] }))
+    const scripts = gulp.src(_.paths.scripts, {base: _.paths.src})
+        .pipe($.babel({presets: ['es2015']}))
         .on('error', _.errorHandler)
         .pipe($.uglify(_.conf.uglify))
         .on('error', _.errorHandler);
@@ -43,7 +43,7 @@ gulp.task('build:scripts', ['lint:scripts'], () => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('build:images', () => {
-    const images = gulp.src(_.paths.images, { base: _.paths.src })
+    const images = gulp.src(_.paths.images, {base: _.paths.src})
         .pipe($.changed(_.paths.dest))
         .pipe($.imagemin(_.conf.imagemin))
         .on('error', _.errorHandler);
@@ -57,9 +57,10 @@ gulp.task('build:images', () => {
 gulp.task('build:fonts', (done) => {
     const path = require('path');
 
-    gulp.src(_.paths.fonts, { base: _.paths.src })
+    gulp.src(_.paths.fonts, {base: _.paths.src})
         .pipe(gulp.dest((file) => {
             file.path = file.base + path.basename(file.path);
+
             return _.paths.dest + 'fonts/';
         }));
 
@@ -72,7 +73,7 @@ gulp.task('build:fonts', (done) => {
 gulp.task('lint:styles', () => {
     _.conf.sass.includePaths = _.depsDir;
 
-    return gulp.src(_.paths.styles, { base: _.paths.src })
+    return gulp.src(_.paths.styles, {base: _.paths.src})
         .pipe($.sassLint(_.conf.sasslint))
         .pipe($.sassLint.format())
         .pipe($.sassLint.failOnError());
@@ -82,7 +83,7 @@ gulp.task('lint:styles', () => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('lint:scripts', () => {
-    return gulp.src(_.paths.scripts, { base: _.paths.src })
+    return gulp.src(_.paths.scripts, {base: _.paths.src})
         .pipe($.eslint(_.conf.eslint))
         .pipe($.eslint.format())
         .pipe($.eslint.failOnError());
@@ -150,7 +151,7 @@ gulp.task('watch', ['serve'], (done) => {
     gulp.watch(_.paths.images,  ['build:images']);
     // Reload
     gulp.watch(_.conf.patterns.server)
-        .on('change', _._bSync.reload);
+        .on('change', _.bSync.reload);
 
     // Done
     return done();

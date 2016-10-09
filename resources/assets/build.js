@@ -18,7 +18,7 @@ class Helpers {
      */
     constructor (gulp) {
         this._gulp = gulp;
-        this._bSync = browserSync;
+        this.bSync = browserSync;
 
         try {
             // Load .env so we can share envvars while development
@@ -68,12 +68,12 @@ class Helpers {
      * @return {Object}
      */
     get wdio () {
-        let conf = {
+        let wdioConf = {
             project: this.package.name,
             baseUrl: 'http://' + this.conf.url,
-            host: 'hub.browserstack.com',
-            user: process.env.BROWSERSTACK_USER,
-            key: process.env.BROWSERSTACK_KEY,
+            host:    'hub.browserstack.com',
+            user:    process.env.BROWSERSTACK_USER,
+            key:     process.env.BROWSERSTACK_KEY,
             browserstackLocal: true,
             debug: true
         };
@@ -82,7 +82,7 @@ class Helpers {
         //     conf.baseUrl = process.env.BROWSERSTACK_URL
         // }
 
-        return conf;
+        return wdioConf;
     }
 
     /**
@@ -114,7 +114,7 @@ class Helpers {
      */
     get paths () {
         const paths = {
-            src: this.conf.paths.src,
+            src:  this.conf.paths.src,
             dest: this.conf.paths.dest
         };
 
@@ -208,11 +208,11 @@ class Helpers {
      */
     get sync () {
         return () => {
-            this._bSync({
-                port: this.conf.port,
-                host: this.conf.host,
-                proxy: this.conf.proxy,
-                open: 'open' in this.conf.serve ? this.conf.serve.open : false,
+            this.bSync({
+                port:           this.conf.port,
+                host:           this.conf.host,
+                proxy:          this.conf.proxy,
+                open:           'open' in this.conf.serve ? this.conf.serve.open : false,
                 logConnections: false
             });
         }
@@ -228,7 +228,7 @@ class Helpers {
     build (stream, done) {
         const pipe = stream
             .pipe(this._gulp.dest(this.paths.dest))
-            .pipe(this._bSync.stream());
+            .pipe(this.bSync.stream());
 
         return done ? done() : pipe;
     }

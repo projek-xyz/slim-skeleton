@@ -16,6 +16,7 @@ cache:
 env:
   global:
     - setup=basic
+    - node_version=6
     - clover_path=tests/clover.xml
     - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
     - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
@@ -25,17 +26,7 @@ matrix:
   fast_finish: true
   include:
     - php: 5.5
-      env:
-        - setup=resource
-        - node_version=4
-    - php: 5.5
-      env:
-        - setup=resource
-        - node_version=5
-    - php: 5.5
-      env:
-        - setup=resource
-        - node_version=6
+      env: setup=resource
     - php: 5.5
       env: setup=coverage
   allow_failures:

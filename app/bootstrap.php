@@ -2,8 +2,10 @@
 
 use Projek\Slim\Container;
 
-/** @define "ROOT_DIR" "../" */
-define('ROOT_DIR', dirname(__DIR__).'/');
+/**
+ * @codingStandardsIgnoreLine
+ */
+define('ROOT_DIR', dirname(__DIR__).DIRECTORY_SEPARATOR);
 
 // Loading vendors
 require ROOT_DIR.'vendor/autoload.php';
@@ -12,16 +14,7 @@ if (file_exists(ROOT_DIR.'.env')) {
     (new Dotenv\Dotenv(ROOT_DIR))->load();
 }
 
-$bootstrap = [
-    'settings' => require_once __DIR__.'/settings.php'
-];
-
-$settings =& $bootstrap['settings'];
-
-// Let's set default timezone
-if (isset($settings['timezone'])) {
-    date_default_timezone_set($settings['timezone'] ?: 'UTC');
-}
+$settings = require_once __DIR__.'/settings.php';
 
 // Let's just use PHP Native sesion
 if (!isset($_SESSION)) {
@@ -29,4 +22,4 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-return new Container($bootstrap, ROOT_DIR);
+return new Container(['settings' => $settings], ROOT_DIR);

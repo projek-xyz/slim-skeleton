@@ -56,7 +56,7 @@ if (!function_exists('directory')) {
             $dir = str_replace(directory($relative), '', $dir);
         }
 
-        return $dir.($paths ? implode('/', $paths).'/' : '');
+        return $dir.($paths ? implode(DIRECTORY_SEPARATOR, $paths).DIRECTORY_SEPARATOR : '');
     }
 }
 

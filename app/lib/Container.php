@@ -24,21 +24,29 @@ class Container extends SlimContainer
     public function __construct(array $value = [], $root_dir = null)
     {
         if (defined('ROOT_DIR')) {
+            $root_dir = rtrim($root_dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
             $value['settings']['directories'] = [
-                'app' => $root_dir.'app/',
-                'resources' => $root_dir.'resources/',
-                'storage' => $root_dir.'storage/',
-                'public' => $root_dir.'public/',
+                'root' => $root_dir,
+                'app' => $root_dir.'app'.DIRECTORY_SEPARATOR,
+                'public' => $root_dir.'public'.DIRECTORY_SEPARATOR,
+                'resources' => $root_dir.'resources'.DIRECTORY_SEPARATOR,
+                'storage' => $root_dir.'storage'.DIRECTORY_SEPARATOR,
             ];
         }
 
+        // Let's set default timezone
+        if (isset($settings['timezone'])) {
+            date_default_timezone_set($settings['timezone'] ?: 'UTC');
+        }
+
+        // Set default application mode
         if (!array_key_exists('mode', $value['settings'])) {
             $value['settings']['mode'] = getenv('APP_ENV') ?: 'production';
         }
 
         // Get detailed information while not in production
         if ($value['settings']['mode'] !== 'production') {
-            $value['settings']['displayErrorDetails'] = true;
+            $value['settings']['displayErrorDetails'] = getenv('APP_DEBUG') ?: true;
         }
 
         parent::__construct($value);

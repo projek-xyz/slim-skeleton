@@ -14,10 +14,8 @@ cache:
     - vendor
 
 env:
-  - setup=basic
-
-env:
   global:
+    - setup=basic
     - node_version=6
     - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
     - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"

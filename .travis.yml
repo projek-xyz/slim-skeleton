@@ -5,6 +5,7 @@ sudo: false
 cache:
   directories:
     - ~/.npm
+    - ~/.composer/cache
     - node_modules
     - vendor
 

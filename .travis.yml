@@ -16,7 +16,6 @@ cache:
 env:
   global:
     - setup=basic
-    - node_version=6
     - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
     - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
     - CI_BRANCH="$TRAVIS_BRANCH"
@@ -38,7 +37,7 @@ mysql:
 
 before_install:
   - mysql -e "create database if not exists ${DB_NAME}"
-  - if [[ $setup == 'resource' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install $node_version; fi
+  - if [[ $setup == 'resource' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install 6; fi
 
 install:
   - if [[ $setup == 'basic' ]]; then composer install -n -q; fi
@@ -52,8 +51,7 @@ script:
   - if [[ $setup == 'resource' ]]; then gulp build; fi
 
 after_script:
-  - if [[ $setup == 'coverage' ]]; then php vendor/bin/test-reporter; fi
-  - if [[ $setup == 'coverage' ]]; then php vendor/bin/coveralls -v; fi
+  - if [[ $setup == 'coverage' ]]; then php vendor/bin/test-reporter &&  php vendor/bin/coveralls -v; fi
 
 notifications:
   email: false

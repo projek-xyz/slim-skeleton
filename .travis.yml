@@ -31,9 +31,8 @@ matrix:
     - php: 5.5
       env: setup=coverage
   allow_failures:
-    - php:
-      - 7.1
-      - hhvm
+    - php: 7.1
+    - php: hhvm
 
 mysql:
   database: $DB_NAME

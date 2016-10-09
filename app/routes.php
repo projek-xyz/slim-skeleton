@@ -5,6 +5,4 @@
  * @var \Slim\App $app
  */
 
-use App\Controllers\HomeControllers;
-
-$app->get('/[{name}]', HomeControllers::class)->setName('home-page');
+$app->get('/[{name}]', App\Controllers\HomeController::class)->setName('home-page');

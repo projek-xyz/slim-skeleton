@@ -9,7 +9,7 @@ const $ = require('gulp-load-plugins')();
 const connect  = require('gulp-connect-php');
 const sequence = require('run-sequence');
 
-const _ = require('./resources/assets/build')(gulp);
+const _ = require('./assets/build')(gulp);
 
 /* Task: Compile SCSS
  --------------------------------------------------------------------------------- */

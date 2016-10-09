@@ -2,6 +2,6 @@
 
 <?php $this->start('page-content') ?>
 
-    <div class="container"><?= $this->section('content') ?></div>
+    <div class="container error"><?= $this->section('content') ?></div>
 
 <?php $this->stop() ?>

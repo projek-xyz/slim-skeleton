@@ -6,16 +6,16 @@
     "open": false
   },
   "paths": {
-    "src"  : "resources/assets/",
+    "src"  : "assets/",
     "dest" : "public/assets/"
   },
   "patterns": {
     "server"  : "app/**/*.php",
     "assets"  : "{styles,scripts,images,fonts}/**/*",
     "fonts"   : "fonts/*.{eot,svg,ttf,woff,woff2}",
-    "styles"  : "{styles,admin/styles}/**/*.scss",
-    "scripts" : "{scripts,admin/scripts}/**/*.js",
-    "images"  : "{images,admin/images}/**/*.{png,jpg,gif,svg}"
+    "styles"  : "styles/**/*.scss",
+    "scripts" : "scripts/**/*.js",
+    "images"  : "images/**/*.{png,jpg,gif,svg}"
   },
   "sass": {
     "outputStyle"  : "compact"

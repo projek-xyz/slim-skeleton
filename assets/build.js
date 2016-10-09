@@ -31,7 +31,7 @@ class Helpers {
         }
 
         // Require the package.json
-        this.package = require(__dirname + '/../../package');
+        this.package = require(__dirname + '/../package');
     }
 
     /**

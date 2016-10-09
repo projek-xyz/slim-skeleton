@@ -142,7 +142,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
         $container[Database\Migrator::class] = function ($container) use ($settings) {
             $directory = isset($settings['migration']['directory'])
                 ? $settings['migration']['directory']
-                : directory('resources.data');
+                : directory('app.data');
 
             return new Database\Migrator($container->get('db'), $directory);
         };
@@ -162,10 +162,6 @@ class DefaultServicesProvider implements ServiceProviderInterface
                 'section' => '_sections',
                 'email' => '_emails',
             ], $view);
-
-            if (isset($settings['app'])) {
-                $view->addData($settings['app']);
-            }
 
             return $view;
         };

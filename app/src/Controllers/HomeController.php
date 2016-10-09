@@ -5,7 +5,7 @@ use Projek\Slim\Http\Controllers;
 use Projek\Slim\Http\Response;
 use Slim\Http\Request;
 
-class HomeControllers extends Controllers
+class HomeController extends Controllers
 {
     /**
      * @api  GET  /

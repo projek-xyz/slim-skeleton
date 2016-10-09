@@ -25,7 +25,7 @@ class View
     public function __construct(array $settings)
     {
         $this->settings = array_merge($this->settings, $settings);
-        $directory = $this->settings['directory'] ?: directory('resources.views');
+        $directory = $this->settings['directory'] ?: directory('app.views');
         $this->plates = new Engine($directory, $this->settings['fileExtension']);
     }
 

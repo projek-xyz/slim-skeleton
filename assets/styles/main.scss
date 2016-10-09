@@ -4,8 +4,21 @@ body {
   font-size: 18px;
   margin: 50px 0 0;
   padding: 0;
-  text-align: center;
   width: 100%;
+}
+
+pre {
+  overflow-x: scroll;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 980px;
+  text-align: center;
+
+  &.error {
+    text-align: inherit;
+  }
 }
 
 #heading {
@@ -14,11 +27,10 @@ body {
   font-size: 100px;
   font-weight: 200;
   letter-spacing: -3px;
+  line-height: 1.8em;
   margin-bottom: 0;
 }
 
 #content {
-  line-height: 1.4em;
-  margin: 0 auto;
-  max-width: 980px;
+  line-height: 1.6em;
 }

@@ -38,13 +38,14 @@ class HelperTest extends TestCase
     {
         // Absolute Path
 
+        $ds = DIRECTORY_SEPARATOR;
         $this->assertEquals(ROOT_DIR, directory(''));
-        $this->assertEquals(ROOT_DIR.'resources/', directory('resources'));
-        $this->assertEquals(ROOT_DIR.'resources/data/', directory('resources.data'));
+        $this->assertEquals(ROOT_DIR.'app'.$ds, directory('app'));
+        $this->assertEquals(ROOT_DIR.'app'.$ds.'data'.$ds, directory('app.data'));
 
         // Relative Path
 
         $this->assertEquals('', directory('storage', 'storage'));
-        $this->assertEquals('uploads/', directory('storage.uploads', 'storage'));
+        $this->assertEquals('uploads'.$ds, directory('storage.uploads', 'storage'));
     }
 }

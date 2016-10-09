@@ -29,7 +29,6 @@ class Container extends SlimContainer
                 'root' => $root_dir,
                 'app' => $root_dir.'app'.DIRECTORY_SEPARATOR,
                 'public' => $root_dir.'public'.DIRECTORY_SEPARATOR,
-                'resources' => $root_dir.'resources'.DIRECTORY_SEPARATOR,
                 'storage' => $root_dir.'storage'.DIRECTORY_SEPARATOR,
             ];
         }

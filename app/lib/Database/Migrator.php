@@ -39,7 +39,7 @@ class Migrator
      */
     public function __construct(Database $database, $directory = null)
     {
-        $this->directory = $directory ?: directory('resources.data');
+        $this->directory = $directory ?: directory('app.data');
         if (!is_dir($this->directory)) {
             throw new \InvalidArgumentException('Migration directory not exists '.$this->directory);
         }

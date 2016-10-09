@@ -18,7 +18,7 @@ abstract class Schema
     /**
      *  @var  array
      */
-    protected $params = '';
+    protected $params = [];
 
     /**
      *  @param  string $table

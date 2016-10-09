@@ -7,12 +7,12 @@ class MailerTest extends TestCase
     {
         $this->settings = [
             'app' => [
-                'title' => 'Slim Skeleton',
+                'title' => 'Slim Skeleton Testing',
                 'email' => 'admin@example.com',
             ],
             'mailer' => [
-                'host'     => getenv('EMAIL_HOST') ?: '',
-                'port'     => getenv('EMAIL_PORT') ?: '',
+                'host'     => getenv('EMAIL_HOST') ?: 'mailtrap.io',
+                'port'     => getenv('EMAIL_PORT') ?: 2525,
                 'username' => getenv('EMAIL_USER') ?: '',
                 'password' => getenv('EMAIL_PASS') ?: '',
             ]
@@ -21,7 +21,7 @@ class MailerTest extends TestCase
         parent::setUp();
     }
 
-    public function test_sending_email()
+    public function test_should_sending_email()
     {
         $mailer = $this->container->get('mailer');
 

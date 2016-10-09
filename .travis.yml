@@ -7,13 +7,6 @@ cache:
     - node_modules
     - vendor
 
-env:
-  global:
-    - setup=basic
-    - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
-    - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
-    - CI_BRANCH="$TRAVIS_BRANCH"
-
 matrix:
   fast_finish: true
   include:
@@ -46,22 +39,28 @@ mysql:
   encoding: utf8
 
 before_install:
+  - PHP=$TRAVIS_PHP_VERSION
+  - if [[ -d ~/.nvm ]]; then echo 'NVM already installed'; fi
+  - if [[ $setup = resource ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install 6; fi
+  - if [[ ! $PHP = hhvm* ]]; then ini_file=~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; else ini_file=/etc/hhvm/php.ini; fi
   - mysql -u $DB_USER -e "create database if not exists ${DB_NAME}"
-  - if [[ $setup == 'resource' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install 6; fi
 
 install:
-  - if [[ $setup == 'basic' ]]; then composer install -n -q; fi
-  - if [[ $setup == 'coverage' ]]; then composer require codeclimate/php-test-reporter:~0.3 -n -q; fi
-  - if [[ $setup == 'resource' ]]; then npm -g update -s && npm i -s; fi
-  - if [[ $setup != 'resource' ]]; then php app/console migrate; fi
+  - if [[ ! $setup ]]; then composer install -n -q; fi
+  - if [[ $setup = coverage ]]; then composer require codeclimate/php-test-reporter:~0.3 -n -q; fi
+  - if [[ $setup = resource ]]; then npm -g update -s && npm i -s; fi
+  - if [[ ! $setup = resource ]]; then php app/console migrate; fi
 
 script:
-  - if [[ $setup == 'basic' ]]; then composer lint -q && composer test -q; fi
-  - if [[ $setup == 'coverage' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover build/logs/clover.xml; fi
-  - if [[ $setup == 'resource' ]]; then gulp build; fi
+  - if [[ ! $setup ]]; then composer lint -q && composer test -q; fi
+  - if [[ $setup = coverage ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover build/logs/clover.xml; fi
+  - if [[ $setup = resource ]]; then gulp build; fi
 
 after_success:
-  - if [[ $setup == 'coverage' ]]; then php vendor/bin/test-reporter &&  php vendor/bin/coveralls -v; fi
+  - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
+  - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
+  - CI_BRANCH="$TRAVIS_BRANCH"
+  - if [[ $setup = coverage ]]; then php vendor/bin/test-reporter &&  php vendor/bin/coveralls -v; fi
 
 notifications:
   email: false

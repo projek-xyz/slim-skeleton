@@ -17,7 +17,6 @@ env:
   global:
     - setup=basic
     - node_version=6
-    - clover_path=tests/clover.xml
 
 matrix:
   fast_finish: true
@@ -46,13 +45,13 @@ install:
 
 script:
   - if [[ $setup == 'basic' ]]; then composer test; fi
-  - if [[ $setup == 'coverage' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover $clover_path; fi
+  - if [[ $setup == 'coverage' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover build/logs/clover.xml; fi
   - if [[ $setup == 'resource' ]]; then gulp build; fi
   - if [[ $setup != 'resource' ]]; then composer lint; fi
 
 after_script:
-  - if [[ $setup == 'coverage' ]]; then php vendor/bin/test-reporter --coverage-report $clover_path; fi
-  - if [[ $setup == 'coverage' ]]; then php vendor/bin/coveralls --coverage_clover $clover_path -v; fi
+  - if [[ $setup == 'coverage' ]]; then php vendor/bin/test-reporter; fi
+  - if [[ $setup == 'coverage' ]]; then php vendor/bin/coveralls -v; fi
 
 notifications:
   email: false

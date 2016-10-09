@@ -14,8 +14,8 @@ engines:
 ratings:
   paths:
     - app/**/*.php
-    - resources/assets/**/*.js
-    - resources/assets/**/*.scss
+    - assets/**/*.js
+    - assets/**/*.scss
 
 exclude_paths:
   - node_modules/*

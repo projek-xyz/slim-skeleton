@@ -14,8 +14,8 @@ cache:
     - vendor
 
 env:
-  - setup=basic
   global:
+    - setup=basic
     - clover_path=tests/clover.xml
     - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
     - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"

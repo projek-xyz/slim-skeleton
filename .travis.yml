@@ -48,7 +48,7 @@ mysql:
   encoding: utf8
 
 before_install:
-  - mysql -uroot -e "create database if not exists ${DB_NAME}"
+  - mysql -u $DB_USER -e "create database if not exists ${DB_NAME}"
   - if [[ $setup == 'resource' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install $node_version; fi
 
 install:

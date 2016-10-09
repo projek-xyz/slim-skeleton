@@ -13,10 +13,12 @@ cache:
     - node_modules
     - vendor
 
-env:
+env: setup=basic
   global:
-    - setup=basic
     - node_version=6
+    - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
+    - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
+    - CI_BRANCH="$TRAVIS_BRANCH"
 
 matrix:
   fast_finish: true
@@ -44,10 +46,9 @@ install:
   - if [[ $setup != 'resource' ]]; then php app/console migrate; fi
 
 script:
-  - if [[ $setup == 'basic' ]]; then composer test; fi
+  - if [[ $setup == 'basic' ]]; then composer lint -q && composer test -q; fi
   - if [[ $setup == 'coverage' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover build/logs/clover.xml; fi
   - if [[ $setup == 'resource' ]]; then gulp build; fi
-  - if [[ $setup != 'resource' ]]; then composer lint; fi
 
 after_script:
   - if [[ $setup == 'coverage' ]]; then php vendor/bin/test-reporter; fi

@@ -60,5 +60,9 @@ after_success:
   - export CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"; export CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"; export CI_BRANCH="$TRAVIS_BRANCH"
   - if [[ $setup = coverage ]]; then ./vendor/bin/test-reporter &&  ./vendor/bin/coveralls -v; fi
 
+branches:
+  except:
+  - /^v\d\..*/ # Exclude tags with 'v' as prefix
+
 notifications:
   email: false

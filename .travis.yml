@@ -4,6 +4,7 @@ sudo: false
 
 cache:
   directories:
+    - ~/.npm
     - node_modules
     - vendor
 
@@ -41,7 +42,7 @@ before_install:
   - PHP=$TRAVIS_PHP_VERSION
   - if [[ $setup = resource ]]; then source ~/.nvm/nvm.sh && nvm install 6; fi
   - if [[ ! $PHP = hhvm* ]]; then ini_file=~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; else ini_file=/etc/hhvm/php.ini; fi
-  - mysql -u $DB_USER -e "create database if not exists ${DB_NAME}"
+  - if [[ ! $setup = resource ]]; then mysql -u $DB_USER -e "create database if not exists ${DB_NAME}"; fi
 
 install:
   - if [[ ! $setup ]]; then composer install -n -q; fi

@@ -16,6 +16,7 @@ cache:
 env:
   global:
     - setup=basic
+    - node_version=6
     - CLOVER_PATH=tests/clover.xml
     - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
     - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
@@ -24,8 +25,10 @@ env:
 matrix:
   fast_finish: true
   include:
-    - php: 5.6
-      env: setup=all
+    - php: 5.5
+      env: setup=asset
+    - php: 5.5
+      env: setup=coverage
   allow_failures:
     - php: 7.1
 
@@ -36,23 +39,23 @@ mysql:
 
 before_install:
   - mysql -e "create database if not exists ${DB_NAME}"
-  - if [[ $setup == 'all' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install $NODEJS_VERSION; fi
+  - if [[ $setup == 'asset' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install $node_version; fi
 
 install:
   - if [[ $setup == 'basic' ]]; then composer install -n -q; fi
-  - if [[ $setup == 'all' ]]; then composer require codeclimate/php-test-reporter:~0.3 -n -q; fi
-  - if [[ $setup == 'all' ]]; then npm -g update -s && npm i -s; fi
+  - if [[ $setup == 'coverage' ]]; then composer require codeclimate/php-test-reporter:~0.3 -n -q; fi
+  - if [[ $setup == 'asset' ]]; then npm -g update -s && npm i -s; fi
   - php app/console migrate
 
 script:
   - composer lint
   - if [[ $setup == 'basic' ]]; then composer test; fi
-  - if [[ $setup == 'all' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover $CLOVER_PATH; fi
-  - if [[ $setup == 'all' ]]; then gulp build; fi
+  - if [[ $setup == 'coverage' ]]; then php vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover $CLOVER_PATH; fi
+  - if [[ $setup == 'asset' ]]; then gulp build; fi
 
 after_script:
-  - if [[ $setup == 'all' ]]; then php vendor/bin/coveralls --coverage_clover $CLOVER_PATH -v; fi
-  - if [[ $setup == 'all' ]]; then php vendor/bin/test-reporter --coverage-report $CLOVER_PATH; fi
+  - if [[ $setup == 'coverage' ]]; then php vendor/bin/coveralls --coverage_clover $CLOVER_PATH -v; fi
+  - if [[ $setup == 'coverage' ]]; then php vendor/bin/test-reporter --coverage-report $CLOVER_PATH; fi
 
 notifications:
   email: false

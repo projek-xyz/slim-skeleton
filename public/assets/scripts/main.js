@@ -1,1 +1,0 @@
-"use strict";!function(){"Modernizr"in window&&console.log("Modernizr is loaded")}();

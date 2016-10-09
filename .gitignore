@@ -15,7 +15,7 @@ Icon?
 
 # Dependency folders
 # --------------------------
-vendor/
+/vendor/
 node_modules/
 tests/clover.xml
 composer.lock

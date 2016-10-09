@@ -25,13 +25,13 @@ env:
 
 matrix:
   fast_finish: true
+  allow_failures:
+    - php: 7.1
   include:
     - php: 5.5
       env: setup=resource
     - php: 5.5
       env: setup=coverage
-  allow_failures:
-    - php: hhvm
 
 mysql:
   database: $DB_NAME

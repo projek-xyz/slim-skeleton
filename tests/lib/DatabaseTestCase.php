@@ -9,11 +9,11 @@ class DatabaseTestCase extends TestCase
     {
         $this->settings = array_merge($this->settings, [
             'db' => [
-                'driver' => getenv('DB_DRIVER'),
-                'host'   => getenv('DB_HOST'),
-                'user'   => getenv('DB_USER'),
-                'pass'   => getenv('DB_PASS'),
-                'name'   => getenv('DB_NAME'),
+                'driver' => getenv('DB_DRIVER') ?: 'mysql',
+                'host'   => getenv('DB_HOST')   ?: 'localhost',
+                'user'   => getenv('DB_USER')   ?: 'root',
+                'pass'   => getenv('DB_PASS')   ?: '',
+                'name'   => getenv('DB_NAME')   ?: '',
             ]
         ]);
 
@@ -21,16 +21,10 @@ class DatabaseTestCase extends TestCase
     }
     protected function newMockDatabase($methods = null)
     {
-        $dsn = sprintf(
-            '%s:host=%s;dbname=%s;charset=%s',
-            $this->settings['db']['driver'],
-            $this->settings['db']['host'],
-            $this->settings['db']['name'],
-            'utf8'
-        );
-
+        $conf = $this->settings['db'];
+        $dsn = sprintf('%s:host=%s;dbname=%s;charset=%s', $conf['driver'], $conf['host'], $conf['name'], 'utf8');
         $db = $this->getMockBuilder(Database::class)
-            ->setConstructorArgs([$dsn, $this->settings['db']['user'], $this->settings['db']['pass']]);
+            ->setConstructorArgs([$dsn, $conf['user'], $conf['pass']]);
 
         if ($methods) {
             $db->setMethods(is_array($methods) ? $methods : func_get_args());

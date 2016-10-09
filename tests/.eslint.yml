@@ -26,6 +26,7 @@ rules:
   brace-style:
     - 2
     - 1tbs
+    - allowSingleLine: true
   callback-return: 2
   camelcase: 2
   comma-dangle: 2
@@ -63,7 +64,9 @@ rules:
   id-match: 2
   indent: 2
   init-declarations: 2
-  key-spacing: 2
+  key-spacing:
+    - 2
+    - align: 'value'
   keyword-spacing:
     - 2
     - after: true
@@ -118,7 +121,11 @@ rules:
   no-magic-numbers: 0
   no-mixed-operators: 2
   no-mixed-requires: 2
-  no-multi-spaces: 0
+  no-multi-spaces:
+    - 0
+    - exceptions:
+        Property: true
+        VariableDeclarator: true
   no-multi-str: 2
   no-multiple-empty-lines: 2
   no-negated-condition: 2

@@ -357,9 +357,12 @@ abstract class Models implements \Countable
         }
 
         if (!$model instanceof Models) {
-            throw new \InvalidArgumentException(
-                sprintf('Expected 1 parameter of %s to be string or %s instance, %s given.', __FUNCTION__, static::class, gettype($model))
-            );
+            throw new \InvalidArgumentException(sprintf(
+                'Expected 1 parameter of %s to be string or %s instance, %s given.',
+                __FUNCTION__,
+                static::class,
+                gettype($model)
+            ));
         }
 
         if (null === $first) {

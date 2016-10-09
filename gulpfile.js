@@ -1,7 +1,7 @@
 /* Gulp set up
  --------------------------------------------------------------------------------- */
 
-var gulp = require('gulp');
+const gulp = require('gulp');
 
 // load all plugins with prefix 'gulp'
 const $ = require('gulp-load-plugins')();
@@ -10,8 +10,6 @@ const connect  = require('gulp-connect-php');
 const sequence = require('run-sequence');
 
 const _ = require('./resources/assets/build')(gulp);
-
-
 
 /* Task: Compile SCSS
  --------------------------------------------------------------------------------- */
@@ -28,8 +26,6 @@ gulp.task('build:styles', ['lint:styles'], () => {
     return _.build(styles);
 });
 
-
-
 /* Task: Minify JS
  --------------------------------------------------------------------------------- */
 
@@ -43,8 +39,6 @@ gulp.task('build:scripts', ['lint:scripts'], () => {
     return _.build(scripts);
 });
 
-
-
 /* Task: Optimize image
  --------------------------------------------------------------------------------- */
 
@@ -56,8 +50,6 @@ gulp.task('build:images', () => {
 
     return _.build(images);
 });
-
-
 
 /* Task: Optimize image
  --------------------------------------------------------------------------------- */
@@ -74,8 +66,6 @@ gulp.task('build:fonts', (done) => {
     return done();
 });
 
-
-
 /* Task: Lint SCSS
  --------------------------------------------------------------------------------- */
 
@@ -88,8 +78,6 @@ gulp.task('lint:styles', () => {
         .pipe($.sassLint.failOnError());
 });
 
-
-
 /* Task: Lint JS
  --------------------------------------------------------------------------------- */
 
@@ -100,54 +88,44 @@ gulp.task('lint:scripts', () => {
         .pipe($.eslint.failOnError());
 });
 
-
-
 /* Task: Vendor
  --------------------------------------------------------------------------------- */
 
-gulp.task('vendor:copy', ['modernizr'], function () {
+gulp.task('vendor:copy', ['modernizr'], () => {
     return gulp.src(_.vendors)
         .pipe(gulp.dest(_.paths.vendor));
 });
 
-
-
 /* Task: Minify Vendor scripts
  --------------------------------------------------------------------------------- */
 
-gulp.task('vendor:scripts', function () {
+gulp.task('vendor:scripts', () => {
     return gulp.src(_.paths.vendor + '/**/*.js')
         .pipe($.uglify(_.conf.uglify))
         .on('error', _.errorHandler)
         .pipe(gulp.dest(_.paths.vendor));
 });
 
-
-
 /* Task: Minify Vendor scripts
  --------------------------------------------------------------------------------- */
 
-gulp.task('vendor:styles', function () {
+gulp.task('vendor:styles', () => {
     return gulp.src(_.paths.vendor + '/**/*.css')
         .pipe($.cleanCss())
         .on('error', _.errorHandler)
         .pipe(gulp.dest(_.paths.vendor));
 });
 
-
-
 /* Task: Modernizr
  --------------------------------------------------------------------------------- */
 
-gulp.task('modernizr', function () {
+gulp.task('modernizr', () => {
     const conf = _.conf.modernizr;
 
     return gulp.src(_.paths.src + '**/*.{js,scss}')
         .pipe($.modernizr(conf.filename, conf.settings))
         .pipe(gulp.dest(_.paths.vendor));
 });
-
-
 
 /* Task: Serve
  --------------------------------------------------------------------------------- */
@@ -159,8 +137,6 @@ gulp.task('serve', () => {
 
     return _.sync();
 });
-
-
 
 /* Task: Watch
  --------------------------------------------------------------------------------- */
@@ -180,8 +156,6 @@ gulp.task('watch', ['serve'], (done) => {
     return done();
 });
 
-
-
 /* Task: Test Behaviour
  --------------------------------------------------------------------------------- */
 
@@ -191,8 +165,6 @@ gulp.task('test:bdd', (done) => {
 
     return done();
 });
-
-
 
 /* Task: Clean
  --------------------------------------------------------------------------------- */
@@ -205,16 +177,12 @@ gulp.task('clean', () => {
     });
 });
 
-
-
 /* Task: Vendor
  --------------------------------------------------------------------------------- */
 
 gulp.task('vendor', (done) => {
     sequence('vendor:copy', 'vendor:scripts', 'vendor:styles', done);
 });
-
-
 
 /* Task: Build
  --------------------------------------------------------------------------------- */
@@ -223,14 +191,10 @@ gulp.task('build', (done) => {
     sequence('build:styles', 'build:scripts', 'build:images', 'build:fonts', done);
 });
 
-
-
 /* Task: Lint
  --------------------------------------------------------------------------------- */
 
 gulp.task('lint', ['lint:styles', 'lint:scripts']);
-
-
 
 /* Task: Default
  --------------------------------------------------------------------------------- */

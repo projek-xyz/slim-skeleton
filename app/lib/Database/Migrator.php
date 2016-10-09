@@ -99,9 +99,10 @@ class Migrator
             $this->database->commit();
 
             $this->out(
-                $migrated > 0
-                    ? '<green>Done successfully migrated</green> '.$files.' <green>file(s)</green>'
-                    : sprintf('<yellow>No migration executed</yellow>%s', $files > 0 ? ' '.$files.' <yellow>file(s) already migrated</yellow>' : ''),
+                $migrated > 0 ? '<green>Done successfully migrated</green> '.$files.' <green>file(s)</green>' : sprintf(
+                    '<yellow>No migration executed</yellow>%s',
+                    $files > 0 ? ' '.$files.' <yellow>file(s) already migrated</yellow>' : ''
+                ),
                 true
             );
 

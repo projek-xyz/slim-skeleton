@@ -40,6 +40,9 @@ script:
   - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then gulp build; fi
 
 after_script:
+  - export CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
+  - export CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
+  - export CI_BRANCH="$TRAVIS_BRANCH"
   - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then php vendor/bin/coveralls --coverage_clover $CLOVER_PATH -v; fi
   - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then php vendor/bin/test-reporter --coverage-report $CLOVER_PATH; fi
 

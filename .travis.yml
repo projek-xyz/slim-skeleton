@@ -24,11 +24,6 @@ matrix:
       sudo: required
       dist: trusty
       group: edge
-      addons:
-        apt:
-          packages:
-            - mysql-server-5.6
-            - mysql-client-5.6
     - php: 5.5
     - php: 5.5
       env: setup=resource
@@ -47,7 +42,7 @@ mysql:
   encoding: utf8
 
 before_install:
-  - mysql -e "create database if not exists ${DB_NAME}"
+  - mysql -uroot -e "create database if not exists ${DB_NAME}"
   - if [[ $setup == 'resource' ]]; then $(curl -fsSL https://git.io/vP4hF | sh -) && source ~/.nvm/nvm.sh && nvm install $node_version; fi
 
 install:

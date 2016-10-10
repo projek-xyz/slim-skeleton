@@ -1,0 +1,54 @@
+{
+  "name": "projek-xyz/slim",
+  "description": "Simple Application Framework built on top of Slim Framework 3",
+  "keywords": ["slim", "microframework", "framework"],
+  "homepage": "http://www.projek.xyz/slim-skeleton",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Fery Wardiyanto",
+      "email": "hallo@feryardiant.me",
+      "homepage": "http://feryardiant.me"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/projek-xyz/slim-framework/issues",
+    "source": "https://github.com/projek-xyz/slim-framework"
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit -c tests/phpunit.xml",
+    "lint": "./vendor/bin/phpcs --standard=PSR2 -n -p app/"
+  },
+  "autoload": {
+    "psr-4": {
+      "Projek\\Slim\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Projek\\Slim\\Tests\\": "tests/src/"
+    }
+  },
+  "require": {
+    "php": ">=5.5.0",
+    "league/plates": "~3.1",
+    "league/flysystem": "~1.0",
+    "league/climate": "~3.2",
+    "monolog/monolog": "~1.21",
+    "phpmailer/phpmailer": "~5.2",
+    "slim/pdo": "~1.8",
+    "vlucas/valitron": "~1.2",
+    "vlucas/phpdotenv": "~2.1"
+  },
+  "require-dev": {
+    "slim/slim": "~3.5",
+    "phpunit/phpunit": "~4.0",
+    "squizlabs/php_codesniffer": "~2.7"
+  },
+  "config": {
+    "preferred-dist": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

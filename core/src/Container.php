@@ -23,15 +23,7 @@ class Container extends SlimContainer
      */
     public function __construct(array $value = [], $root_dir = null)
     {
-        if (defined('ROOT_DIR')) {
-            $root_dir = rtrim($root_dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-            $value['settings']['directories'] = [
-                'root' => $root_dir,
-                'app' => $root_dir.'app'.DIRECTORY_SEPARATOR,
-                'public' => $root_dir.'public'.DIRECTORY_SEPARATOR,
-                'storage' => $root_dir.'storage'.DIRECTORY_SEPARATOR,
-            ];
-        }
+        $this->initializeAppDirectories($root_dir);
 
         // Let's set default timezone
         if (isset($settings['timezone'])) {
@@ -59,6 +51,20 @@ class Container extends SlimContainer
         }
 
         static::$instance = $this;
+    }
+
+    protected function initializeAppDirectories($rootDir)
+    {
+        $value['settings']['directories'] = [];
+        if (null !== $rootDir && file_exists($rootDir) && is_dir($rootDir)) {
+            $rootDir = rtrim($rootDir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+            $value['settings']['directories'] = [
+                'root' => $rootDir,
+                'app' => $rootDir.'app'.DIRECTORY_SEPARATOR,
+                'public' => $rootDir.'public'.DIRECTORY_SEPARATOR,
+                'storage' => $rootDir.'storage'.DIRECTORY_SEPARATOR,
+            ];
+        }
     }
 
     /**

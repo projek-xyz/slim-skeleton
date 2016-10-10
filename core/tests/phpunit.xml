@@ -15,14 +15,14 @@
     colors="true">
 
     <testsuites>
-        <testsuite name="Projek Slim Skeleton Test Suite">
-            <directory>./app/</directory>
+        <testsuite name="Projek Slim Framework Test Suite">
+            <directory>./src/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>../app/src/</directory>
+            <directory>../src/</directory>
         </whitelist>
     </filter>
 

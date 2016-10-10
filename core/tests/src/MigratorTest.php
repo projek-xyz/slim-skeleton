@@ -1,6 +1,7 @@
 <?php
 namespace Projek\Slim\Tests;
 
+use Projek\Slim\Container;
 use Projek\Slim\Database\Migrator;
 use Slim\PDO\Database;
 
@@ -18,7 +19,7 @@ class MigratorTest extends DatabaseTestCase
     public function setUp()
     {
         $this->settings = [
-            'migration' => ['directory' => ROOT_DIR.'tests/stubs/']
+            'migration' => ['directory' => FIXTURES_DIR.'data'.DIRECTORY_SEPARATOR]
         ];
 
         parent::setUp();
@@ -42,7 +43,7 @@ class MigratorTest extends DatabaseTestCase
     {
         try {
             // Recreate migrations table after tests are done.
-            app(Migrator::class)->migrate();
+            Container::instance()->get(Migrator::class)->migrate();
         } catch (\Exception $e) {
             // Do nothing.
         }

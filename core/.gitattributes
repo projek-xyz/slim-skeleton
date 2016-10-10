@@ -1,0 +1,11 @@
+# Enforce Unix newlines
+* text=lf
+
+# Exclude unused files
+# see: https://redd.it/2jzp6k
+/.codeclimate.yml   export-ignore
+/.coveralls.yml     export-ignore
+/.travis.yml        export-ignore
+/docs               export-ignore
+/CONDUCT.md         export-ignore
+/CONTRIBUTING.md    export-ignore

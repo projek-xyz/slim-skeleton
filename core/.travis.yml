@@ -52,7 +52,7 @@ install:
   - if [[ ! $setup = resource ]]; then php app/console migrate; fi
 
 script:
-  - if [[ ! $setup ]]; then composer test -q; fi
+  - if [[ ! $setup ]]; then composer lint -q && composer test -q; fi
   - if [[ $setup = coverage ]]; then ./vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover build/logs/clover.xml; fi
   - if [[ $setup = resource ]]; then gulp build; fi
 

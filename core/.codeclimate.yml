@@ -1,0 +1,24 @@
+engines:
+  fixme:
+    enabled: true
+  phpcodesniffer:
+    enabled: true
+    config:
+      standard: 'PSR2'
+  eslint:
+    enabled: true
+    channel: 'eslint-3'
+    config:
+      config: tests/.eslint.yml
+
+ratings:
+  paths:
+    - app/**/*.php
+    - assets/**/*.js
+    - assets/**/*.scss
+
+exclude_paths:
+  - node_modules/*
+  - public/*
+  - tests/*
+  - vendor/*

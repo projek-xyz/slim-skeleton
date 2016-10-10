@@ -250,7 +250,7 @@ class DefaultServicesProvider implements ServiceProviderInterface
             return new Uploader($settings['upload']);
         };
 
-        require_once __DIR__.'/helpers.php';
+        require_once __DIR__ . '/helpers.php';
     }
 
     /**

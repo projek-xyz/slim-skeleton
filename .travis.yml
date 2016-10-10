@@ -6,7 +6,6 @@ cache:
   directories:
     - ~/.npm
     - ~/.composer/cache
-    - composer.lock
     - node_modules
     - vendor
 

@@ -71,16 +71,21 @@ class Helpers {
         let wdioConf = {
             project: this.package.name,
             baseUrl: 'http://' + this.conf.url,
-            host: 'hub.browserstack.com',
-            user: process.env.BROWSERSTACK_USER,
-            key: process.env.BROWSERSTACK_KEY,
-            browserstackLocal: true,
             debug: true
         };
 
-        // if (this.isLocal) {
-        //     conf.baseUrl = process.env.BROWSERSTACK_URL
-        // }
+        // Check if it has BROWSERSTACK_* in envvar
+        if ('BROWSERSTACK_USER' in process.env && 'BROWSERSTACK_KEY' in process.env) {
+            wdioConf.host = 'hub.browserstack.com';
+            wdioConf.user = process.env.BROWSERSTACK_USER;
+            wdioConf.key = process.env.BROWSERSTACK_KEY;
+            wdioConf.services = ['browserstack'];
+
+            if (this.isLocal) {
+                // process.env.BROWSERSTACK_URL
+                wdioConf.browserstackLocal = true;
+            }
+        }
 
         return wdioConf;
     }
@@ -91,8 +96,8 @@ class Helpers {
      * @return {String}
      */
     get mode () {
-        // Determine build mode, default is 'dev'
-        let mode = 'development',
+        // Determine build mode, default is 'local'
+        let mode = 'local',
             modes = ['development', 'production', 'testing', 'local'];
 
         // If mode is invalid, back to 'dev' mode
@@ -138,21 +143,26 @@ class Helpers {
         return Object.keys(this.package.dependencies)
     }
 
+    /**
+     * Get vendors directory patterns
+     *
+     * @return {array}
+     */
     get vendors () {
         let vendors = [];
 
-        for (let i in this.depsDir) {
-            let name = this.depsDir[i].split('/').pop();
+        for (let i in this.depsPath) {
+            let name = this.depsPath[i].split('/').pop();
 
             if (['bootstrap', 'jquery'].indexOf(name) > -1) {
-                vendors.push(this.depsDir[i] + '/dist/**/*.{js,css}');
+                vendors.push(this.depsPath[i] + '/dist/**/*.{js,css}');
             } else if (name == 'font-awesome') {
-                vendors.push(this.depsDir[i] + '/{fonts,css}/*.{css,eot,svg,ttf,woff,woff2}');
+                vendors.push(this.depsPath[i] + '/{fonts,css}/*.{css,eot,svg,ttf,woff,woff2}');
             } else {
-                vendors.push(this.depsDir[i] + '/**/*.js');
+                vendors.push(this.depsPath[i] + '/**/*.js');
             }
 
-            vendors.push('!' + this.depsDir[i] + '/**/*min.{js,css}');
+            vendors.push('!' + this.depsPath[i] + '/**/*min.{js,css}');
         }
 
         return vendors;
@@ -163,7 +173,7 @@ class Helpers {
      *
      * @return {Array}
      */
-    get depsDir () {
+    get depsPath () {
         let dirs = [];
 
         for (let dep in this.dependencies) {
@@ -190,12 +200,10 @@ class Helpers {
             config.port = parseInt(this.conf.proxy.split(':').pop());
         }
 
-        if ('bin' in server) {
-            config.bin = server.bin;
-        }
-
-        if ('ini' in server) {
-            config.ini = server.ini;
+        for (let key in ['bin', 'ini']) {
+            if (key in server) {
+                config[key] = server[key];
+            }
         }
 
         return config;
@@ -208,13 +216,15 @@ class Helpers {
      */
     get sync () {
         return () => {
-            this.bSync({
+            let bSyncConfig = {
                 port: this.conf.port,
                 host: this.conf.host,
                 proxy: this.conf.proxy,
                 open: 'open' in this.conf.serve ? this.conf.serve.open : false,
                 logConnections: false
-            });
+            };
+
+            this.bSync(bSyncConfig);
         }
     }
 
@@ -238,11 +248,11 @@ class Helpers {
      *
      * @param  {Object} err Error instance
      */
-    errorHandler (err) {
+    logErrors (err) {
         gutil.log(gutil.colors.red(`[Error] ${err.stack}`));
     }
 
-    e (message, color) {
+    log (message, color) {
         color = color && color in gutil.colors ? color : 'green';
 
         const cb = gutil.colors[color];

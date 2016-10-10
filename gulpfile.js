@@ -15,13 +15,13 @@ const _ = require('./assets/build')(gulp);
  --------------------------------------------------------------------------------- */
 
 gulp.task('build:styles', ['lint:styles'], () => {
-    _.conf.sass.includePaths = _.depsDir;
+    _.conf.sass.includePaths = _.depsPath;
 
     const styles = gulp.src(_.paths.styles, {base: _.paths.src})
         .pipe($.sass(_.conf.sass).on('error', $.sass.logError))
         .pipe($.autoprefixer(_.conf.autoprefixer))
         .pipe($.cleanCss())
-        .on('error', _.errorHandler);
+        .on('error', _.logErrors);
 
     return _.build(styles);
 });
@@ -32,9 +32,9 @@ gulp.task('build:styles', ['lint:styles'], () => {
 gulp.task('build:scripts', ['lint:scripts'], () => {
     const scripts = gulp.src(_.paths.scripts, {base: _.paths.src})
         .pipe($.babel({presets: ['es2015']}))
-        .on('error', _.errorHandler)
+        .on('error', _.logErrors)
         .pipe($.uglify(_.conf.uglify))
-        .on('error', _.errorHandler);
+        .on('error', _.logErrors);
 
     return _.build(scripts);
 });
@@ -46,7 +46,7 @@ gulp.task('build:images', () => {
     const images = gulp.src(_.paths.images, {base: _.paths.src})
         .pipe($.changed(_.paths.dest))
         .pipe($.imagemin(_.conf.imagemin))
-        .on('error', _.errorHandler);
+        .on('error', _.logErrors);
 
     return _.build(images);
 });
@@ -71,7 +71,7 @@ gulp.task('build:fonts', (done) => {
  --------------------------------------------------------------------------------- */
 
 gulp.task('lint:styles', () => {
-    _.conf.sass.includePaths = _.depsDir;
+    _.conf.sass.includePaths = _.depsPath;
 
     return gulp.src(_.paths.styles, {base: _.paths.src})
         .pipe($.sassLint(_.conf.sasslint))
@@ -103,7 +103,7 @@ gulp.task('vendor:copy', ['modernizr'], () => {
 gulp.task('vendor:scripts', () => {
     return gulp.src(_.paths.vendor + '/**/*.js')
         .pipe($.uglify(_.conf.uglify))
-        .on('error', _.errorHandler)
+        .on('error', _.logErrors)
         .pipe(gulp.dest(_.paths.vendor));
 });
 
@@ -113,7 +113,7 @@ gulp.task('vendor:scripts', () => {
 gulp.task('vendor:styles', () => {
     return gulp.src(_.paths.vendor + '/**/*.css')
         .pipe($.cleanCss())
-        .on('error', _.errorHandler)
+        .on('error', _.logErrors)
         .pipe(gulp.dest(_.paths.vendor));
 });
 
@@ -172,7 +172,7 @@ gulp.task('test:bdd', (done) => {
 
 gulp.task('deploy:wiki', (done) => {
     const exec = require('child_process').exec;
-    const ghUser = _.mode != 'local' && 'GH_USER_TOKEN' in process.env ? process.env.GH_USER_TOKEN : 'git';
+    const ghUser = !_.isLocal && 'GH_USER_TOKEN' in process.env ? process.env.GH_USER_TOKEN : 'git';
     let command = [
         'git subtree push -P docs/wiki',
         ghUser + '@github.com:projek-xyz/slim-skeleton.wiki.git',
@@ -180,8 +180,8 @@ gulp.task('deploy:wiki', (done) => {
     ];
 
     exec(command.join(' '), (err, stdout, stderr) => {
-        _.e(stdout);
-        _.e(stderr, 'red');
+        _.log(stdout);
+        _.log(stderr, 'red');
 
         done(err);
     });
@@ -194,7 +194,7 @@ gulp.task('clean', () => {
     const del = require('del');
 
     return del([_.paths.dest, _.paths.vendor]).then(() => {
-        _.e('Assets directory cleaned', 'green');
+        _.log('Assets directory cleaned', 'green');
     });
 });
 

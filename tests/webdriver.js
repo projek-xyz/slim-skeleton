@@ -44,7 +44,7 @@ exports.config = {
     //
     // By default WebdriverIO commands are executed in a synchronous way using
     // the wdio-sync package. If you still want to run your tests in an async way
-    // e.g. using promises you can set the sync option to false.
+    // log.g. using promises you can set the sync option to false.
     sync: true,
     //
     // Level of logging verbosity: silent | verbose | command | data | result | error
@@ -92,7 +92,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['browserstack'],
+    // services: ['browserstack'],
     //
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -130,12 +130,12 @@ exports.config = {
     // beforeSuite: (suite) => {
     // },
     //
-    // Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
+    // Hook that gets executed _before_ a hook within the suite starts (log.g. runs before calling
     // beforeEach in Mocha)
     // beforeHook: () => {
     // },
     //
-    // Hook that gets executed _after_ a hook within the suite starts (e.g. runs after calling
+    // Hook that gets executed _after_ a hook within the suite starts (log.g. runs after calling
     // afterEach in Mocha)
     // afterHook: () => {
     // },

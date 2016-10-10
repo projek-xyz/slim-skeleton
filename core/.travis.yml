@@ -24,9 +24,6 @@ matrix:
             - mysql-client-core-5.6
             - mysql-client-5.6
     - php: 5.5
-      env: setup=resource
-    - php: 5.5
-      env: setup=coverage
     - php: 5.6
     - php: 7.0
     - php: 7.1
@@ -41,20 +38,16 @@ mysql:
 
 before_install:
   - PHP=$TRAVIS_PHP_VERSION
-  - if [[ $setup = resource ]]; then source ~/.nvm/nvm.sh && nvm install 6; fi
   - if [[ ! $PHP = hhvm* ]]; then ini_file=~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; else ini_file=/etc/hhvm/php.ini; fi
-  - if [[ ! $setup = resource ]]; then mysql -u $DB_USER -e "create database if not exists ${DB_NAME}"; fi
+  - mysql -u $DB_USER -e "create database if not exists ${DB_NAME}"
 
 install:
   - if [[ ! $setup ]]; then composer install -n -q; fi
   - if [[ $setup = coverage ]]; then composer require codeclimate/php-test-reporter:~0.3 -n -q; fi
-  - if [[ $setup = resource ]]; then npm -g update -s && npm i -s; fi
-  - if [[ ! $setup = resource ]]; then php app/console migrate; fi
 
 script:
   - if [[ ! $setup ]]; then composer lint -q && composer test -q; fi
   - if [[ $setup = coverage ]]; then ./vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover build/logs/clover.xml; fi
-  - if [[ $setup = resource ]]; then gulp build; fi
 
 after_success:
   - export CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"; export CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"; export CI_BRANCH="$TRAVIS_BRANCH"

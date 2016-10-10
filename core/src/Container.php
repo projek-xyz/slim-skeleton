@@ -21,19 +21,19 @@ class Container extends SlimContainer
     /**
      * {@inheritdoc}
      */
-    public function __construct(array $value = [], $root_dir = null)
+    public function __construct(array $value = [], $rootDir = null)
     {
-        $this->initializeAppDirectories($root_dir);
-
         // Let's set default timezone
-        if (isset($settings['timezone'])) {
-            date_default_timezone_set($settings['timezone'] ?: 'UTC');
+        if (isset($value['settings']['timezone'])) {
+            date_default_timezone_set($value['settings']['timezone'] ?: 'UTC');
         }
 
         // Set default application mode
         if (!array_key_exists('mode', $value['settings'])) {
             $value['settings']['mode'] = getenv('APP_ENV') ?: 'production';
         }
+
+        $this->initializeAppDirectories($rootDir, $value['settings']);
 
         // Get detailed information while not in production
         if ($value['settings']['mode'] !== 'production') {
@@ -53,17 +53,16 @@ class Container extends SlimContainer
         static::$instance = $this;
     }
 
-    protected function initializeAppDirectories($rootDir)
+    protected function initializeAppDirectories($rootDir, &$settings)
     {
-        $value['settings']['directories'] = [];
-        if (null !== $rootDir && file_exists($rootDir) && is_dir($rootDir)) {
+        $settings['directories'] = [];
+        if (null !== $rootDir) {
             $rootDir = rtrim($rootDir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-            $value['settings']['directories'] = [
-                'root' => $rootDir,
-                'app' => $rootDir.'app'.DIRECTORY_SEPARATOR,
-                'public' => $rootDir.'public'.DIRECTORY_SEPARATOR,
-                'storage' => $rootDir.'storage'.DIRECTORY_SEPARATOR,
-            ];
+            $settings['directories']['root'] = $rootDir;
+
+            foreach (['app', 'assets', 'public', 'storage'] as $dir) {
+                $settings['directories'][$dir] = $rootDir.$dir.DIRECTORY_SEPARATOR;
+            }
         }
     }
 

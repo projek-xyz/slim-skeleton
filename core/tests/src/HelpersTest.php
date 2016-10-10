@@ -1,7 +1,7 @@
 <?php
 namespace Projek\Slim\Tests;
 
-class HelperTest extends TestCase
+class HelpersTest extends TestCase
 {
     public function test_array_get()
     {
@@ -39,9 +39,9 @@ class HelperTest extends TestCase
         // Absolute Path
 
         $ds = DIRECTORY_SEPARATOR;
-        $this->assertEquals(ROOT_DIR, directory(''));
-        $this->assertEquals(ROOT_DIR.'app'.$ds, directory('app'));
-        $this->assertEquals(ROOT_DIR.'app'.$ds.'data'.$ds, directory('app.data'));
+        $this->assertEquals(FIXTURES_DIR, directory('root'));
+        $this->assertEquals(FIXTURES_DIR.'app'.$ds, directory('app'));
+        $this->assertEquals(FIXTURES_DIR.'app'.$ds.'data'.$ds, directory('app.data'));
 
         // Relative Path
 

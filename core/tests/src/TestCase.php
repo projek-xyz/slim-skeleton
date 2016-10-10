@@ -14,7 +14,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->container = new Container(['settings' => $this->settings], ROOT_DIR);
+        $this->container = new Container(['settings' => $this->settings], FIXTURES_DIR);
     }
 
     protected function invokeMethod($obj, $name, $arg = [])

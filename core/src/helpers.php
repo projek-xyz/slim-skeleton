@@ -45,7 +45,7 @@ if (!function_exists('directory')) {
     function directory($path, $relative = null)
     {
         if (empty($path)) {
-            return ROOT_DIR;
+            return config('directories.root');
         }
 
         $paths = explode('.', $path);

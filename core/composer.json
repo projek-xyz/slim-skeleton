@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test": "./vendor/bin/phpunit -c tests/phpunit.xml",
-    "lint": "./vendor/bin/phpcs --standard=PSR2 -n -p app/"
+    "lint": "./vendor/bin/phpcs --standard=PSR2 -n -p src/"
   },
   "autoload": {
     "psr-4": {

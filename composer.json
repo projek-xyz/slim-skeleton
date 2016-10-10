@@ -32,7 +32,7 @@
   },
   "require": {
     "php": ">=5.5.0",
-    "projek-xyz/slim": "~0.1",
+    "projek-xyz/slim": "~1.0",
     "slim/slim": "~3.5"
   },
   "require-dev": {

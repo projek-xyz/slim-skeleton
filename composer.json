@@ -32,7 +32,7 @@
   },
   "require": {
     "php": ">=5.5.0",
-    "projek-xyz/slim": "*",
+    "projek-xyz/slim": "dev-master",
     "slim/slim": "~3.5"
   },
   "require-dev": {
@@ -47,11 +47,6 @@
       "url": "core"
     }
   ],
-  "extra": {
-    "branch-alias": {
-      "dev-master": "0.1-dev"
-    }
-  },
   "minimum-stability": "dev",
   "prefer-stable": true
 }

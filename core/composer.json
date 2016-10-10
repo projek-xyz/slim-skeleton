@@ -49,6 +49,11 @@
   "config": {
     "preferred-dist": true
   },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.1-dev"
+    }
+  },
   "minimum-stability": "dev",
   "prefer-stable": true
 }

@@ -17,7 +17,6 @@ Icon?
 # --------------------------
 /vendor/
 node_modules/
-tests/clover.xml
 composer.lock
 
 # IDE Project Configurations

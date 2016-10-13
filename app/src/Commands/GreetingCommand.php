@@ -6,17 +6,17 @@ use Projek\Slim\Console;
 class GreetingCommand extends Console\Commands
 {
     /**
-     * {@inheritedoc}
+     * @inheritdoc
      */
     protected $name = 'greeting';
 
     /**
-     * {@inheritedoc}
+     * @inheritdoc
      */
     protected $description = 'Say hello to the world';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function __invoke(Console\Input$input, Console\Output $output, Console\Arguments $args)
     {

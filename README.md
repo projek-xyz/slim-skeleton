@@ -39,4 +39,4 @@ Please see [CONTRIBUTING](.github/CONTRIBUTING.md) and [CONDUCT](.github/CONDUCT
 
 ## License
 
-This library is open-sourced software licensed under [MIT license](LICENSE.md).
+This library is open-sourced software licensed under [MIT license](LICENSE.md).

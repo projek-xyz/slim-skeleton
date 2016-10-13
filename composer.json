@@ -1,8 +1,7 @@
 {
   "name": "projek-xyz/slim-skeleton",
-  "description": "Build full-stack web application on top of Slim micro framework 3.",
+  "description": "Build a simple web application on top of Slim micro framework with ease.",
   "keywords": ["slim", "microframework", "skeleton", "starter"],
-  "homepage": "http://www.projek.xyz/slim-skeleton",
   "type": "project",
   "license": "MIT",
   "authors": [

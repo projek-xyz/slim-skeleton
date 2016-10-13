@@ -8,7 +8,11 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/projek-xyz/slim-skeleton.svg?maxAge=2592000&style=flat-square)](https://codeclimate.com/github/projek-xyz/slim-skeleton)
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/59c39221-cc85-467f-9e00-c7e0dcbdc9ee.svg?style=flat-square)](https://insight.sensiolabs.com/projects/59c39221-cc85-467f-9e00-c7e0dcbdc9ee)
 
-Build full-stack web application on top of Slim micro framework 3.
+Build a simple web application on top of Slim micro framework with ease.
+
+## Documentation
+
+Documentation for the framework can be found on the [wiki](https://github.com/projek-xyz/slim-framework/wiki).
 
 ## Requirements
 

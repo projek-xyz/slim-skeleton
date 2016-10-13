@@ -1,6 +1,6 @@
 {
   "name": "projek-xyz/slim-skeleton",
-  "description": "Slim Framework 3.x Application Skeleton",
+  "description": "Skeleton for Slim micro framework 3 Application",
   "keywords": ["slim", "microframework", "skeleton", "starter"],
   "homepage": "http://www.projek.xyz/slim-skeleton",
   "type": "project",
@@ -8,8 +8,7 @@
   "authors": [
     {
       "name": "Fery Wardiyanto",
-      "email": "hallo@feryardiant.me",
-      "homepage": "http://feryardiant.me"
+      "email": "feryardiyanto@gmail.com"
     }
   ],
   "support": {

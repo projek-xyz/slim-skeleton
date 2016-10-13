@@ -1,11 +1,14 @@
-# Slim Framework Application Skeleton
+# Skeleton for Slim micro framework 3 Application
 
 [![LICENSE](https://img.shields.io/packagist/l/projek-xyz/slim-skeleton.svg?style=flat-square)](LICENSE.md)
 [![VERSION](https://img.shields.io/packagist/v/projek-xyz/slim-skeleton.svg?style=flat-square)](https://github.com/projek-xyz/slim-skeleton/releases)
 [![Build Status](https://img.shields.io/travis/projek-xyz/slim-skeleton/master.svg?style=flat-square)](https://travis-ci.org/projek-xyz/slim-skeleton)
-[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/59c39221-cc85-467f-9e00-c7e0dcbdc9ee.svg?style=flat-square)](https://insight.sensiolabs.com/projects/59c39221-cc85-467f-9e00-c7e0dcbdc9ee)
+[![Coveralls](https://img.shields.io/coveralls/projek-xyz/slim-skeleton/master.svg?style=flat-square)](https://coveralls.io/github/projek-xyz/slim-skeleton)
 [![Code Climate](https://img.shields.io/codeclimate/github/projek-xyz/slim-skeleton.svg?maxAge=2592000&style=flat-square)](https://codeclimate.com/github/projek-xyz/slim-skeleton)
 [![Code Climate](https://img.shields.io/codeclimate/coverage/github/projek-xyz/slim-skeleton.svg?maxAge=2592000&style=flat-square)](https://codeclimate.com/github/projek-xyz/slim-skeleton)
+[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/59c39221-cc85-467f-9e00-c7e0dcbdc9ee.svg?style=flat-square)](https://insight.sensiolabs.com/projects/59c39221-cc85-467f-9e00-c7e0dcbdc9ee)
+
+Build full-stack web application on top of Slim micro framework 3.
 
 ## Requirements
 
@@ -32,8 +35,8 @@ Now, you should open [http://localhost:8888](http://localhost:8888) in your favo
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details.
+Please see [CONTRIBUTING](.github/CONTRIBUTING.md) and [CONDUCT](.github/CONDUCT.md) for details.
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+This library is open-sourced software licensed under [MIT license](LICENSE.md).

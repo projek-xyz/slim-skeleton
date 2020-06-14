@@ -39,7 +39,7 @@
     "gulp-modernizr": "^1.0.0-alpha",
     "gulp-sass": "^2.3.2",
     "gulp-sass-lint": "^1.2.0",
-    "gulp-uglify": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
     "gulp-util": "^3.0.7",
     "gulp-webdriver": "^2.0.2",
     "run-sequence": "^1.2.2",

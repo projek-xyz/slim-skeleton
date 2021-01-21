@@ -33,7 +33,7 @@
     "gulp-changed": "^1.3.2",
     "gulp-clean-css": "^2.0.13",
     "gulp-connect-php": "0.0.8",
-    "gulp-eslint": "^3.0.1",
+    "gulp-eslint": "^6.0.0",
     "gulp-imagemin": "^3.0.3",
     "gulp-load-plugins": "^2.0.6",
     "gulp-modernizr": "^1.0.0-alpha",

@@ -41,7 +41,7 @@
     "gulp-sass-lint": "^1.2.0",
     "gulp-uglify": "^3.0.2",
     "gulp-util": "^3.0.7",
-    "gulp-webdriver": "^2.0.2",
+    "gulp-webdriver": "^4.0.0",
     "run-sequence": "^1.2.2",
     "wdio-browserstack-service": "^0.1.3",
     "wdio-mocha-framework": "^0.6.4",

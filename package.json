@@ -17,7 +17,7 @@
     "deploy:wiki": "git subtree push -P docs/wiki git@github.com:projek-xyz/slim-skeleton.wiki.git master"
   },
   "dependencies": {
-    "bootstrap": "^4.0.0-alpha.4",
+    "bootstrap": "^5.0.1",
     "font-awesome": "^4.6.3",
     "jquery": "^3.1.1"
   },

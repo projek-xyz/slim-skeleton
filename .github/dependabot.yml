@@ -1,0 +1,36 @@
+version: 2
+updates:
+- package-ecosystem: composer
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "22:00"
+  open-pull-requests-limit: 10
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "22:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: chai
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: del
+    versions:
+    - ">= 5.a, < 6"
+  - dependency-name: gulp
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: gulp-clean-css
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: gulp-autoprefixer
+    versions:
+    - 7.0.1
+  - dependency-name: run-sequence
+    versions:
+    - 2.2.1
+  - dependency-name: gulp-sass
+    versions:
+    - 4.1.0

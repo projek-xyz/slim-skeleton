@@ -1,6 +1,7 @@
 {
   "name": "slim-skeleton",
   "private": true,
+  "version": "0.0.0",
   "author": "Fery Wardiyanto <hallo@feryardiant.me>",
   "license": "MIT",
   "homepage": "https://github.com/projek-xyz/slim-skeleton#readme",

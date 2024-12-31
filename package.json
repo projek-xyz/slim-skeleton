@@ -27,7 +27,7 @@
     "browser-sync": "^3.0.2",
     "chai": "^3.5.0",
     "del": "^7.0.0",
-    "dotenv": "^10.0.0",
+    "dotenv": "^16.4.5",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^9.0.0",
     "gulp-babel": "^8.0.0",

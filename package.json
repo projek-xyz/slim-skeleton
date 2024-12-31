@@ -29,7 +29,7 @@
     "del": "^7.0.0",
     "dotenv": "^10.0.0",
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^8.0.0",
+    "gulp-autoprefixer": "^9.0.0",
     "gulp-babel": "^8.0.0",
     "gulp-changed": "^4.0.2",
     "gulp-clean-css": "^3.10.0",

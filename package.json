@@ -37,7 +37,7 @@
     "gulp-eslint": "^6.0.0",
     "gulp-imagemin": "^9.0.0",
     "gulp-load-plugins": "^2.0.6",
-    "gulp-modernizr": "^4.0.1",
+    "gulp-modernizr": "^5.0.2",
     "gulp-sass": "^6.0.0",
     "gulp-sass-lint": "^1.2.0",
     "gulp-uglify": "^3.0.2",
